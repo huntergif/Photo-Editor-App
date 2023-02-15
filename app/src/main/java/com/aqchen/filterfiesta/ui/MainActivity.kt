@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta
+package com.aqchen.filterfiesta.ui
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -12,8 +12,10 @@ import android.view.Menu
 import android.view.MenuItem
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 import org.opencv.android.OpenCVLoader
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
