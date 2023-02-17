@@ -13,7 +13,6 @@ import android.view.MenuItem
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import org.opencv.android.OpenCVLoader
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -22,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        OpenCVLoader.initDebug()
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
