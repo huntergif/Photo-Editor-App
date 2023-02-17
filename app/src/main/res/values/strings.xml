@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">FilterFiesta</string>
     <string name="action_settings">Settings</string>
+    <!-- Strings used for Login Fragment -->
+    <string name="login_title">Login</string>
+    <string name="login_subtitle">Welcome back!</string>
+    <string name="login_submit_label">Login</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
