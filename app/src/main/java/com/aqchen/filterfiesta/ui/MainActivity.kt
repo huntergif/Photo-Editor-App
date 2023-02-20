@@ -1,7 +1,6 @@
 package com.aqchen.filterfiesta.ui
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
@@ -13,7 +12,6 @@ import android.view.MenuItem
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import org.opencv.android.OpenCVLoader
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -22,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        OpenCVLoader.initDebug()
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
@@ -35,12 +32,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAnchorView(R.id.fab)
-                    .setAction("Action", null).show()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

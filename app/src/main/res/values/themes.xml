@@ -1,9 +1,56 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.FilterFiesta" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
 
-    <style name="Theme.FilterFiesta" parent="Base.Theme.FilterFiesta" />
+<resources>
+    <style name="Base.Theme.FilterFiesta" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_light_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_light_error</item>
+        <item name="colorErrorContainer">@color/md_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/md_theme_light_background</item>
+        <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
+        <item name="colorAltRed">#bd1307</item>
+        <item name="colorOnAltRed">#ffffff</item>
+        <item name="colorAltRedContainer">#ffdad4</item>
+        <item name="colorOnAltRedContainer">#410100</item>
+        <item name="harmonizeAltRed">false</item>
+        <item name="colorAltGreen">#006d3c</item>
+        <item name="colorOnAltGreen">#ffffff</item>
+        <item name="colorAltGreenContainer">#73fca8</item>
+        <item name="colorOnAltGreenContainer">#00210e</item>
+        <item name="harmonizeAltGreen">false</item>
+        <item name="colorAltYellow">#6a5f00</item>
+        <item name="colorOnAltYellow">#ffffff</item>
+        <item name="colorAltYellowContainer">#fce42a</item>
+        <item name="colorOnAltYellowContainer">#201c00</item>
+        <item name="harmonizeAltYellow">false</item>
+        <item name="colorAltLightBlue">#006689</item>
+        <item name="colorOnAltLightBlue">#ffffff</item>
+        <item name="colorAltLightBlueContainer">#c3e8ff</item>
+        <item name="colorOnAltLightBlueContainer">#001e2c</item>
+        <item name="harmonizeAltLightBlue">false</item>
+        <item name="colorAltBlue">#0061a3</item>
+        <item name="colorOnAltBlue">#ffffff</item>
+        <item name="colorAltBlueContainer">#d1e4ff</item>
+        <item name="colorOnAltBlueContainer">#001d36</item>
+        <item name="harmonizeAltBlue">false</item>
+        <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
+    </style>
 </resources>

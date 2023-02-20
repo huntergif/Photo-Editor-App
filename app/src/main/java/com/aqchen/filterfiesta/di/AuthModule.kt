@@ -1,8 +1,8 @@
 package com.aqchen.filterfiesta.di
 
-import com.aqchen.filterfiesta.data.remote.FirebaseAuth
-import com.aqchen.filterfiesta.data.repository.FirebaseAuthRepositoryImpl
-import com.aqchen.filterfiesta.domain.repository.FirebaseAuthRepository
+import com.aqchen.filterfiesta.data.remote.FirebaseAuthentication
+import com.aqchen.filterfiesta.data.repository.AuthRepositoryImpl
+import com.aqchen.filterfiesta.domain.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,13 +18,13 @@ object AuthModule {
     @Provides
     // Determines scope - singleton means we only inject one and the same instance of the dependency
     @Singleton
-    fun provideAuth(): FirebaseAuth {
-        return FirebaseAuth()
+    fun provideAuth(): FirebaseAuthentication {
+        return FirebaseAuthentication()
     }
 
     @Provides
     @Singleton
-    fun provideFirebaseAuthRepository(firebaseAuth: FirebaseAuth): FirebaseAuthRepository {
-        return FirebaseAuthRepositoryImpl(firebaseAuth)
+    fun provideFirebaseAuthRepository(firebaseAuth: FirebaseAuthentication): AuthRepository {
+        return AuthRepositoryImpl(firebaseAuth)
     }
 }

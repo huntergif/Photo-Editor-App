@@ -1,0 +1,28 @@
+
+<resources>
+    <attr name="colorAltRed" format="color" />
+    <attr name="colorOnAltRed" format="color" />
+    <attr name="colorAltRedContainer" format="color" />
+    <attr name="colorOnAltRedContainer" format="color" />
+    <attr name="harmonizeAltRed" format="boolean" />
+    <attr name="colorAltGreen" format="color" />
+    <attr name="colorOnAltGreen" format="color" />
+    <attr name="colorAltGreenContainer" format="color" />
+    <attr name="colorOnAltGreenContainer" format="color" />
+    <attr name="harmonizeAltGreen" format="boolean" />
+    <attr name="colorAltYellow" format="color" />
+    <attr name="colorOnAltYellow" format="color" />
+    <attr name="colorAltYellowContainer" format="color" />
+    <attr name="colorOnAltYellowContainer" format="color" />
+    <attr name="harmonizeAltYellow" format="boolean" />
+    <attr name="colorAltLightBlue" format="color" />
+    <attr name="colorOnAltLightBlue" format="color" />
+    <attr name="colorAltLightBlueContainer" format="color" />
+    <attr name="colorOnAltLightBlueContainer" format="color" />
+    <attr name="harmonizeAltLightBlue" format="boolean" />
+    <attr name="colorAltBlue" format="color" />
+    <attr name="colorOnAltBlue" format="color" />
+    <attr name="colorAltBlueContainer" format="color" />
+    <attr name="colorOnAltBlueContainer" format="color" />
+    <attr name="harmonizeAltBlue" format="boolean" />
+</resources>
