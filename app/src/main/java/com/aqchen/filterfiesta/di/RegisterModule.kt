@@ -1,5 +1,7 @@
 package com.aqchen.filterfiesta.di
 
+import com.aqchen.filterfiesta.domain.repository.AuthRepository
+import com.aqchen.filterfiesta.domain.use_case.auth.CreateUserWithEmailAndPasswordUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.ValidateEmailUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.ValidatePasswordUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.ValidateRepeatedPasswordUseCase
@@ -35,5 +37,11 @@ class RegisterModule {
     @Singleton
     fun provideValidateTermsUseCase(): ValidateTermsUseCase {
         return ValidateTermsUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCreateUserWithEmailAndPasswordUseCase(authRepository: AuthRepository): CreateUserWithEmailAndPasswordUseCase {
+        return CreateUserWithEmailAndPasswordUseCase(authRepository)
     }
 }

@@ -1,6 +1,6 @@
 package com.aqchen.filterfiesta.ui.auth.register
 
-data class RegistrationFormState(
+data class RegisterFormState(
     val email: String = "",
     val emailError: String? = null,
     val password: String = "",

@@ -2,13 +2,21 @@ package com.aqchen.filterfiesta.ui.auth.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aqchen.filterfiesta.domain.use_case.auth.CreateUserWithEmailAndPasswordUseCase
+import com.aqchen.filterfiesta.domain.use_case.auth.GetCurrentUserUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.ValidateEmailUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.ValidatePasswordUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.ValidateRepeatedPasswordUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.ValidateTermsUseCase
+import com.aqchen.filterfiesta.ui.auth.login.LoginFormState
+import com.aqchen.filterfiesta.util.Resource
+import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,43 +26,65 @@ class RegisterViewModel @Inject constructor(
     private val validateEmail: ValidateEmailUseCase,
     private val validatePassword: ValidatePasswordUseCase,
     private val validateRepeatedPassword: ValidateRepeatedPasswordUseCase,
-    private val validateTerms: ValidateTermsUseCase
+    private val validateTerms: ValidateTermsUseCase,
+    private val createUserWithEmailAndPasswordUseCase: CreateUserWithEmailAndPasswordUseCase,
+    private val getCurrentUser: GetCurrentUserUseCase,
 ): ViewModel() {
-    private val _registrationFormStateFlow = MutableStateFlow<RegistrationFormState>(
-        RegistrationFormState()
+    // use shared flow for login user flow since we want to emit login result only once
+    // https://stackoverflow.com/questions/66162586/the-main-difference-between-sharedflow-and-stateflow
+    private val _registerUserFlow = MutableSharedFlow<Resource<FirebaseUser?>?>()
+    // public readable shared flow
+    val registerUserFlow: SharedFlow<Resource<FirebaseUser?>?> = _registerUserFlow
+
+    // only this view model can mutate the state flow
+    private val _registerFormStateFlow = MutableStateFlow(
+        RegisterFormState()
     )
+    // public readable state flow
+    val registerFormStateFlow: StateFlow<RegisterFormState> = _registerFormStateFlow
 
-    private val validationEventChannel = Channel<ValidationEvent>()
-    val validationEvents = validationEventChannel.receiveAsFlow()
+    val currentUser: FirebaseUser?
+        get() = getCurrentUser()
 
-    fun onEvent(event: RegistrationFormEvent) {
+    // Check if user is already logged-in
+    init {
+        if (getCurrentUser() != null) {
+            // shared flow can only emit in a coroutine
+            viewModelScope.launch {
+                _registerUserFlow.emit(Resource.Success(getCurrentUser()))
+            }
+        }
+    }
+
+    // Handle register form events from the view
+    fun onEvent(event: RegisterFormEvent) {
         when (event) {
-            is RegistrationFormEvent.EmailChanged -> {
-                _registrationFormStateFlow.value = _registrationFormStateFlow.value.copy(email = event.email)
+            is RegisterFormEvent.EmailChanged -> {
+                _registerFormStateFlow.value = _registerFormStateFlow.value.copy(email = event.email)
             }
-            is RegistrationFormEvent.PasswordChanged -> {
-                _registrationFormStateFlow.value = _registrationFormStateFlow.value.copy(password = event.password)
+            is RegisterFormEvent.PasswordChanged -> {
+                _registerFormStateFlow.value = _registerFormStateFlow.value.copy(password = event.password)
             }
-            is RegistrationFormEvent.RepeatedPasswordChanged -> {
-                _registrationFormStateFlow.value = _registrationFormStateFlow.value.copy(repeatedPassword = event.repeatedPassword)
+            is RegisterFormEvent.RepeatedPasswordChanged -> {
+                _registerFormStateFlow.value = _registerFormStateFlow.value.copy(repeatedPassword = event.repeatedPassword)
             }
-            is RegistrationFormEvent.TermsChanged -> {
-                _registrationFormStateFlow.value = _registrationFormStateFlow.value.copy(acceptedTerms = event.isAccepted)
+            is RegisterFormEvent.TermsChanged -> {
+                _registerFormStateFlow.value = _registerFormStateFlow.value.copy(acceptedTerms = event.isAccepted)
             }
-            is RegistrationFormEvent.Submit -> {
+            is RegisterFormEvent.Submit -> {
                 submitData()
             }
         }
     }
 
     private fun submitData() {
-        val emailResult = validateEmail(_registrationFormStateFlow.value.email)
-        val passwordResult = validatePassword(_registrationFormStateFlow.value.password)
+        val emailResult = validateEmail(_registerFormStateFlow.value.email)
+        val passwordResult = validatePassword(_registerFormStateFlow.value.password)
         val repeatedPasswordResult = validateRepeatedPassword(
-            _registrationFormStateFlow.value.password,
-            _registrationFormStateFlow.value.repeatedPassword
+            _registerFormStateFlow.value.password,
+            _registerFormStateFlow.value.repeatedPassword
         )
-        val termsResult = validateTerms(_registrationFormStateFlow.value.acceptedTerms)
+        val termsResult = validateTerms(_registerFormStateFlow.value.acceptedTerms)
 
         val hasError = listOf(
             emailResult,
@@ -63,22 +93,26 @@ class RegisterViewModel @Inject constructor(
             termsResult
         ).any { !it.successful }
 
-        if (hasError) {
-            _registrationFormStateFlow.value = _registrationFormStateFlow.value.copy(
-                emailError = emailResult.errorMessage,
-                passwordError = passwordResult.errorMessage,
-                repeatedPasswordError = repeatedPasswordResult.errorMessage,
-                acceptedTermsError = termsResult.errorMessage
-            )
-        } else {
+        // Set errors to messages (or null)
+        _registerFormStateFlow.value = _registerFormStateFlow.value.copy(
+            emailError = emailResult.errorMessage,
+            passwordError = passwordResult.errorMessage,
+            repeatedPasswordError = repeatedPasswordResult.errorMessage,
+            acceptedTermsError = termsResult.errorMessage
+        )
+
+        if (!hasError) {
+            // launch coroutine to register
             viewModelScope.launch {
-                validationEventChannel.send(ValidationEvent.Success)
+                // emit that register user flow is loading
+                _registerUserFlow.emit(Resource.Loading)
+                // emit result resource
+                _registerUserFlow.emit(
+                    createUserWithEmailAndPasswordUseCase(
+                        _registerFormStateFlow.value.email,
+                        _registerFormStateFlow.value.password)
+                )
             }
         }
     }
-
-    sealed class ValidationEvent {
-        object Success: ValidationEvent()
-    }
-
 }

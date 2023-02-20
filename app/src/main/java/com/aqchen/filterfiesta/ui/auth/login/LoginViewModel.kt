@@ -40,6 +40,7 @@ class LoginViewModel @Inject constructor(
     val currentUser: FirebaseUser?
         get() = getCurrentUser()
 
+    // Check if user is already logged-in
     init {
         if (getCurrentUser() != null) {
             // shared flow can only emit in a coroutine
@@ -49,6 +50,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    // Handle login form events from the view
     fun onEvent(event: LoginFormEvent) {
         when (event) {
             is LoginFormEvent.EmailChanged -> {
@@ -72,23 +74,23 @@ class LoginViewModel @Inject constructor(
             passwordResult,
         ).any { !it.successful }
 
-        if (hasError) {
-            _loginFormStateFlow.value = _loginFormStateFlow.value.copy(
-                emailError = emailResult.errorMessage,
-                passwordError = passwordResult.errorMessage,
-            )
-        } else {
+        // Set errors to messages (or null)
+        _loginFormStateFlow.value = _loginFormStateFlow.value.copy(
+            emailError = emailResult.errorMessage,
+            passwordError = passwordResult.errorMessage,
+        )
+
+        if (!hasError) {
             // no errors in form
             _loginFormStateFlow.value = _loginFormStateFlow.value.copy(
                 emailError = null,
                 passwordError = null,
             )
-            // set login is loading
-            viewModelScope.launch {
-                _loginUserFlow.emit(Resource.Loading)
-            }
             // launch coroutine to login
             viewModelScope.launch {
+                // set login is loading
+                _loginUserFlow.emit(Resource.Loading)
+                // emit result
                 _loginUserFlow.emit(loginWithEmailAndPassword(_loginFormStateFlow.value.email, _loginFormStateFlow.value.password))
             }
         }
