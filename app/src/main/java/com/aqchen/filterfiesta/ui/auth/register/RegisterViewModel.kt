@@ -8,16 +8,13 @@ import com.aqchen.filterfiesta.domain.use_case.auth.ValidateEmailUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.ValidatePasswordUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.ValidateRepeatedPasswordUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.ValidateTermsUseCase
-import com.aqchen.filterfiesta.ui.auth.login.LoginFormState
 import com.aqchen.filterfiesta.util.Resource
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

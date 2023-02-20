@@ -2,7 +2,6 @@ package com.aqchen.filterfiesta.ui.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aqchen.filterfiesta.domain.repository.AuthRepository
 import com.aqchen.filterfiesta.domain.use_case.auth.GetCurrentUserUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.LoginWithEmailAndPasswordUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.ValidateEmailUseCase
