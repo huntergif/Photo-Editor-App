@@ -5,6 +5,6 @@ package com.aqchen.filterfiesta.util
 sealed class Resource<out T> {
     data class Success<out T>(val data: T) : Resource<T>()
     // Error could still return data such as cached data
-    data class Error<out T>(val exception: java.lang.Exception, val data: T? = null) : Resource<T>()
+    data class Error<out T>(val errorMessage: String, val data: T? = null) : Resource<T>()
     object Loading: Resource<Nothing>()
 }

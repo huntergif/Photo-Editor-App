@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment2"
-        android:name="com.aqchen.filterfiesta.ui.auth.LoginFragment"
+        android:name="com.aqchen.filterfiesta.ui.auth.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
 </navigation>

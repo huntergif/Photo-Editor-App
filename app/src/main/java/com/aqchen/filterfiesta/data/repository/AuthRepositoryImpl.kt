@@ -10,22 +10,22 @@ import kotlinx.coroutines.tasks.await
 class AuthRepositoryImpl(
     private val firebaseAuth: FirebaseAuthentication
 ): AuthRepository {
-    override suspend fun signInWithEmailAndPassword(email: String, password: String): Resource<FirebaseUser?> {
+    override suspend fun signInWithEmailAndPassword(email: String, password: String): Resource<FirebaseUser> {
         return try {
-            Resource.Success(firebaseAuth.conn.signInWithEmailAndPassword(email, password).await().user)
+            Resource.Success(firebaseAuth.conn.signInWithEmailAndPassword(email, password).await().user!!)
         } catch (e: FirebaseAuthException) {
-            Resource.Error(e)
+            Resource.Error(e.message ?: "Unknown Firebase Auth Error")
         }
     }
 
     override suspend fun createAccountWithEmailAndPassword(
         email: String,
         password: String
-    ): Resource<FirebaseUser?> {
+    ): Resource<FirebaseUser> {
         return try {
-            Resource.Success(firebaseAuth.conn.createUserWithEmailAndPassword(email, password).await().user)
+            Resource.Success(firebaseAuth.conn.createUserWithEmailAndPassword(email, password).await().user!!)
         } catch (e: FirebaseAuthException) {
-            Resource.Error(e)
+            Resource.Error(e.message ?: "Unknown Firebase Auth Error")
         }
     }
 
