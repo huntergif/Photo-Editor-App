@@ -1,103 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context="com.aqchen.filterfiesta.ui.auth.login.LoginFragment">
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginHorizontal="@dimen/sm_margin"
+        android:layout_marginBottom="@dimen/sm_margin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true" >
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/login_title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/login_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_title"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="@dimen/text_title_font_size"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/login_subtitle"
+            app:layout_constraintTop_toBottomOf="@id/login_title"
+            app:layout_constraintBottom_toTopOf="@id/login_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="@dimen/md_sm_margin">
+            android:layout_marginBottom="@dimen/sm_margin"
+            android:textSize="@dimen/text_subtitle_font_size"
+            android:text="@string/login_subtitle" />
 
-            <com.google.android.material.textview.MaterialTextView
+        <!-- Login Image -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/login_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:maxWidth="200dp"
+            android:layout_margin="@dimen/sm_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_subtitle"
+            app:layout_constraintBottom_toTopOf="@id/login_email_input_layout"
+            android:src="@drawable/adjusting_image_illustration" />
+
+        <!-- Email input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_email_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_image"
+            app:layout_constraintBottom_toTopOf="@id/login_password_input_layout"
+            android:hint="@string/email_input_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_email_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_password_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_email_input_layout"
+            app:layout_constraintBottom_toTopOf="@id/login_submit_button"
+            android:hint="@string/password_input_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_title_font_size"
-                android:textColor="?attr/colorPrimary"
-                android:text="@string/login_title" />
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/sm_margin"
-                android:textSize="@dimen/text_subtitle_font_size"
-                android:text="@string/login_subtitle" />
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Image Wrapper -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/sm_margin">
-                <!-- Login Image -->
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:maxWidth="200dp"
-                    android:src="@drawable/adjusting_image_illustration"/>
-            </LinearLayout>
-            
-            <!-- Email input -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/login_email_input_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/email_input_hint">
+        <!-- Login Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/login_submit_label"
+            android:layout_marginVertical="@dimen/sm_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_password_input_layout"
+            app:layout_constraintBottom_toTopOf="@id/login_signup_text" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/login_email_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Password input -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/login_password_input_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password_input_hint">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/login_password_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Login Button -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_marginVertical="@dimen/sm_margin"
-                >
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/login_submit_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/login_submit_label" />
-            </LinearLayout>
-
-            <!-- Sign Up Now Wrapper -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/login_signup_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/login_no_account_question"/>
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Sign Up Now Wrapper -->
+        <TextView
+            android:id="@+id/login_signup_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_no_account_question"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_submit_button"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
