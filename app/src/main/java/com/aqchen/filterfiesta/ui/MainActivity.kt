@@ -1,6 +1,7 @@
 package com.aqchen.filterfiesta.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
+        Log.i("MainActivity", "MainActivity onCreate")
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -32,6 +35,31 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.i("MainActivity", "MainActivity onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i("MainActivity", "MainActivity onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i("MainActivity", "MainActivity onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i("MainActivity", "MainActivity onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("MainActivity", "MainActivity onDestroy")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
