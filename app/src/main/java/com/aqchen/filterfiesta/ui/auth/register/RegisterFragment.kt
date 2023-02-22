@@ -22,6 +22,7 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.launch
 
 class RegisterFragment : Fragment() {
@@ -35,6 +36,14 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Set enter and return transitions - pairs with transitions in login fragment
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.X, false).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 

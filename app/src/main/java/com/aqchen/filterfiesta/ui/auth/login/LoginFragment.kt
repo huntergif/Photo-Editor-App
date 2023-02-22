@@ -22,6 +22,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.launch
 
 
@@ -110,6 +111,15 @@ class LoginFragment : Fragment() {
                 }
 
                 override fun onClick(widget: View) {
+                    // Set exit and renter transitions to the register fragment
+                    // note that we also need to set transitions in the register fragment onCreateView
+                    exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true).apply {
+                        duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+                    }
+                    reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false).apply {
+                        duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+                    }
+                    // navigate to register fragment
                     findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
                 }
             }
