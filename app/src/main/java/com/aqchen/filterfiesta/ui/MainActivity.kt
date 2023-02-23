@@ -1,5 +1,7 @@
 package com.aqchen.filterfiesta.ui
 
+import android.animation.ObjectAnimator
+import android.animation.TimeInterpolator
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +12,12 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.animation.AnticipateInterpolator
+import android.view.animation.Interpolator
+import android.view.animation.LinearInterpolator
+import androidx.core.animation.doOnEnd
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +29,27 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Handle the splash screen transition.
+        // Note: when launching the app from Android Studio (rather from the device), there is a bug
+        // where the app icon will not show up: https://issuetracker.google.com/issues/205021357
+        // Note: Must be *before* super.onCreate()
+        val splashScreen = installSplashScreen()
+        splashScreen.setOnExitAnimationListener { splashScreenView ->
+            // Add fade out animation for the splash screen when exiting
+            val fadeOut = ObjectAnimator.ofFloat(
+                splashScreenView.view,
+                View.ALPHA,
+                1f,
+                0f
+            )
+            fadeOut.interpolator = LinearInterpolator()
+            fadeOut.duration = 300L
+
+            // Call SplashScreenView.remove at the end of the animation.
+            fadeOut.doOnEnd { splashScreenView.remove() }
+            // Run the animation.
+            fadeOut.start()
+        }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
