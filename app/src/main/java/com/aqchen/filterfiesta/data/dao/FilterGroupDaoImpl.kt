@@ -2,33 +2,58 @@ package com.aqchen.filterfiesta.data.dao
 
 import com.aqchen.filterfiesta.data.remote.FirebaseFirestore
 import com.aqchen.filterfiesta.domain.models.FilterGroup
-import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseException
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.snapshots
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class FilterGroupDaoImpl(
+class FilterGroupDaoImpl @Inject constructor(
     private val fireStore: FirebaseFirestore
 ) : FilterGroupDao {
-    override suspend fun createFilterGroupDocForUserId(userId: String, filterGroup: FilterGroup) {
-        fireStore.conn.collection("userData").document(userId).collection("filterGroups").add(
-            filterGroup
-        )
-    }
-
-    override suspend fun getFilterGroupDocsByUserIdFlow(userId: String): Flow<QuerySnapshot> {
-        return fireStore.conn.collection("userData").document(userId).collection("filterGroups").snapshots()
-    }
-
-    override suspend fun updateFilterGroupDocForUserId(userId: String, filterGroup: FilterGroup) {
-        if (filterGroup.id == null) {
-            throw FirebaseFirestoreException("filterGroup id can't be null", FirebaseFirestoreException.Code.INVALID_ARGUMENT)
+    private val userDataCollectionRef = fireStore.conn.collection("userData")
+    override suspend fun createUserFilterGroup(userId: String, filterGroup: FilterGroup) {
+        try {
+            userDataCollectionRef.document(userId).collection("filterGroups").add(
+                filterGroup
+            )
+        } catch (e: FirebaseException) {
+            throw e
         }
-        //fireStore.conn.collection("userData").document(userId).collection("filterGroup").document(filterGroup.id).update(filterGroup)
     }
 
-    override suspend fun deleteFilterGroupDocForUserId(userId: String, filterGroupDocId: String) {
-        TODO("Not yet implemented")
+    override suspend fun getUserFilterGroupsFlow(userId: String): Flow<QuerySnapshot> {
+        try {
+            return userDataCollectionRef.document(userId).collection("filterGroups").snapshots()
+        } catch (e: FirebaseException) {
+            throw e
+        }
+    }
+
+    override suspend fun updateUserFilterGroup(userId: String, filterGroup: FilterGroup) {
+        if (filterGroup.id == null) {
+            // Note: FirebaseFirestoreException extends FirebaseException
+            throw FirebaseFirestoreException(
+                "FilterGroup id can't be null when updating.",
+                FirebaseFirestoreException.Code.INVALID_ARGUMENT
+            )
+        }
+        try {
+            val doc = userDataCollectionRef.document(userId).collection("filterGroups").document(filterGroup.id)
+            doc.set(filterGroup)
+        } catch (e: FirebaseException) {
+            throw e
+        }
+    }
+
+    override suspend fun deleteUserFilterGroup(userId: String, filterGroupId: String) {
+        try {
+            val filterGroup = userDataCollectionRef.document(userId).collection("filterGroups")
+                .document(filterGroupId)
+            filterGroup.delete()
+        } catch (e: FirebaseException) {
+            throw e
+        }
     }
 }

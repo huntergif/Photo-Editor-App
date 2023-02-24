@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(FragmentComponent::class)
-class LoginModule {
+object LoginModule {
     @Provides
     @Singleton
     fun provideValidateEmailUseCase(): ValidateEmailUseCase {

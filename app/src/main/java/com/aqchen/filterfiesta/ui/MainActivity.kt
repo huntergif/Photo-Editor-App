@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                 0f
             )
             fadeOut.interpolator = LinearInterpolator()
-            fadeOut.duration = 300L
+            fadeOut.duration = 200L // 200 ms
 
             // Call SplashScreenView.remove at the end of the animation.
             fadeOut.doOnEnd { splashScreenView.remove() }

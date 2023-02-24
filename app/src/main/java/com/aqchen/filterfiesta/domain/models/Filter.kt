@@ -6,10 +6,12 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 @IgnoreExtraProperties
 data class Filter(
     val id: String? = null,
-    var strength: Int = 0,
+    val type: String = "",
+    val parameters: Map<String, Float> = mutableMapOf(),
 ) {
     companion object {
         const val FIELD_ID = "id"
-        const val FIELD_STRENGTH = "strength"
+        const val FIELD_TYPE = "type"
+        const val FIELD_PARAMETERS = "parameters"
     }
 }
