@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class FilterGroupDaoImpl @Inject constructor(
-    private val fireStore: FirebaseFirestore
+    private val firestore: FirebaseFirestore
 ) : FilterGroupDao {
-    private val userDataCollectionRef = fireStore.conn.collection("userData")
+    private val userDataCollectionRef = firestore.conn.collection("userData")
     override suspend fun createUserFilterGroup(userId: String, filterGroup: FilterGroup) {
         try {
             userDataCollectionRef.document(userId).collection("filterGroups").add(
