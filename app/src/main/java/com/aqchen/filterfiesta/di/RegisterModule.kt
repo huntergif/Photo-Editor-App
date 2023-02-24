@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(FragmentComponent::class)
-class RegisterModule {
+object RegisterModule {
     @Provides
     @Singleton
     fun provideValidateEmailUseCase(): ValidateEmailUseCase {

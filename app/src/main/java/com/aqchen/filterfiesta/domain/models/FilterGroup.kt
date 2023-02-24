@@ -1,16 +1,15 @@
 package com.aqchen.filterfiesta.domain.models
 
 import com.google.firebase.firestore.IgnoreExtraProperties
-import com.google.type.Date
 
-// Filter POJO
+// FilterGroup POJO
 @IgnoreExtraProperties
 data class FilterGroup(
     val id: String? = null,
-    var userId: String = "",
-    var name: String = "",
-    var isPublic: Boolean = false,
-    var filters: ArrayList<Filter> = ArrayList(),
+    val userId: String = "",
+    val name: String = "",
+    val isPublic: Boolean = false,
+    val filters: MutableList<Filter> = mutableListOf(),
 ) {
     companion object {
         const val FIELD_ID = "id"

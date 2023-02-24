@@ -5,8 +5,8 @@ import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.Flow
 
 interface FilterGroupDao {
-    suspend fun createFilterGroupDocForUserId(userId: String, filterGroup: FilterGroup)
-    suspend fun getFilterGroupDocsByUserIdFlow(userId: String): Flow<QuerySnapshot>
-    suspend fun updateFilterGroupDocForUserId(userId: String, filterGroup: FilterGroup)
-    suspend fun deleteFilterGroupDocForUserId(userId: String, filterGroupDocId: String)
+    suspend fun createUserFilterGroup(userId: String, filterGroup: FilterGroup)
+    suspend fun getUserFilterGroupsFlow(userId: String): Flow<QuerySnapshot>
+    suspend fun updateUserFilterGroup(userId: String, filterGroup: FilterGroup)
+    suspend fun deleteUserFilterGroup(userId: String, filterGroupId: String)
 }
