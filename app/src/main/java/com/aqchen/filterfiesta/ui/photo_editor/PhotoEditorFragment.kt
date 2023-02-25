@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photoeditor
+package com.aqchen.filterfiesta.ui.photo_editor
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle

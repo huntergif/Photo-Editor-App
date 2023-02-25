@@ -13,10 +13,22 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_photoEditorFragment"
+            app:destination="@id/photoEditorFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.aqchen.filterfiesta.ui.auth.register.RegisterFragment"
         android:label=""
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_photoEditorFragment"
+            app:destination="@id/photoEditorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/photoEditorFragment"
+        android:name="com.aqchen.filterfiesta.ui.photo_editor.PhotoEditorFragment"
+        android:label="fragment_photo_editor"
+        tools:layout="@layout/fragment_photo_editor" />
 </navigation>

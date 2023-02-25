@@ -3,13 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.aqchen.filterfiesta.ui.photo_editor.PhotoEditorFragment"
+    tools:context="com.aqchen.filterfiesta.ui.photo_editor.filter_groups.FilterGroupsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/bottom_editor_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/filters_recycler_view"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </androidx.constraintlayout.widget.ConstraintLayout>

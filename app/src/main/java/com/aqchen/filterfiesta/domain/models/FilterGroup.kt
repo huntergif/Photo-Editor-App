@@ -5,6 +5,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 // FilterGroup POJO
 @IgnoreExtraProperties
 data class FilterGroup(
+    val dateCreated: String? = null,
     val id: String? = null,
     val userId: String = "",
     val name: String = "",
