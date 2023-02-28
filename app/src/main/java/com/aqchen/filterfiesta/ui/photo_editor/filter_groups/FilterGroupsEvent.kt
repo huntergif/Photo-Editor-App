@@ -9,4 +9,6 @@ sealed class FilterGroupsEvent {
     data class Update(val filterGroup: FilterGroup): FilterGroupsEvent()
     data class Delete(val filterGroup: FilterGroup): FilterGroupsEvent()
     object RestoreFilterGroup: FilterGroupsEvent()
+
+    object LoadFilterGroups: FilterGroupsEvent()
 }

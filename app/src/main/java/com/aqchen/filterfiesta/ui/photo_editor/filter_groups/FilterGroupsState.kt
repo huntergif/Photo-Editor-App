@@ -9,6 +9,6 @@ import kotlinx.coroutines.flow.Flow
 // State data class should survive lifecycle changes
 data class FilterGroupsState(
     val filterGroups: Flow<List<FilterGroup>>? = null,
-    val getFilterGroupsStatus: Resource<Flow<List<FilterGroup>>>? = null,
+    val getFilterGroupsStatus: Resource<Unit>? = null,
     val filterGroupsOrder: FilterGroupsOrder = FilterGroupsOrder.Name(OrderType.Descending)
 )

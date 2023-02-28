@@ -6,12 +6,15 @@ import com.aqchen.filterfiesta.domain.models.FilterGroup
 import com.aqchen.filterfiesta.domain.use_case.filter_groups.FilterGroupsUseCases
 import com.aqchen.filterfiesta.domain.util.FilterGroupsOrder
 import com.aqchen.filterfiesta.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class FilterGroupsModel @Inject constructor(
+@HiltViewModel
+
+class FilterGroupsViewModel @Inject constructor(
     private val filterGroupsUseCases: FilterGroupsUseCases
 ) : ViewModel() {
     // only this view model can mutate the state flow
@@ -42,15 +45,20 @@ class FilterGroupsModel @Inject constructor(
                 // Do nothing if the current order in the state matches the order in the event
                 // Note: we need ::class or else it will compare referential equality (FilterGroupsOrder is not a data class), which is never true
                 if (_filterGroupsStateFlow.value.filterGroupsOrder::class == event.filterGroupsOrder::class &&
-                        _filterGroupsStateFlow.value.filterGroupsOrder.orderType == event.filterGroupsOrder.orderType) {
+                    _filterGroupsStateFlow.value.filterGroupsOrder.orderType == event.filterGroupsOrder.orderType) {
                     return
                 }
             }
-            FilterGroupsEvent.RestoreFilterGroup -> {
+            is FilterGroupsEvent.RestoreFilterGroup -> {
                 viewModelScope.launch {
                     // if lastDeletedFilterGroup is null, we return from the coroutine
                     filterGroupsUseCases.createFilterGroupUseCase(lastDeletedFilterGroup ?: return@launch)
                     lastDeletedFilterGroup = null
+                }
+            }
+            is FilterGroupsEvent.LoadFilterGroups -> {
+                viewModelScope.launch {
+                    getFilterGroupsFlow(filterGroupsStateFlow.value.filterGroupsOrder)
                 }
             }
         }
@@ -61,11 +69,13 @@ class FilterGroupsModel @Inject constructor(
         when (val res = filterGroupsUseCases.getFilterGroupsUseCase(filterGroupsOrder)) {
             is Resource.Success -> {
                 _filterGroupsStateFlow.value = _filterGroupsStateFlow.value.copy(filterGroups = res.data)
-                _filterGroupsStateFlow.value = _filterGroupsStateFlow.value.copy(getFilterGroupsStatus = res)
+                _filterGroupsStateFlow.value = _filterGroupsStateFlow.value.copy(getFilterGroupsStatus = Resource.Success(Unit))
             }
-            // handle Resource.Loading and Resource.Error
-            else -> {
-                _filterGroupsStateFlow.value = _filterGroupsStateFlow.value.copy(getFilterGroupsStatus = res)
+            is Resource.Loading -> {
+                _filterGroupsStateFlow.value = _filterGroupsStateFlow.value.copy(getFilterGroupsStatus = Resource.Loading)
+            }
+            is Resource.Error -> {
+                _filterGroupsStateFlow.value = _filterGroupsStateFlow.value.copy(getFilterGroupsStatus = Resource.Error(res.errorMessage))
             }
         }
     }

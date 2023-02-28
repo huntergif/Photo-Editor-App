@@ -11,38 +11,41 @@ import com.aqchen.filterfiesta.domain.use_case.filter_groups.DeleteFilterGroupUs
 import com.aqchen.filterfiesta.domain.use_case.filter_groups.FilterGroupsUseCases
 import com.aqchen.filterfiesta.domain.use_case.filter_groups.GetFilterGroupsUseCase
 import com.aqchen.filterfiesta.domain.use_case.filter_groups.UpdateFilterGroupUseCase
+import com.aqchen.filterfiesta.domain.use_case.tool_pages.GetToolPagesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.FragmentScoped
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Singleton
 
 @Module
-@InstallIn(FragmentComponent::class)
+@InstallIn(ViewModelComponent::class)
 object PhotoEditorModule {
     @Provides
     // Determines scope - singleton means we only inject one and the same instance of the dependency
-    @Singleton
+    @ViewModelScoped
     fun provideFireStore(): FirebaseFirestore {
         return FirebaseFirestore()
     }
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun provideFilterGroupDao(firestore: FirebaseFirestore): FilterGroupDao {
         return FilterGroupDaoImpl(firestore)
     }
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun provideFilterGroupRepository(filterGroupDao: FilterGroupDao): FilterGroupRepository {
         return FilterGroupRepositoryImpl(filterGroupDao)
     }
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun provideFilterGroupsUseCases(filterGroupRepository: FilterGroupRepository, authRepository: AuthRepository): FilterGroupsUseCases {
         return FilterGroupsUseCases(
             createFilterGroupUseCase = CreateFilterGroupUseCase(filterGroupRepository, authRepository),
@@ -50,5 +53,11 @@ object PhotoEditorModule {
             getFilterGroupsUseCase = GetFilterGroupsUseCase(filterGroupRepository, authRepository),
             updateFilterGroupUseCase = UpdateFilterGroupUseCase(filterGroupRepository, authRepository),
         )
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetToolPagesUsesCase(): GetToolPagesUseCase {
+        return GetToolPagesUseCase()
     }
 }

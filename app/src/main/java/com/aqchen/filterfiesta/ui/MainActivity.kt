@@ -18,6 +18,7 @@ import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.fragment.NavHostFragment
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,7 +62,10 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        // https://developer.android.com/guide/navigation/navigation-getting-started#navigate
+        // https://stackoverflow.com/questions/58703451/fragmentcontainerview-as-navhostfragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
+        val navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }

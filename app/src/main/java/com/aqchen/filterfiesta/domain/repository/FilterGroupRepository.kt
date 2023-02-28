@@ -3,6 +3,7 @@ package com.aqchen.filterfiesta.domain.repository
 import com.aqchen.filterfiesta.domain.models.FilterGroup
 import com.aqchen.filterfiesta.util.Resource
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 interface FilterGroupRepository {
     suspend fun createUserFilterGroup(userId: String, filterGroup: FilterGroup): Resource<Unit>
