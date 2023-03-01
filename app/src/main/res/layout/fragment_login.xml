@@ -96,9 +96,6 @@
             app:layout_constraintBottom_toTopOf="@id/login_signup_text" />
 
         <!-- Sign Up Now Wrapper -->
-
-        <!-- Forgot Password Wrapper -->
-
         <TextView
             android:id="@+id/login_signup_text"
             android:layout_width="wrap_content"
@@ -110,11 +107,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/login_submit_button" />
 
+        <!-- Forgot Password Wrapper -->
         <TextView
             android:id="@+id/forgot_password_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/xxs_margin"
             android:text="@string/login_forgot_password_question"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

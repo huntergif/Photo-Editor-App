@@ -25,6 +25,5 @@
     <fragment
         android:id="@+id/passwordResetFragment"
         android:name="com.aqchen.filterfiesta.ui.auth.passwordreset.PasswordResetFragment"
-        android:label="fragment_password_reset"
         tools:layout="@layout/fragment_password_reset" />
 </navigation>
