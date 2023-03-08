@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.util.Resource
 import com.aqchen.filterfiesta.util.setTextViewWithClickableSpan
@@ -72,6 +73,7 @@ class RegisterFragment : Fragment() {
                         when (it) {
                             is Resource.Success -> {
                                 Snackbar.make(view, R.string.register_successful, Snackbar.LENGTH_LONG).show()
+                                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                             }
                             is Resource.Error -> {
                                 // re-enabled button to try again

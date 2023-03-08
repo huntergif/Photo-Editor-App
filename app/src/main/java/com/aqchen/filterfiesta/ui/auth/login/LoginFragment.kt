@@ -63,6 +63,7 @@ class LoginFragment : Fragment() {
                         when (it) {
                             is Resource.Success -> {
                                 Snackbar.make(view, R.string.login_successful, Snackbar.LENGTH_LONG).show()
+                                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                             }
                             is Resource.Error -> {
                                 submitButton.isEnabled = true

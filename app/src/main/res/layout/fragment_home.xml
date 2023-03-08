@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.selectmethod.HomeFragment">
+    tools:context=".ui.home.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_marginHorizontal="@dimen/sm_margin"
@@ -22,6 +22,7 @@
             android:layout_marginVertical="@dimen/md_sm_margin"
             android:gravity="center"
             android:text="@string/select_roll_submit_label"
+            android:drawableTop="@drawable/ic_camera_roll"
             app:layout_constraintBottom_toTopOf="@id/select_camera_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -31,12 +32,14 @@
             android:id="@+id/select_camera_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginVertical="@dimen/md_sm_margin"
+            android:gravity="center"
+            android:text="@string/select_camera_submit_label"
+            android:drawableTop="@drawable/ic_take_photo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/select_roll_button"
-            android:text="@string/select_camera_submit_label" />
+            app:layout_constraintTop_toBottomOf="@id/select_roll_button"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

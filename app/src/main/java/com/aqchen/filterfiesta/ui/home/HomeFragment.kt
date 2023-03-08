@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.selectmethod
+package com.aqchen.filterfiesta.ui.home
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
