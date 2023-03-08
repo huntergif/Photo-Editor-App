@@ -27,6 +27,10 @@
     <string name="email_input_hint">Email</string>
     <string name="password_input_hint">Password</string>
 
+    <!-- Strings used for Select Method Fragment -->
+    <string name="select_roll_submit_label">Choose from Camera Roll</string>
+    <string name="select_camera_submit_label">Take a Picture</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
