@@ -6,7 +6,7 @@
     <!-- Strings used for Login Fragment -->
     <string name="login_title">Login</string>
     <string name="login_subtitle">Welcome back!</string>
-    <string name="login_submit_label">Login</string>
+    <string name="login_submit_label">LOGIN</string>
     <string name="login_successful">Logged-in!</string>
     <string name="login_failed">Failed to login</string>
     <string name="login_no_account_question">Don\'t have an account? Sign Up Now</string>
@@ -15,7 +15,7 @@
     <!-- Strings used for Register Fragment -->
     <string name="register_title">Sign Up</string>
     <string name="register_subtitle">Create an account</string>
-    <string name="register_submit_label">Sign up</string>
+    <string name="register_submit_label">SIGN UP</string>
     <string name="register_repeat_password_input_hint">Confirm password</string>
     <string name="register_accept_terms_label">Accept Privacy Policy</string>
     <string name="register_successful">Created an account!</string>
@@ -28,8 +28,8 @@
     <string name="password_input_hint">Password</string>
 
     <!-- Strings used for Select Method Fragment -->
-    <string name="select_roll_submit_label">Choose from Camera Roll</string>
-    <string name="select_camera_submit_label">Take a Picture</string>
+    <string name="select_roll_submit_label">Choose from Photos</string>
+    <string name="select_camera_submit_label">Use Camera</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
