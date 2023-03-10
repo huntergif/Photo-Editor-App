@@ -89,27 +89,7 @@ class ToolPagerFragment : Fragment() {
             recyclerView.adapter = adapter
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-//                launch {
-//                    viewModel.toolPagesFlow.collect {
-//                        when (it) {
-//                            is Resource.Success -> {
-//                                adapter = ToolPagerAdapter(
-//                                    it.data,
-//                                    viewModel.selectedPositionFlow,
-//                                ) { itemPos ->
-//                                    Log.d("ToolPagerFragment", itemPos.toString())
-//                                    recyclerView.smoothScrollToPosition(itemPos)
-//                                }
-//                                adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-//                                recyclerView.adapter = adapter
-//                            }
-//                            else -> {
-//                                Snackbar.make(view, R.string.tool_pages_get_failure, Snackbar.LENGTH_LONG).show()
-//                            }
-//                        }
-//                    }
-//                }
-                CoroutineScope(Dispatchers.Main).launch {
+                viewLifecycleOwner.lifecycleScope.launch {
                     viewModel.currentPositionFlow.collect { currentPos ->
                         Log.d("ToolPagerFragment", "current pos: $currentPos")
                         (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -135,19 +115,21 @@ class ToolPagerFragment : Fragment() {
                             }
                             val toolPage = viewModel.toolPages[selectedPos]
                             val ft = parentFragmentManager.beginTransaction()
-                            val newFragment: Fragment
-                            when (toolPage) {
+                            val newFragment = when (toolPage) {
                                 is ToolPage.CustomFilters -> {
-                                    newFragment = CustomFiltersFragment.newInstance()
+                                    CustomFiltersFragment.newInstance()
                                 }
+
                                 ToolPage.Adjustments -> {
-                                    newFragment = AdjustmentsFragment.newInstance()
+                                    AdjustmentsFragment.newInstance()
                                 }
+
                                 ToolPage.OtherTools -> {
-                                    newFragment = AdjustmentsFragment.newInstance()
+                                    AdjustmentsFragment.newInstance()
                                 }
+
                                 ToolPage.PresetFilters -> {
-                                    newFragment = PresetFiltersFragment.newInstance()
+                                    PresetFiltersFragment.newInstance()
                                 }
                             }
                             ft.replace(R.id.tool_page_fragment_container, newFragment)
