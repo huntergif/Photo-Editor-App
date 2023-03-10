@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/filterGroupsFragment"
-        android:name="com.aqchen.filterfiesta.ui.photo_editor.filter_groups.FilterGroupsFragment"
+        android:name="com.aqchen.filterfiesta.ui.photo_editor.custom_filters.CustomFiltersFragment"
         android:label="fragment_filter_groups"
-        tools:layout="@layout/fragment_filter_groups" />
+        tools:layout="@layout/fragment_tool_page_custom_filters" />
 </navigation>

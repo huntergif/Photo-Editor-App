@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--  https://github.com/material-components/material-components-android/issues/1420 -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:transitionGroup="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.aqchen.filterfiesta.ui.auth.login.LoginFragment">
@@ -61,7 +63,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_email_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password input -->
@@ -79,7 +83,8 @@
                 android:id="@+id/login_password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"/>
+                android:maxLines="1"
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Login Button -->

@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.filterfiesta.com.aqchen.filterfiesta.MainActivity">
+    <item
+        android:id="@+id/action_photo_editor_settings"
+        android:orderInCategory="100"
+        android:title="@string/photo_editor_menu_settings_label"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_photo_editor_new_custom_filter"
+        android:orderInCategory="200"
+        android:title="@string/photo_editor_menu_create_custom_filter_label"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_photo_editor_manage_custom_filters"
+        android:orderInCategory="300"
+        android:title="@string/photo_editor_menu_manage_custom_filters_label"
+        app:showAsAction="never" />
 </menu>

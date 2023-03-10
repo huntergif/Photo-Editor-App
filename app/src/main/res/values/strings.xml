@@ -42,4 +42,36 @@
 
     <!-- Tool Pager Fragment -->
     <string name="tool_pages_get_failure">Failed to get tool pages</string>
+
+    <!-- Create Custom Filter Fragment -->
+    <string name="create_custom_filter_title">New Custom Filter</string>
+    <string name="create_custom_filter_name_hint">Custom filter name</string>
+    <string name="create_custom_filter_create_button_label">Create</string>
+    <string name="create_custom_filter_error">Failed to create new custom filter</string>
+    <string name="create_custom_filter_success">Created new custom filter!</string>
+
+    <!-- Photo Editor Menu -->
+    <string name="photo_editor_menu_settings_label">Settings</string>
+    <string name="photo_editor_menu_create_custom_filter_label">New Custom Filter</string>
+    <string name="photo_editor_menu_manage_custom_filters_label">Manage Custom Filters</string>
+
+    <!-- Custom Filters Details List Fragment -->
+    <string name="custom_filters_details_list_description">%1$d filters</string>
+
+    <!-- Custom Filter Details Fragment -->
+    <string name="custom_filter_details_filters_label">Filters</string>
+    <string name="custom_filter_details_container_transition_name">custom_filter_details_container_transition</string>
+
+    <!-- Custom Filters Details List Menu -->
+    <string name="custom_filters_details_list_menu_edit_label">Edit</string>
+
+    <!-- Custom Filter Details Menu -->
+    <string name="custom_filter_details_menu_edit_label">Edit details</string>
+    <string name="custom_filter_details_menu_delete_label">Delete custom filter</string>
+
+    <!-- Edit Custom Filter Details Fragment -->
+    <string name="edit_custom_filter_details_title">Edit Custom Filter</string>
+    <string name="edit_custom_filter_details_edit_button_label">Save</string>
+    <string name="edit_custom_filter_error">Failed to save changes</string>
+    <string name="edit_custom_filter_success">Saved changes</string>
 </resources>

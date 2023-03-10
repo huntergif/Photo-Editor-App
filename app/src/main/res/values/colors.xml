@@ -66,4 +66,5 @@
     <color name="AltYellow">#E5CE00</color>
     <color name="AltLightBlue">#5BC7FC</color>
     <color name="AltBlue">#B8CFEE</color>
+    <color name="md_theme_surface_primary_1">#0d6750a4</color>
 </resources>
