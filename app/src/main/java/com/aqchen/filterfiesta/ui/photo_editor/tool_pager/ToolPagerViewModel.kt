@@ -4,12 +4,10 @@ import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 import com.aqchen.filterfiesta.domain.models.ToolPage
 import com.aqchen.filterfiesta.domain.use_case.tool_pages.GetToolPagesUseCase
-import com.aqchen.filterfiesta.ui.photo_editor.filter_groups.FilterGroupsEvent
 import com.aqchen.filterfiesta.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.lang.Thread.State
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,16 +25,19 @@ class ToolPagerViewModel @Inject constructor(
 
     val toolPages = getToolPagesUseCase()
 
+    var previousSelectedPosition: Int? = null
+
     fun onEvent(event: ToolPagerEvent) {
         when (event) {
             is ToolPagerEvent.LoadList -> {
                 _toolPagesFlow.value = Resource.Success(getToolPagesUseCase())
             }
             is ToolPagerEvent.SelectFocusedToolPage -> {
-                _currentPositionFlow.value = selectedPositionFlow.value
+                previousSelectedPosition = _selectedPositionFlow.value
+                _selectedPositionFlow.value = _currentPositionFlow.value
             }
             is ToolPagerEvent.FocusToolPageViewHolder -> {
-                _selectedPositionFlow.value = event.position
+                _currentPositionFlow.value = event.position
             }
         }
     }

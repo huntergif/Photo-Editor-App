@@ -1,15 +1,24 @@
 package com.aqchen.filterfiesta.ui.photo_editor.tool_pager
 
+import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.domain.models.ToolPage
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 
 class ToolPagerAdapter(
-    private val toolPages: List<ToolPage>
+    private val toolPages: List<ToolPage>,
+    private val selectedPositionFlow: StateFlow<Int>,
+    private val onClickListener: (position: Int) -> Unit,
 ) : RecyclerView.Adapter<ToolPagerAdapter.ViewHolder>() {
 
     /**
@@ -21,6 +30,36 @@ class ToolPagerAdapter(
 
         init {
             textView = view.findViewById(R.id.view_holder_tool_page_name)
+        }
+
+        var isSelectedPosition: Boolean = false
+            set(value) {
+                field = value
+                updateTextViewColor()
+            }
+
+        private fun updateTextViewColor() {
+            if (isSelectedPosition) {
+                val color = TypedValue().let {
+                    textView.context.theme.resolveAttribute(
+                        com.google.android.material.R.attr.colorPrimary,
+                        it,
+                        true
+                    )
+                    textView.context.getColor(it.resourceId)
+                }
+                textView.setTextColor(color)
+            } else {
+                val color = TypedValue().let {
+                    textView.context.theme.resolveAttribute(
+                        com.google.android.material.R.attr.colorOnBackground,
+                        it,
+                        true
+                    )
+                    textView.context.getColor(it.resourceId)
+                }
+                textView.setTextColor(color)
+            }
         }
     }
 
@@ -38,6 +77,12 @@ class ToolPagerAdapter(
         viewHolder.textView.text = toolPages[position].pageName
 
         viewHolder.textView.layout
+
+        viewHolder.itemView.setOnClickListener {
+            onClickListener(position)
+        }
+
+        viewHolder.isSelectedPosition = position == selectedPositionFlow.value
     }
 
     // Return the size of your dataset (invoked by the layout manager)

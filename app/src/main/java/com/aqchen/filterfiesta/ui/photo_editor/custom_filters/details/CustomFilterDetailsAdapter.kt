@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.domain.models.Filter
 
-class CustomFiltersDetailsAdapter : ListAdapter<Filter, CustomFiltersDetailsAdapter.ViewHolder>(FilterDiff) {
+class CustomFilterDetailsAdapter : ListAdapter<Filter, CustomFilterDetailsAdapter.ViewHolder>(FilterDiff) {
 
     object FilterDiff: DiffUtil.ItemCallback<Filter>() {
         override fun areItemsTheSame(oldItem: Filter, newItem: Filter): Boolean {

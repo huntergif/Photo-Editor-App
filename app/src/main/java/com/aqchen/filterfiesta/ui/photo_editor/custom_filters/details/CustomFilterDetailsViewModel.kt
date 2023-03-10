@@ -12,26 +12,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CustomFiltersDetailsViewModel @Inject constructor(
-    private val getCustomFilterUseCase: GetCustomFilterUseCase,
+class CustomFilterDetailsViewModel @Inject constructor(
     private val customFiltersUseCases: CustomFiltersUseCases,
 ) : ViewModel() {
     // only this view model can mutate the state flow
     private val _customFilterStateFlow = MutableStateFlow(
-        CustomFiltersDetailsState()
+        CustomFilterDetailsState()
     )
     // public readable state flow
-    val customFilterStateFlow: StateFlow<CustomFiltersDetailsState> = _customFilterStateFlow
+    val customFilterStateFlow: StateFlow<CustomFilterDetailsState> = _customFilterStateFlow
 
     private val _deleteCustomFilterStateStateFlow = MutableStateFlow<Resource<Unit>?>(null)
     val deleteCustomFilterStateStateFlow: StateFlow<Resource<Unit>?> = _deleteCustomFilterStateStateFlow
 
-    fun onEvent(event: CustomFiltersDetailsEvent) {
+    fun onEvent(event: CustomFilterDetailsEvent) {
         when (event) {
-            is CustomFiltersDetailsEvent.CustomFilterChanged -> {
+            is CustomFilterDetailsEvent.CustomFilterChanged -> {
                 _customFilterStateFlow.value = _customFilterStateFlow.value.copy(customFilter = event.customFilter)
             }
-            is CustomFiltersDetailsEvent.DeleteCustomFilter -> {
+            is CustomFilterDetailsEvent.DeleteCustomFilter -> {
                 viewModelScope.launch {
                     _deleteCustomFilterStateStateFlow.emit(Resource.Loading)
 
@@ -45,14 +44,14 @@ class CustomFiltersDetailsViewModel @Inject constructor(
                     }
                 }
             }
-            is CustomFiltersDetailsEvent.ResetState -> {
+            is CustomFilterDetailsEvent.ResetState -> {
                 resetState()
             }
         }
     }
 
     private fun resetState() {
-        _customFilterStateFlow.value = CustomFiltersDetailsState()
+        _customFilterStateFlow.value = CustomFilterDetailsState()
         _deleteCustomFilterStateStateFlow.value = null
     }
 }

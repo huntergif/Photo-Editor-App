@@ -1,6 +1,12 @@
 package com.aqchen.filterfiesta.ui.photo_editor.tool_pager
 
+import android.content.Context.VIBRATOR_MANAGER_SERVICE
+import android.content.Context.VIBRATOR_SERVICE
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,9 +21,13 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.aqchen.filterfiesta.R
+import com.aqchen.filterfiesta.domain.models.ToolPage
+import com.aqchen.filterfiesta.ui.photo_editor.adjustments.AdjustmentsFragment
+import com.aqchen.filterfiesta.ui.photo_editor.custom_filters.CustomFiltersFragment
+import com.aqchen.filterfiesta.ui.photo_editor.preset_filters.PresetFiltersFragment
 import com.aqchen.filterfiesta.ui.util.CenterLinearLayoutManager
-import com.aqchen.filterfiesta.util.Resource
-import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -29,6 +39,7 @@ class ToolPagerFragment : Fragment() {
 
     private lateinit var viewModel: ToolPagerViewModel
     private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: ToolPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,9 +55,6 @@ class ToolPagerFragment : Fragment() {
         val layoutManager = CenterLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
         recyclerView.clipToPadding = false // needed for CenterLinearLayoutManager to work
-        val adapter = ToolPagerAdapter(emptyList())
-        adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-        recyclerView.adapter = adapter
 
         // Add snap functionality
         val snapHelper = PagerSnapHelper()
@@ -68,32 +76,82 @@ class ToolPagerFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel = ViewModelProvider(requireActivity())[ToolPagerViewModel::class.java]
-            viewModel.onEvent(ToolPagerEvent.LoadList)
+            //viewModel.onEvent(ToolPagerEvent.LoadList)
 
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.toolPagesFlow.collect {
-                        when (it) {
-                            is Resource.Success -> {
-                                recyclerView.adapter = ToolPagerAdapter(it.data)
-                                adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-                            }
-                            else -> {
-                                Snackbar.make(view, R.string.tool_pages_get_failure, Snackbar.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-                }
-                launch {
-                    viewModel.currentPositionFlow.collect {
-                        Log.d("ToolPagerFragment", "current pos: $it")
+            adapter = ToolPagerAdapter(
+                viewModel.toolPages,
+                viewModel.selectedPositionFlow,
+            ) { itemPos ->
+                Log.d("ToolPagerFragment", itemPos.toString())
+                recyclerView.smoothScrollToPosition(itemPos)
+            }
+            adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            recyclerView.adapter = adapter
+
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+//                launch {
+//                    viewModel.toolPagesFlow.collect {
+//                        when (it) {
+//                            is Resource.Success -> {
+//                                adapter = ToolPagerAdapter(
+//                                    it.data,
+//                                    viewModel.selectedPositionFlow,
+//                                ) { itemPos ->
+//                                    Log.d("ToolPagerFragment", itemPos.toString())
+//                                    recyclerView.smoothScrollToPosition(itemPos)
+//                                }
+//                                adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+//                                recyclerView.adapter = adapter
+//                            }
+//                            else -> {
+//                                Snackbar.make(view, R.string.tool_pages_get_failure, Snackbar.LENGTH_LONG).show()
+//                            }
+//                        }
+//                    }
+//                }
+                CoroutineScope(Dispatchers.Main).launch {
+                    viewModel.currentPositionFlow.collect { currentPos ->
+                        Log.d("ToolPagerFragment", "current pos: $currentPos")
+                        (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            @Suppress("WrongConstant")
+                            val vibratorManager =
+                                context?.getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager?
+                            vibratorManager?.defaultVibrator
+                        } else {
+                            @Suppress("DEPRECATION")
+                            context?.getSystemService(VIBRATOR_SERVICE) as Vibrator?
+                        })?.vibrate(VibrationEffect.createOneShot(8, 50))
                     }
                 }
 
                 launch {
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.selectedPositionFlow.collect {
-                            Log.d("ToolPagerFragment", "selected pos: $it")
+                        viewModel.selectedPositionFlow.collect { selectedPos ->
+                            Log.d("ToolPagerFragment", "selected pos: $selectedPos")
+                            adapter.notifyItemChanged(selectedPos)
+                            val prevPos = viewModel.previousSelectedPosition
+                            if (prevPos != null) {
+                                adapter.notifyItemChanged(prevPos)
+                            }
+                            val toolPage = viewModel.toolPages[selectedPos]
+                            val ft = parentFragmentManager.beginTransaction()
+                            val newFragment: Fragment
+                            when (toolPage) {
+                                is ToolPage.CustomFilters -> {
+                                    newFragment = CustomFiltersFragment.newInstance()
+                                }
+                                ToolPage.Adjustments -> {
+                                    newFragment = AdjustmentsFragment.newInstance()
+                                }
+                                ToolPage.OtherTools -> {
+                                    newFragment = AdjustmentsFragment.newInstance()
+                                }
+                                ToolPage.PresetFilters -> {
+                                    newFragment = PresetFiltersFragment.newInstance()
+                                }
+                            }
+                            ft.replace(R.id.tool_page_fragment_container, newFragment)
+                            ft.commit()
                         }
                     }
                 }

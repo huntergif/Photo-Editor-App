@@ -1,6 +1,6 @@
-package com.aqchen.filterfiesta.ui.photo_editor.adjustments
+package com.aqchen.filterfiesta.ui.photo_editor.preset_filters
 
 import androidx.lifecycle.ViewModel
 
-class AdjustmentsViewModel: ViewModel() {
+class PresetFiltersViewModel: ViewModel() {
 }
