@@ -7,12 +7,10 @@ class GetToolPagesUseCase @Inject constructor() {
 
     operator fun invoke(): List<ToolPage> {
         return listOf(
-            ToolPage("Custom Filters"),
-            ToolPage("Adjustments"),
-            ToolPage("Filters"),
-            ToolPage("PLACEHOLDER"),
-            ToolPage("PLACEHOLDER"),
-            ToolPage("PLACEHOLDER"),
+            ToolPage.CustomFilters,
+            ToolPage.Adjustments,
+            ToolPage.PresetFilters,
+            ToolPage.OtherTools,
         )
     }
 }

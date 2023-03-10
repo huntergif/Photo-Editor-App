@@ -1,8 +1,8 @@
-package com.aqchen.filterfiesta.domain.use_case.filter_groups
+package com.aqchen.filterfiesta.domain.use_case.custom_filters
 
-data class FilterGroupsUseCases constructor(
-    val createFilterGroupUseCase: CreateFilterGroupUseCase,
-    val deleteFilterGroupUseCase: DeleteFilterGroupUseCase,
-    val getFilterGroupsUseCase: GetFilterGroupsUseCase,
-    val updateFilterGroupUseCase: UpdateFilterGroupUseCase,
+data class CustomFiltersUseCases constructor(
+    val createFilterGroupUseCase: CreateCustomFilterUseCase,
+    val deleteCustomFilterUseCase: DeleteCustomFilterUseCase,
+    val getCustomFiltersUseCase: GetCustomFiltersUseCase,
+    val updateFilterGroupUseCase: UpdateCustomFilterUseCase,
 )
