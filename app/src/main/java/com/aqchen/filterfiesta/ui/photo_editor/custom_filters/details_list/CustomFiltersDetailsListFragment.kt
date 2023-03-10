@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photo_editor.filter_groups
+package com.aqchen.filterfiesta.ui.photo_editor.custom_filters.details_list
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -6,30 +6,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import com.aqchen.filterfiesta.R
-import kotlinx.coroutines.launch
 
-class FilterGroupsFragment : Fragment() {
+class CustomFiltersDetailsList : Fragment() {
 
     companion object {
-        fun newInstance() = FilterGroupsFragment()
+        fun newInstance() = CustomFiltersDetailsList()
     }
 
-    private lateinit var viewModel: FilterGroupsViewModel
+    private lateinit var viewModel: CustomFiltersDetailsListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_filter_groups, container, false)
+        return inflater.inflate(R.layout.fragment_custom_filters_details_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel = ViewModelProvider(requireActivity())[FilterGroupsViewModel::class.java]
-        }
     }
 
 }

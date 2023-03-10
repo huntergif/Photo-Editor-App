@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photo_editor.filter_groups
+package com.aqchen.filterfiesta.ui.photo_editor.custom_filters
 
 import com.aqchen.filterfiesta.domain.models.FilterGroup
 import com.aqchen.filterfiesta.domain.util.FilterGroupsOrder

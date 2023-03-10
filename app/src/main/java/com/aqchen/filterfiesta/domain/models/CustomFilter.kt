@@ -1,11 +1,13 @@
 package com.aqchen.filterfiesta.domain.models
 
 import com.google.firebase.firestore.IgnoreExtraProperties
+import com.google.firebase.firestore.ServerTimestamp
+import java.util.Date
 
 // FilterGroup POJO
 @IgnoreExtraProperties
 data class FilterGroup(
-    val dateCreated: String? = null,
+    @ServerTimestamp val dateCreated: Date? = null,
     val id: String? = null,
     val userId: String = "",
     val name: String = "",
@@ -14,6 +16,9 @@ data class FilterGroup(
 ) {
     companion object {
         const val FIELD_ID = "id"
-        const val FIELD_STRENGTH = "strength"
+        const val FIELD_USER_ID = "userId"
+        const val FIELD_NAME = "name"
+        const val FIELD_IS_PUBLIC = "isPublic"
+        const val FIELD_FILTERS = "filters"
     }
 }

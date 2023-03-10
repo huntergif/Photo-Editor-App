@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photo_editor.filter_groups
+package com.aqchen.filterfiesta.ui.photo_editor.custom_filters
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,22 +26,22 @@ class FilterGroupsViewModel @Inject constructor(
 
     private var lastDeletedFilterGroup: FilterGroup? = null
 
-    fun onEvent(event: FilterGroupsEvent) {
+    fun onEvent(event: CustomFiltersEvent) {
         when (event) {
-            is FilterGroupsEvent.Create -> {
+            is CustomFiltersEvent.Create -> {
 
             }
-            is FilterGroupsEvent.Update -> {
+            is CustomFiltersEvent.Update -> {
 
             }
-            is FilterGroupsEvent.Delete -> {
+            is CustomFiltersEvent.Delete -> {
 
                 viewModelScope.launch {
                     filterGroupsUseCases.deleteFilterGroupUseCase(event.filterGroup)
                     lastDeletedFilterGroup = event.filterGroup
                 }
             }
-            is FilterGroupsEvent.Order -> {
+            is CustomFiltersEvent.Order -> {
                 // Do nothing if the current order in the state matches the order in the event
                 // Note: we need ::class or else it will compare referential equality (FilterGroupsOrder is not a data class), which is never true
                 if (_filterGroupsStateFlow.value.filterGroupsOrder::class == event.filterGroupsOrder::class &&
@@ -49,14 +49,14 @@ class FilterGroupsViewModel @Inject constructor(
                     return
                 }
             }
-            is FilterGroupsEvent.RestoreFilterGroup -> {
+            is CustomFiltersEvent.RestoreFilterGroup -> {
                 viewModelScope.launch {
                     // if lastDeletedFilterGroup is null, we return from the coroutine
                     filterGroupsUseCases.createFilterGroupUseCase(lastDeletedFilterGroup ?: return@launch)
                     lastDeletedFilterGroup = null
                 }
             }
-            is FilterGroupsEvent.LoadFilterGroups -> {
+            is CustomFiltersEvent.LoadCustomFilters -> {
                 viewModelScope.launch {
                     getFilterGroupsFlow(filterGroupsStateFlow.value.filterGroupsOrder)
                 }

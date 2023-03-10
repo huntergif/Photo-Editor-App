@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photo_editor.filter_groups
+package com.aqchen.filterfiesta.ui.photo_editor.custom_filters
 
 import android.view.LayoutInflater
 import android.view.View
