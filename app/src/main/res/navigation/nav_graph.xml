@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_loginFragment_to_passwordResetFragment"
             app:destination="@id/passwordResetFragment" />
+        <action    
+            android:id="@+id/action_loginFragment_to_photoEditorFragment"
+            app:destination="@id/photoEditorFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -26,4 +29,51 @@
         android:id="@+id/passwordResetFragment"
         android:name="com.aqchen.filterfiesta.ui.auth.password_reset.PasswordResetFragment"
         tools:layout="@layout/fragment_password_reset" />
+    </fragment>
+    <fragment    
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_photoEditorFragment"
+            app:destination="@id/photoEditorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/photoEditorFragment"
+        android:name="com.aqchen.filterfiesta.ui.photo_editor.PhotoEditorFragment"
+        android:label=""
+        tools:layout="@layout/fragment_photo_editor" >
+        <action
+            android:id="@+id/action_photoEditorFragment_to_createCustomFilterFragment"
+            app:destination="@id/createCustomFilterFragment" />
+        <action
+            android:id="@+id/action_photoEditorFragment_to_customFiltersDetailsListFragment"
+            app:destination="@id/customFiltersDetailsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createCustomFilterFragment"
+        android:name="com.aqchen.filterfiesta.ui.photo_editor.custom_filters.create.CreateCustomFilterFragment"
+        android:label="fragment_create_custom_filter"
+        tools:layout="@layout/fragment_create_custom_filter" />
+    <fragment
+        android:id="@+id/customFiltersDetailsListFragment"
+        android:name="com.aqchen.filterfiesta.ui.photo_editor.custom_filters.details_list.CustomFiltersDetailsListFragment"
+        android:label="Manage Custom Filters"
+        tools:layout="@layout/fragment_custom_filters_details_list" >
+        <action
+            android:id="@+id/action_customFiltersDetailsListFragment_to_customFiltersDetailsFragment"
+            app:destination="@id/customFiltersDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/customFiltersDetailsFragment"
+        android:name="com.aqchen.filterfiesta.ui.photo_editor.custom_filters.details.CustomFilterDetailsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_custom_filter_details" >
+        <action
+            android:id="@+id/action_customFiltersDetailsFragment_to_editCustomFilterDetailsFragment"
+            app:destination="@id/editCustomFilterDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editCustomFilterDetailsFragment"
+        android:name="com.aqchen.filterfiesta.ui.photo_editor.custom_filters.edit_details.EditCustomFilterDetailsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_edit_custom_filter_details" />
 </navigation>

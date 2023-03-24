@@ -46,7 +46,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.i("LoginFragment", "LoginFragment onViewCreated")
 
         val emailTextInputLayout = view.findViewById<TextInputLayout>(R.id.login_email_input_layout)
         val emailTextInput = view.findViewById<TextInputEditText>(R.id.login_email_input)
@@ -65,6 +64,7 @@ class LoginFragment : Fragment() {
                         when (it) {
                             is Resource.Success -> {
                                 Snackbar.make(view, R.string.login_successful, Snackbar.LENGTH_LONG).show()
+                                findNavController().navigate(R.id.action_loginFragment_to_photoEditorFragment)
                             }
                             is Resource.Error -> {
                                 submitButton.isEnabled = true
@@ -163,50 +163,5 @@ class LoginFragment : Fragment() {
                 }
             }
         )
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.i("LoginFragment", "LoginFragment onCreate")
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        Log.i("LoginFragment", "LoginFragment onViewStateRestored")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.i("LoginFragment", "LoginFragment onStart")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.i("LoginFragment", "LoginFragment onResume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.i("LoginFragment", "LoginFragment onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.i("LoginFragment", "LoginFragment onStop")
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        Log.i("LoginFragment", "LoginFragment onSaveInstanceState")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.i("LoginFragment", "LoginFragment onDestroyView")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("LoginFragment", "LoginFragment onDestroy")
     }
 }
