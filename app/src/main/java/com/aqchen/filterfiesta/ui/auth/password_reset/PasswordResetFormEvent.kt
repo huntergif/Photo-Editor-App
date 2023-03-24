@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.auth.passwordreset
+package com.aqchen.filterfiesta.ui.auth.password_reset
 
 sealed class PasswordResetFormEvent {
     data class EmailChanged(val email: String): PasswordResetFormEvent()
