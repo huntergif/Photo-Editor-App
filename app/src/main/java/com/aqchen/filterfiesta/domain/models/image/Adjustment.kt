@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.domain.models
+package com.aqchen.filterfiesta.domain.models.image
 
 class Adjustment {
 }

@@ -1,8 +1,10 @@
 package com.aqchen.filterfiesta.domain.models.image
 
-abstract class ImageFilter private constructor() {
-    val type: String
-    val parameters: Map<String, Double>
+abstract class ImageFilterOrAdjustment private constructor() {
+    abstract val type: String
+    abstract val parameters: Map<String, Double>
 
-    fun applyFilter()
+    abstract fun build()
+    abstract fun setParameters(parameters: Map<String, Double>)
+    abstract fun apply()
 }
