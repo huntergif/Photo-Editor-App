@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/login_submit_label"
-            android:layout_marginVertical="@dimen/sm_margin"
+            android:layout_marginTop="@dimen/sm_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/login_password_input_layout"
@@ -106,9 +106,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_no_account_question"
+            app:layout_constraintBottom_toTopOf="@id/forgot_password_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_submit_button"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/login_submit_button" />
+
+        <!-- Forgot Password Wrapper -->
+        <TextView
+            android:id="@+id/forgot_password_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_forgot_password_question"
+            android:layout_marginTop="@dimen/xxs_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_signup_text" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

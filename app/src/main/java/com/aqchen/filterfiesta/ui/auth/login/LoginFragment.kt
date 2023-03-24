@@ -8,6 +8,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -52,6 +53,7 @@ class LoginFragment : Fragment() {
         val passwordTextInput = view.findViewById<TextInputEditText>(R.id.login_password_input)
         val submitButton = view.findViewById<MaterialButton>(R.id.login_submit_button)
         val signUpText = view.findViewById<TextView>(R.id.login_signup_text)
+        val forgotPasswordText = view.findViewById<TextView>(R.id.forgot_password_text)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
@@ -96,6 +98,7 @@ class LoginFragment : Fragment() {
             viewModel.onEvent(LoginFormEvent.Submit)
         }
 
+        //Clickable text for Sign Up
         setTextViewWithClickableSpan(
             signUpText,
             getString(R.string.login_no_account_question),
@@ -124,6 +127,39 @@ class LoginFragment : Fragment() {
                     }
                     // navigate to register fragment
                     findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+                }
+            }
+        )
+
+        //Clickable text for Forgot Password
+        setTextViewWithClickableSpan(
+            forgotPasswordText,
+            getString(R.string.login_forgot_password_question),
+            getString(R.string.login_password_action_text),
+            object : ClickableSpan() {
+                override fun updateDrawState(ds: TextPaint) {
+                    // Resolve ?attr/colorPrimary attribute at runtime
+                    val color = TypedValue().let {
+                        requireContext().theme.resolveAttribute(com.google.android.material.R.attr.colorPrimary, it, true)
+                        requireContext().getColor(it.resourceId)
+                    }
+                    // set clickable text color
+                    ds.color = color
+                    // remove underline from clickable text
+                    ds.isUnderlineText = false
+                }
+
+                override fun onClick(widget: View) {
+                    // Set exit and renter transitions to the register fragment
+                    // note that we also need to set transitions in the register fragment onCreateView
+                    exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true).apply {
+                        duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+                    }
+                    reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false).apply {
+                        duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+                    }
+                    // navigate to register fragment
+                    findNavController().navigate(R.id.action_loginFragment_to_passwordResetFragment)
                 }
             }
         )

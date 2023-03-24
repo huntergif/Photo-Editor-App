@@ -11,6 +11,8 @@
     <string name="login_failed">Failed to login</string>
     <string name="login_no_account_question">Don\'t have an account? Sign Up Now</string>
     <string name="login_signup_action_text">Sign Up Now</string>
+    <string name="login_forgot_password_question">Forgot your password? Click Here to Reset</string>
+    <string name="login_password_action_text">Click Here to Reset</string>
 
     <!-- Strings used for Register Fragment -->
     <string name="register_title">Sign Up</string>
@@ -22,6 +24,12 @@
     <string name="register_failed">Failed to register</string>
     <string name="register_privacy_policy_notice">By creating an account, you agree to our Privacy Policy</string>
     <string name="register_privacy_policy_action_text">Privacy Policy</string>
+
+    <!-- Strings used for Password Reset Fragment -->
+    <string name="password_reset_title">Reset Password</string>
+    <string name="password_reset_subtitle">Enter the email associated with your account and we\'ll send instructions on how to reset your password.</string>
+    <string name="password_reset_submit_label">Submit</string>
+    <string name="password_reset_email_sent">An email has successfully been sent to rest your password!</string>
 
     <!-- Strings used for Login and Register Fragment -->
     <string name="email_input_hint">Email</string>
