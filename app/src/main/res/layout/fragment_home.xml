@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginHorizontal="@dimen/sm_margin"
+        android:layout_marginBottom="@dimen/sm_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:fitsSystemWindows="true" >
+
+        <!-- Choose From Photos Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/select_roll_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/md_sm_margin"
+            android:gravity="center"
+            android:text="@string/select_roll_submit_label"
+            android:drawableTop="@drawable/ic_camera_roll"
+            app:layout_constraintBottom_toTopOf="@id/select_camera_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Use Camera Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/select_camera_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/md_sm_margin"
+            android:gravity="center"
+            android:text="@string/select_camera_submit_label"
+            android:drawableTop="@drawable/ic_take_photo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/select_roll_button"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
