@@ -2,8 +2,13 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="xxs_margin">3dp</dimen>
     <dimen name="xs_margin">8dp</dimen>
+    <dimen name="sm_xs_margin">12dp</dimen>
     <dimen name="sm_margin">16dp</dimen>
     <dimen name="md_sm_margin">20dp</dimen>
     <dimen name="text_title_font_size">48sp</dimen>
+    <dimen name="text_title_medium_font_size">38sp</dimen>
     <dimen name="text_subtitle_font_size">28sp</dimen>
+    <dimen name="text_small_subtitle_font_size">16sp</dimen>
+    <dimen name="elevation_1">8dp</dimen>
+    <dimen name="elevation_0">1dp</dimen>
 </resources>
