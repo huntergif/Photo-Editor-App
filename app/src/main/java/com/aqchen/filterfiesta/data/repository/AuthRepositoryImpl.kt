@@ -3,6 +3,7 @@ package com.aqchen.filterfiesta.data.repository
 import com.aqchen.filterfiesta.data.remote.FirebaseAuthentication
 import com.aqchen.filterfiesta.domain.repository.AuthRepository
 import com.aqchen.filterfiesta.util.Resource
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
@@ -27,6 +28,10 @@ class AuthRepositoryImpl(
         } catch (e: FirebaseAuthException) {
             Resource.Error(e.message ?: "Unknown Firebase Auth Error")
         }
+    }
+
+    override fun sendPasswordResetEmail(email: String): Task<Void> {
+        return firebaseAuth.conn.sendPasswordResetEmail(email)
     }
 
     override fun signOut() {
