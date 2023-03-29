@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photo_editor.custom_filters.shared_view_models.view_custom_filter
+package com.aqchen.filterfiesta.ui.shared_view_models.view_custom_filter
 
 import com.aqchen.filterfiesta.domain.models.CustomFilter
 
