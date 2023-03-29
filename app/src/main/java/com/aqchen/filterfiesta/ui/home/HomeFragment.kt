@@ -9,13 +9,47 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.aqchen.filterfiesta.R
+import com.aqchen.filterfiesta.databinding.FragmentHomeBinding
 import java.io.File
 import java.util.Date
 
 class HomeFragment : Fragment() {
 
+    private var _binding: FragmentHomeBinding? = null
+    private val binding
+        get() = checkNotNull(_binding){"Cannot access binding because it is not null, is the view visible?"}
+
     companion object {
         fun newInstance() = HomeFragment()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?){
+        super.onViewCreated(view, savedInstanceState)
+        binding.apply{
+            selectCameraButton.setOnClickListener{
+                photoName = "IMG_${Date()}.JPG"
+                val photoFile = File(requireContext().applicationContext.filesDir,photoName)
+                val photoUri = FileProvider.getUriForFile(
+                    requireContext(),
+                    "com.aqchen.filterfiesta.fileprovider",
+                    photoFile
+                )
+                takePhoto.launch(photoUri)
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private lateinit var viewModel: HomeViewModel
@@ -29,36 +63,8 @@ class HomeFragment : Fragment() {
     private val takePhoto = registerForActivityResult(
         ActivityResultContracts.TakePicture()
     ) { tookPhoto: Boolean ->
-        if (tookPhoto && photoName != null){
-            HomeViewModel.updatePhoto { oldPhoto ->
-                oldPhoto.copy(photoFileName = photoName)
-            }
-        }
     }
 
     private var photoName: String? = null
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
-
-    override fun OnViewCreated(view: View, savedInstanceState: Bundle?){
-        super.onViewCreated(view, savedInstanceState)
-        binding.apply{
-            userCamera.setOnClickListener{
-                photoName = "IMG_${Date()}.JPG"
-                val photoFile = File(requireContext().applicationContext.filesDir,photoName)
-                val photoUri = FileProvider.getUriForFile(
-                    requireContext(),
-                    "com.aqchen.filterfiesta.fileprovider",
-                    photoFile
-                )
-                takePhoto.launch(photoUri)
-            }
-        }
-    }
 
 }
