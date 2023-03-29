@@ -14,8 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
-import com.aqchen.filterfiesta.ui.photo_editor.custom_filters.shared_view_models.view_custom_filter.ViewCustomFilterEvent
-import com.aqchen.filterfiesta.ui.photo_editor.custom_filters.shared_view_models.view_custom_filter.ViewCustomFilterViewModel
+import com.aqchen.filterfiesta.ui.shared_view_models.view_custom_filter.ViewCustomFilterEvent
+import com.aqchen.filterfiesta.ui.shared_view_models.view_custom_filter.ViewCustomFilterViewModel
 import com.aqchen.filterfiesta.util.Resource
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout

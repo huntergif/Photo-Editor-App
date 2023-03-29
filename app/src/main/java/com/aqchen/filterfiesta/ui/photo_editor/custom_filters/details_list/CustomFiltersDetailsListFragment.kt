@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
-import com.aqchen.filterfiesta.ui.photo_editor.custom_filters.shared_view_models.view_custom_filter.ViewCustomFilterEvent
-import com.aqchen.filterfiesta.ui.photo_editor.custom_filters.shared_view_models.view_custom_filter.ViewCustomFilterViewModel
+import com.aqchen.filterfiesta.ui.shared_view_models.view_custom_filter.ViewCustomFilterEvent
+import com.aqchen.filterfiesta.ui.shared_view_models.view_custom_filter.ViewCustomFilterViewModel
 import com.google.android.material.motion.MotionUtils
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialElevationScale
