@@ -1,6 +1,7 @@
 package com.aqchen.filterfiesta.domain.models.image
 
-data class ParameterSettings(
+data class ParameterSetting(
+    val type: String,
     val name: String,
     val min: Double,
     val max: Double,
@@ -10,7 +11,7 @@ data class ParameterSettings(
 abstract class BaseImageFilter(
     val type: String,
     val name: String,
-    val parameterSettings: Map<String, ParameterSettings>
+    val parameterSettings: List<ParameterSetting>
 ) {
     abstract fun apply(parameters: Map<String, Double>)
 }

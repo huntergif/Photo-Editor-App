@@ -35,7 +35,7 @@ class PhotoEditorImagesViewModel @Inject constructor(): ViewModel() {
                 _imageFiltersStateFlow.value = event.filters
             }
             is PhotoEditorImagesEvent.SelectAdjustment -> {
-
+                _selectedAdjustmentStateFlow.value = event.adjustment
             }
         }
     }
