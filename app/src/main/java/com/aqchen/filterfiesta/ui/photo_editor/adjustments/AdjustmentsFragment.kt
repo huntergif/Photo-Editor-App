@@ -24,6 +24,21 @@ class AdjustmentsFragment: Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // pairs with transitions in photo editor fragment
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+        exitTransition = MaterialFadeThrough().apply {
+            duration = MotionUtils.resolveThemeDuration(
+                requireContext(),
+                com.google.android.material.R.attr.motionDurationMedium2,
+                300
+            ).toLong()
+        }
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+
         return inflater.inflate(R.layout.fragment_tool_page_adjustments, container, false)
     }
 
@@ -33,19 +48,5 @@ class AdjustmentsFragment: Fragment() {
             viewModel = ViewModelProvider(requireActivity())[AdjustmentsViewModel::class.java]
         }
 
-        exitTransition = MaterialFadeThrough().apply {
-            duration = MotionUtils.resolveThemeDuration(
-                requireContext(),
-                com.google.android.material.R.attr.motionDurationMedium2,
-                300
-            ).toLong()
-        }
-        enterTransition = MaterialFadeThrough().apply {
-            duration = MotionUtils.resolveThemeDuration(
-                requireContext(),
-                com.google.android.material.R.attr.motionDurationMedium2,
-                300
-            ).toLong()
-        }
     }
 }
