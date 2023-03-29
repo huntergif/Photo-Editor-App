@@ -33,6 +33,7 @@ class PhotoEditorFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         val toolPagerFragment = view.findViewById<FragmentContainerView>(R.id.tool_pager_fragment_container)

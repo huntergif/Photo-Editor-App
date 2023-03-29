@@ -1,5 +1,7 @@
 package com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images
 
+import android.graphics.Bitmap
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.aqchen.filterfiesta.domain.models.image.Image
 import com.aqchen.filterfiesta.util.Resource
@@ -10,11 +12,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotoEditorImagesViewModel @Inject constructor(): ViewModel() {
-    private val _baseImageStateFlow = MutableStateFlow<Resource<Image>?>(null);
-    val baseImageStateFlow: StateFlow<Resource<Image>?> = _baseImageStateFlow;
 
-    private val _previewImageStateFlow = MutableStateFlow<Resource<Image>?>(null);
-    val previewImageStateFlow: StateFlow<Resource<Image>?> = _previewImageStateFlow;
+    private val _baseImageStateFlow = MutableStateFlow<Resource<Image>?>(null)
+    val baseImageStateFlow: StateFlow<Resource<Image>?> = _baseImageStateFlow
+
+    private val _previewImageStateFlow = MutableStateFlow<Resource<Image>?>(null)
+    val previewImageStateFlow: StateFlow<Resource<Image>?> = _previewImageStateFlow
 
     fun onEvent(event: PhotoEditorImagesEvent) {
         when (event) {
