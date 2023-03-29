@@ -86,4 +86,7 @@
     <string name="edit_custom_filter_details_edit_button_label">Save</string>
     <string name="edit_custom_filter_error">Failed to save changes</string>
     <string name="edit_custom_filter_success">Saved changes</string>
+
+    <!-- Photo Editor Image Preview Fragment -->
+    <string name="photo_editor_image_preview_content_description">Image Preview</string>
 </resources>

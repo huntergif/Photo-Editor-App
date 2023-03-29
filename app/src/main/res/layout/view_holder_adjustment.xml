@@ -21,12 +21,12 @@
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackground" >
             <ImageView
-                android:id="@+id/view_holder_filter_group_image"
+                android:id="@+id/view_holder_adjustment_image"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/sm_margin"
                 android:layout_marginHorizontal="@dimen/sm_margin"
-                app:layout_constraintBottom_toTopOf="@id/view_holder_filter_group_name"
+                app:layout_constraintBottom_toTopOf="@id/view_holder_adjustment_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +34,7 @@
                 app:tint="?attr/colorOnSurfaceVariant"
                 android:contentDescription="@string/filter_group_image_content_description" />
             <TextView
-                android:id="@+id/view_holder_filter_group_name"
+                android:id="@+id/view_holder_adjustment_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/sm_margin"
@@ -43,8 +43,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_holder_filter_group_image"
-                android:text=""/>
+                app:layout_constraintTop_toBottomOf="@id/view_holder_adjustment_image"
+                android:text="PLACEHOLDER"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
