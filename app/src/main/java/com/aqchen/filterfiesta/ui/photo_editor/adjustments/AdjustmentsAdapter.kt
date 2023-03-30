@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.domain.models.image.BaseImageFilter
 
-class AdjustmentsAdapter : ListAdapter<BaseImageFilter, AdjustmentsAdapter.ViewHolder>(
+class AdjustmentsAdapter(
+    private val onClickListener: (filter: BaseImageFilter) -> Unit,
+) : ListAdapter<BaseImageFilter, AdjustmentsAdapter.ViewHolder>(
     FilterDiff
 ) {
     object FilterDiff: DiffUtil.ItemCallback<BaseImageFilter>() {
@@ -44,5 +46,10 @@ class AdjustmentsAdapter : ListAdapter<BaseImageFilter, AdjustmentsAdapter.ViewH
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.textView.text = getItem(position).name
+
+        // https://stackoverflow.com/questions/43673445/why-setonclicklistener-not-working-in-adapter-with-recyclerview
+        viewHolder.itemView.setOnClickListener {
+            onClickListener(getItem(position))
+        }
     }
 }

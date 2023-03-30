@@ -1,35 +1,26 @@
-package com.aqchen.filterfiesta.ui.photo_editor.tool_pager
+package com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.pager
 
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.ColorInt
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
-import com.aqchen.filterfiesta.domain.models.ToolPage
+import com.aqchen.filterfiesta.domain.models.image.ParameterSetting
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 
-class ToolPagerAdapter(
-    private val toolPages: List<ToolPage>,
+class ParameterPagerAdapter(
+    val parameterPages: List<ParameterSetting>,
     private val selectedPositionFlow: StateFlow<Int>,
     private val onClickListener: (position: Int) -> Unit,
-) : RecyclerView.Adapter<ToolPagerAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ParameterPagerAdapter.ViewHolder>() {
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder)
-     */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView
 
         init {
-            textView = view.findViewById(R.id.view_holder_tool_page_name)
+            textView = view.findViewById(R.id.view_holder_edit_adjustment_parameter_page_name)
         }
 
         var isSelectedPosition: Boolean = false
@@ -63,20 +54,16 @@ class ToolPagerAdapter(
         }
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_holder_tool_page, parent, false)
+            .inflate(R.layout.view_holder_adjustment_parameter_page, parent, false)
 
         return ViewHolder(view)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.textView.text = toolPages[position].pageName
+        viewHolder.textView.text = parameterPages[position].name
 
-        // https://stackoverflow.com/questions/43673445/why-setonclicklistener-not-working-in-adapter-with-recyclerview
         viewHolder.itemView.setOnClickListener {
             onClickListener(position)
         }
@@ -84,6 +71,5 @@ class ToolPagerAdapter(
         viewHolder.isSelectedPosition = position == selectedPositionFlow.value
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = toolPages.size
+    override fun getItemCount() = parameterPages.size
 }

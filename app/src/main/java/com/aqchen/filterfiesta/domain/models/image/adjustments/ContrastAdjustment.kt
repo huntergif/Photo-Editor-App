@@ -13,7 +13,14 @@ class ContrastAdjustment: BaseImageFilter(
             default = 0.0,
             min = -1.0,
             max = 1.0,
-        )
+        ),
+        ParameterSetting(
+            type = "test",
+            name = "Test",
+            default = 0.0,
+            min = 0.0,
+            max = 1.0,
+        ),
     )
 ) {
     override fun apply(parameters: Map<String, Double>) {

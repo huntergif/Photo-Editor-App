@@ -10,9 +10,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
+import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.EditParametersFragment
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.ui.util.MarginItemDecoration
 import com.aqchen.filterfiesta.ui.util.MarginItemDecorationDirection
 import com.google.android.material.motion.MotionUtils
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.launch
@@ -23,6 +27,7 @@ class AdjustmentsFragment: Fragment() {
     }
 
     private lateinit var viewModel: AdjustmentsViewModel
+    private lateinit var photoEditorViewModel: PhotoEditorImagesViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AdjustmentsAdapter
 
@@ -54,12 +59,20 @@ class AdjustmentsFragment: Fragment() {
         recyclerView = view.findViewById(R.id.fragment_tool_page_adjustments_recycler_view)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
-        adapter = AdjustmentsAdapter()
-        recyclerView.adapter = adapter
         recyclerView.addItemDecoration(MarginItemDecoration(MarginItemDecorationDirection.Horizontal))
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel = ViewModelProvider(requireActivity())[AdjustmentsViewModel::class.java]
+            photoEditorViewModel = ViewModelProvider(requireActivity())[PhotoEditorImagesViewModel::class.java]
+
+            adapter = AdjustmentsAdapter() {
+                photoEditorViewModel.onEvent(PhotoEditorImagesEvent.SelectAdjustment(it))
+                Snackbar.make(view, "SELECTED ADJUSTMENT ${it.name}", Snackbar.LENGTH_LONG).show()
+                requireParentFragment().parentFragmentManager.beginTransaction().replace(R.id.photo_editor_bottom_bar, EditParametersFragment.newInstance()).commit()
+            }
+
+            recyclerView.adapter = adapter
+
             adapter.submitList(viewModel.getAdjustmentsList())
         }
 

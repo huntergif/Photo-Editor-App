@@ -21,8 +21,8 @@ class PhotoEditorImagesViewModel @Inject constructor(): ViewModel() {
     private val _imageFiltersStateFlow = MutableStateFlow<List<Filter>>(emptyList())
     val imageFiltersStateFlow: StateFlow<List<Filter>> = _imageFiltersStateFlow;
 
-    private val _selectedAdjustmentStateFlow = MutableStateFlow<BaseImageFilter?>(null)
-    val selectedAdjustmentStateFlow: StateFlow<BaseImageFilter?> = _selectedAdjustmentStateFlow
+    private val _selectedAdjustmentStateFlow = MutableStateFlow<SelectAdjustmentState?>(null)
+    val selectedAdjustmentStateFlow: StateFlow<SelectAdjustmentState?> = _selectedAdjustmentStateFlow
 
     fun onEvent(event: PhotoEditorImagesEvent) {
         when (event) {
@@ -35,7 +35,7 @@ class PhotoEditorImagesViewModel @Inject constructor(): ViewModel() {
                 _imageFiltersStateFlow.value = event.filters
             }
             is PhotoEditorImagesEvent.SelectAdjustment -> {
-                _selectedAdjustmentStateFlow.value = event.adjustment
+                _selectedAdjustmentStateFlow.value = SelectAdjustmentState(event.adjustment, event.currentParams)
             }
         }
     }

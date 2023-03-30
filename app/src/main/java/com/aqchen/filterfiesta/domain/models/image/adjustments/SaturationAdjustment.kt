@@ -13,7 +13,7 @@ class SaturationAdjustment: BaseImageFilter(
             default = 0.0,
             min = -1.0,
             max = 1.0,
-        )
+        ),
     )
 ) {
     override fun apply(parameters: Map<String, Double>) {
