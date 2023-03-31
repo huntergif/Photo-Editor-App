@@ -14,12 +14,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotoEditorImagesViewModel @Inject constructor(): ViewModel() {
-    private val _baseImageStateFlow = MutableStateFlow<Image?>(null);
-    val baseImageStateFlow: StateFlow<Image?> = _baseImageStateFlow;
 
-
-    private val _baseImageStateFlow = MutableStateFlow<Resource<Image>?>(null)
-    val baseImageStateFlow: StateFlow<Resource<Image>?> = _baseImageStateFlow
+    private val _baseImageStateFlow = MutableStateFlow<Image?>(null)
+    val baseImageStateFlow: StateFlow<Image?> = _baseImageStateFlow
 
     private val _previewImageStateFlow = MutableStateFlow<Resource<Image>?>(null)
     val previewImageStateFlow: StateFlow<Resource<Image>?> = _previewImageStateFlow
