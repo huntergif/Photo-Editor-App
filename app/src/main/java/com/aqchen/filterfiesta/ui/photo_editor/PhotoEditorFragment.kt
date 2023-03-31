@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
+import com.aqchen.filterfiesta.ui.photo_editor.bottom_bars.home.BottomBarHomeFragment
 import com.aqchen.filterfiesta.ui.photo_editor.tool_pager.ToolPagerFragment
 import com.google.android.material.transition.MaterialSharedAxis
 
@@ -36,8 +37,8 @@ class PhotoEditorFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
-        val toolPagerFragment = view.findViewById<FragmentContainerView>(R.id.tool_pager_fragment_container)
-        childFragmentManager.beginTransaction().replace(R.id.tool_pager_fragment_container, ToolPagerFragment()).commit()
+        val bottomBarFragment: FragmentContainerView = view.findViewById(R.id.photo_editor_bottom_bar)
+        childFragmentManager.beginTransaction().replace(R.id.photo_editor_bottom_bar, BottomBarHomeFragment()).commit()
 
         val menuHost: MenuHost = requireActivity()
 

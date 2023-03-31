@@ -1,6 +1,8 @@
 package com.aqchen.filterfiesta.ui.auth.login
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.util.Log
@@ -10,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -18,6 +21,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.util.Resource
 import com.aqchen.filterfiesta.util.setTextViewWithClickableSpan
 import com.google.android.material.button.MaterialButton
@@ -35,6 +40,21 @@ class LoginFragment : Fragment() {
     }
 
     private lateinit var viewModel: LoginViewModel
+    // TODO REMOVE TEST
+    private lateinit var testViewModel: PhotoEditorImagesViewModel
+
+    private val selectImageIntent = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    )
+    { uri ->
+        if (uri != null) {
+            testViewModel.onEvent(PhotoEditorImagesEvent.SetBaseImage(uri))
+            // TODO change back to login fragment to home fragment
+            findNavController().navigate(R.id.action_loginFragment_to_photoEditorFragment)
+        } else {
+            Snackbar.make(requireView(), "Failed to select image", Snackbar.LENGTH_LONG).show()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +77,8 @@ class LoginFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
+            // TODO REMOVE TEST (ALSO REMOVE FROM NAVGRAPH)
+            testViewModel = ViewModelProvider(requireActivity())[PhotoEditorImagesViewModel::class.java]
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -64,7 +86,8 @@ class LoginFragment : Fragment() {
                         when (it) {
                             is Resource.Success -> {
                                 Snackbar.make(view, R.string.login_successful, Snackbar.LENGTH_LONG).show()
-                                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+
+                                selectImageIntent.launch("image/*")
                             }
                             is Resource.Error -> {
                                 submitButton.isEnabled = true

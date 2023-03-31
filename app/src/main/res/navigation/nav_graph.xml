@@ -19,6 +19,9 @@
         <action    
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_photoEditorFragment"
+            app:destination="@id/photoEditorFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
