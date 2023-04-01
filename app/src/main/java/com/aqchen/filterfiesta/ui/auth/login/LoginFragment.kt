@@ -1,6 +1,8 @@
 package com.aqchen.filterfiesta.ui.auth.login
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.util.Log
@@ -10,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -18,6 +21,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.util.Resource
 import com.aqchen.filterfiesta.util.setTextViewWithClickableSpan
 import com.google.android.material.button.MaterialButton
@@ -63,8 +68,8 @@ class LoginFragment : Fragment() {
                     viewModel.loginUserFlow.collect {
                         when (it) {
                             is Resource.Success -> {
-                                Snackbar.make(view, R.string.login_successful, Snackbar.LENGTH_LONG).show()
                                 findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                                Snackbar.make(view, R.string.login_successful, Snackbar.LENGTH_LONG).show()
                             }
                             is Resource.Error -> {
                                 submitButton.isEnabled = true
@@ -87,11 +92,11 @@ class LoginFragment : Fragment() {
         }
 
         emailTextInput.doAfterTextChanged {
-            text -> viewModel.onEvent(LoginFormEvent.EmailChanged(text.toString()))
+                text -> viewModel.onEvent(LoginFormEvent.EmailChanged(text.toString()))
         }
 
         passwordTextInput.doAfterTextChanged {
-            text -> viewModel.onEvent(LoginFormEvent.PasswordChanged(text.toString()))
+                text -> viewModel.onEvent(LoginFormEvent.PasswordChanged(text.toString()))
         }
 
         submitButton.setOnClickListener {

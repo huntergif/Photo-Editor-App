@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,8 +25,6 @@ import com.aqchen.filterfiesta.ui.photo_editor.adjustments.AdjustmentsFragment
 import com.aqchen.filterfiesta.ui.photo_editor.custom_filters.CustomFiltersFragment
 import com.aqchen.filterfiesta.ui.photo_editor.preset_filters.PresetFiltersFragment
 import com.aqchen.filterfiesta.ui.util.CenterLinearLayoutManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -51,7 +48,7 @@ class ToolPagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById<RecyclerView>(R.id.tool_pager_recycler_view)
+        recyclerView = view.findViewById(R.id.tool_pager_recycler_view)
         val layoutManager = CenterLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
         recyclerView.clipToPadding = false // needed for CenterLinearLayoutManager to work
@@ -76,13 +73,11 @@ class ToolPagerFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel = ViewModelProvider(requireActivity())[ToolPagerViewModel::class.java]
-            //viewModel.onEvent(ToolPagerEvent.LoadList)
 
             adapter = ToolPagerAdapter(
                 viewModel.toolPages,
                 viewModel.selectedPositionFlow,
             ) { itemPos ->
-                Log.d("ToolPagerFragment", itemPos.toString())
                 recyclerView.smoothScrollToPosition(itemPos)
             }
             adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
@@ -91,7 +86,6 @@ class ToolPagerFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewModel.currentPositionFlow.collect { currentPos ->
-                        Log.d("ToolPagerFragment", "current pos: $currentPos")
                         (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                             @Suppress("WrongConstant")
                             val vibratorManager =
@@ -107,7 +101,6 @@ class ToolPagerFragment : Fragment() {
                 launch {
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.selectedPositionFlow.collect { selectedPos ->
-                            Log.d("ToolPagerFragment", "selected pos: $selectedPos")
                             adapter.notifyItemChanged(selectedPos)
                             val prevPos = viewModel.previousSelectedPosition
                             if (prevPos != null) {

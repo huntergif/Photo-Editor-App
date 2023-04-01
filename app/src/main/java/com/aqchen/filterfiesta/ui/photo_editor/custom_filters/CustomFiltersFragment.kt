@@ -57,7 +57,7 @@ class CustomFiltersFragment : Fragment() {
             ).toLong()
         }
 
-        recyclerView = view.findViewById<RecyclerView>(R.id.custom_filters_recycler_view)
+        recyclerView = view.findViewById(R.id.custom_filters_recycler_view)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
         adapter = CustomFiltersAdapter()
@@ -73,22 +73,20 @@ class CustomFiltersFragment : Fragment() {
                     viewModel.customFiltersStateFlow.collect {
                         when (it.getCustomFiltersStatus) {
                             is com.aqchen.filterfiesta.util.Resource.Error -> {
-                                Snackbar.make(view, "ERROR", Snackbar.LENGTH_LONG).show()
+                                Snackbar.make(view, "Failed to get custom filters", Snackbar.LENGTH_LONG).show()
                             }
                             com.aqchen.filterfiesta.util.Resource.Loading -> {
-                                Snackbar.make(view, "LOADING", Snackbar.LENGTH_LONG).show()
+                                // Do nothing for now
                             }
                             is com.aqchen.filterfiesta.util.Resource.Success -> {
-                                Snackbar.make(view, "SUCCESS", Snackbar.LENGTH_LONG).show()
                                 launch {
                                     it.customFilters?.collect { customFilters ->
-                                        Snackbar.make(view, customFilters[0].filters.toString(), Snackbar.LENGTH_LONG).show()
                                         adapter.submitList(customFilters)
                                     }
                                 }
                             }
                             null -> {
-                                Snackbar.make(view, "NULL", Snackbar.LENGTH_LONG).show()
+                                // Do nothing
                             }
                         }
                     }
@@ -96,5 +94,4 @@ class CustomFiltersFragment : Fragment() {
             }
         }
     }
-
 }

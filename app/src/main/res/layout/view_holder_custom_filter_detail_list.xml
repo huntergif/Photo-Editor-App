@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/view_holder_custom_filter_card_view"
+        android:id="@+id/view_holder_adjustment_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="@dimen/elevation_0"

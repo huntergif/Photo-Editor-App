@@ -2,6 +2,7 @@ package com.aqchen.filterfiesta.ui.util
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.core.view.updatePaddingRelative
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +25,8 @@ open class CenterLinearLayoutManager : LinearLayoutManager {
     override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
         // always measure first item, its size determines starting offset
         // this must be done before super.onLayoutChildren
+        Log.i("CenterLinearLayoutManager", "childCount: $childCount itemCount: ${state.itemCount}")
+        // note child count is number of view holders the recycler view currently has. childCount <= itemCount
         if (childCount == 0 && state.itemCount > 0) {
             val firstChild = recycler.getViewForPosition(0)
             measureChildWithMargins(firstChild, 0, 0)
@@ -39,6 +42,7 @@ open class CenterLinearLayoutManager : LinearLayoutManager {
         // after determining first and/or last items size use it to alter host padding
         when (orientation) {
             RecyclerView.HORIZONTAL -> {
+                Log.i("CenterLinearLayoutManager", width.toString())
                 val hPadding = ((width - child.measuredWidth) / 2).coerceAtLeast(0)
                 if (lp == 0) recyclerView.updatePaddingRelative(start = hPadding, end = hPadding) // here we set the same padding for both sides
                 if (lp == itemCount - 1) {
