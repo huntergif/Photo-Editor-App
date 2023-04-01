@@ -78,6 +78,7 @@ object PhotoEditorModule {
     fun providesValidateCustomFilterUpdatableUseCase(): ValidateCustomFilterUpdatableUseCase {
         return ValidateCustomFilterUpdatableUseCase()
     }
+
     @Provides
     @ViewModelScoped
     fun providesGetAdjustmentsUseCase(): GetAdjustmentsUseCase {

@@ -34,6 +34,7 @@ class PhotoEditorFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         val bottomBarFragment: FragmentContainerView = view.findViewById(R.id.photo_editor_bottom_bar)

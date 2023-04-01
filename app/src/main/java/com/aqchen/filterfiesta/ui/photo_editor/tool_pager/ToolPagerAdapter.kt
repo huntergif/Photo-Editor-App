@@ -76,8 +76,7 @@ class ToolPagerAdapter(
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.textView.text = toolPages[position].pageName
 
-        viewHolder.textView.layout
-
+        // https://stackoverflow.com/questions/43673445/why-setonclicklistener-not-working-in-adapter-with-recyclerview
         viewHolder.itemView.setOnClickListener {
             onClickListener(position)
         }
