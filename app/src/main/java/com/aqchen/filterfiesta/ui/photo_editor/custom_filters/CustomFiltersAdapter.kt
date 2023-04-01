@@ -17,13 +17,11 @@ class CustomFiltersAdapter : ListAdapter<CustomFilter, CustomFiltersAdapter.View
 
     object FilterGroupDiff: DiffUtil.ItemCallback<CustomFilter>() {
         override fun areItemsTheSame(oldItem: CustomFilter, newItem: CustomFilter): Boolean {
-            Log.d("CustomFiltersAdapter", "areItemsTheSame")
             if (oldItem.id == null && newItem.id == null) return false
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: CustomFilter, newItem: CustomFilter): Boolean {
-            Log.d("CustomFiltersAdapter", "areContentsTheSame")
             return oldItem == newItem
         }
 
@@ -54,7 +52,6 @@ class CustomFiltersAdapter : ListAdapter<CustomFilter, CustomFiltersAdapter.View
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        Log.d("CustomFiltersAdapter", "ON BIND VIEW HOLDER")
         viewHolder.textView.text = getItem(position).name
     }
 }

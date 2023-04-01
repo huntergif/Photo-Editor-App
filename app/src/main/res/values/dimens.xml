@@ -11,4 +11,5 @@
     <dimen name="text_small_subtitle_font_size">16sp</dimen>
     <dimen name="elevation_1">8dp</dimen>
     <dimen name="elevation_0">1dp</dimen>
+    <dimen name="image_dimens">70dp</dimen>
 </resources>
