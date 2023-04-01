@@ -77,7 +77,7 @@ class ParameterPagerFragment : Fragment() {
             editParametersViewModel = ViewModelProvider(requireActivity())[EditParametersViewModel::class.java]
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                 launch {
+                launch {
                     viewModel.currentPositionFlow.collect { currentPos ->
                         (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                             @Suppress("WrongConstant")

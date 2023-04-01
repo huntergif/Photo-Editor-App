@@ -16,6 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/photo_editor_image_preview_content_description"
-         />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,9 +7,12 @@ import com.aqchen.filterfiesta.domain.models.image.BaseImageFilter
 
 sealed class PhotoEditorImagesEvent {
 
-    data class SetBaseImage(val uri: Uri): PhotoEditorImagesEvent()
-    data class SetPreviewImage(val uri: Uri): PhotoEditorImagesEvent()
-    data class SetFilterOrAdjustmentPreviewImage(val uri: Uri): PhotoEditorImagesEvent()
-    data class SetImageFilters(val filters: List<Filter>): PhotoEditorImagesEvent()
-    data class SelectAdjustment(val adjustment: BaseImageFilter, val currentParams: Map<String, Double>? = null): PhotoEditorImagesEvent()
+    data class SetBaseImage(val uri: Uri) : PhotoEditorImagesEvent()
+    data class SetPreviewImage(val uri: Uri) : PhotoEditorImagesEvent()
+    data class SetFilterOrAdjustmentPreviewImage(val uri: Uri) : PhotoEditorImagesEvent()
+    data class SetImageFilters(val filters: List<Filter>) : PhotoEditorImagesEvent()
+    data class SelectAdjustment(
+        val adjustment: BaseImageFilter,
+        val currentParams: Map<String, Double>? = null
+    ) : PhotoEditorImagesEvent()
 }
