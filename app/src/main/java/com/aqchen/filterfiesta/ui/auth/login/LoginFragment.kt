@@ -45,7 +45,6 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.i("LoginFragment", "LoginFragment onCreateView")
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
@@ -68,8 +67,8 @@ class LoginFragment : Fragment() {
                     viewModel.loginUserFlow.collect {
                         when (it) {
                             is Resource.Success -> {
-                                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                                 Snackbar.make(view, R.string.login_successful, Snackbar.LENGTH_LONG).show()
+                                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                             }
                             is Resource.Error -> {
                                 submitButton.isEnabled = true
