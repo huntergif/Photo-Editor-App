@@ -9,6 +9,7 @@
 
     <com.alexvasilkov.gestures.views.GestureImageView
         android:id="@+id/image_preview_image_view"
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"

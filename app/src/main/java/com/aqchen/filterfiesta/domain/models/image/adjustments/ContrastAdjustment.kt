@@ -1,7 +1,10 @@
 package com.aqchen.filterfiesta.domain.models.image.adjustments
 
+import android.graphics.Bitmap
+import android.net.Uri
 import com.aqchen.filterfiesta.domain.models.image.BaseImageFilter
 import com.aqchen.filterfiesta.domain.models.image.ParameterSetting
+import com.bumptech.glide.Glide
 
 class ContrastAdjustment: BaseImageFilter(
     type = "contrast",
@@ -23,7 +26,7 @@ class ContrastAdjustment: BaseImageFilter(
         ),
     )
 ) {
-    override fun apply(parameters: Map<String, Double>) {
-        TODO("Not yet implemented")
+    override fun apply(source: Bitmap, dest: Bitmap, parameters: Map<String, Double>) {
+
     }
 }

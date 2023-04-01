@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
+import com.aqchen.filterfiesta.domain.models.image.newDefaultFilter
 import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.EditParametersFragment
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
@@ -65,10 +68,15 @@ class AdjustmentsFragment: Fragment() {
             viewModel = ViewModelProvider(requireActivity())[AdjustmentsViewModel::class.java]
             photoEditorViewModel = ViewModelProvider(requireActivity())[PhotoEditorImagesViewModel::class.java]
 
-            adapter = AdjustmentsAdapter() {
-                photoEditorViewModel.onEvent(PhotoEditorImagesEvent.SelectAdjustment(it))
-                Snackbar.make(view, "SELECTED ADJUSTMENT ${it.name}", Snackbar.LENGTH_LONG).show()
-                requireParentFragment().parentFragmentManager.beginTransaction().replace(R.id.photo_editor_bottom_bar, EditParametersFragment.newInstance()).commit()
+            adapter = AdjustmentsAdapter {
+                photoEditorViewModel.onEvent(PhotoEditorImagesEvent.SelectFilter(newDefaultFilter(it), null))
+                photoEditorViewModel.onEvent(PhotoEditorImagesEvent.SetPreviewFilter(
+                    newDefaultFilter(it)))
+                requireParentFragment().parentFragmentManager.commit {
+                    setReorderingAllowed(true)
+                    replace(R.id.photo_editor_bottom_bar, EditParametersFragment.newInstance())
+                    addToBackStack("photo_editor_bottom_bar")
+                }
             }
 
             recyclerView.adapter = adapter

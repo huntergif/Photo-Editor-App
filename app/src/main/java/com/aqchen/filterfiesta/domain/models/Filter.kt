@@ -7,7 +7,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 @IgnoreExtraProperties
 data class Filter(
     val type: String = "",
-    val parameters: Map<String, Double> = mutableMapOf(),
+    val parameters: Map<String, Double> = mapOf(),
 ) {
     companion object {
         const val FIELD_TYPE = "type"

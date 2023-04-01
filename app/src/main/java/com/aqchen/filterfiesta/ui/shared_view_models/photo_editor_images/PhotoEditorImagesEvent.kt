@@ -1,5 +1,6 @@
 package com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images
 
+import android.graphics.Bitmap
 import android.net.Uri
 import com.aqchen.filterfiesta.domain.models.Filter
 import com.aqchen.filterfiesta.domain.models.image.Adjustment
@@ -10,5 +11,9 @@ sealed class PhotoEditorImagesEvent {
     data class SetPreviewImage(val uri: Uri): PhotoEditorImagesEvent()
     data class SetFilterOrAdjustmentPreviewImage(val uri: Uri): PhotoEditorImagesEvent()
     data class SetImageFilters(val filters: List<Filter>): PhotoEditorImagesEvent()
-    data class SelectAdjustment(val adjustment: BaseImageFilter, val currentParams: Map<String, Double>? = null): PhotoEditorImagesEvent()
+    data class SetPreviewFilter(val filter: Filter): PhotoEditorImagesEvent()
+    @Deprecated("Consider SetPreviewFilter")
+    data class SelectFilter(val filterValue: Filter, val filterListPosition: Int?): PhotoEditorImagesEvent()
+    @Deprecated("Don't use")
+    object ShowPreview: PhotoEditorImagesEvent()
 }

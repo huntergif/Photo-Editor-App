@@ -14,7 +14,9 @@ import com.aqchen.filterfiesta.domain.use_case.custom_filters.GetCustomFiltersUs
 import com.aqchen.filterfiesta.domain.use_case.custom_filters.UpdateCustomFilterUseCase
 import com.aqchen.filterfiesta.domain.use_case.custom_filters.ValidateCustomFilterNameUseCase
 import com.aqchen.filterfiesta.domain.use_case.custom_filters.ValidateCustomFilterUpdatableUseCase
+import com.aqchen.filterfiesta.domain.use_case.filters.GenerateImageUseCase
 import com.aqchen.filterfiesta.domain.use_case.filters.GetAdjustmentsUseCase
+import com.aqchen.filterfiesta.domain.use_case.filters.GetFilterClassFromTypeUseCase
 import com.aqchen.filterfiesta.domain.use_case.tool_pages.GetToolPagesUseCase
 import dagger.Module
 import dagger.Provides
@@ -83,5 +85,17 @@ object PhotoEditorModule {
     @ViewModelScoped
     fun providesGetAdjustmentsUseCase(): GetAdjustmentsUseCase {
         return GetAdjustmentsUseCase()
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun providesGetFilterClassFromTypeUseCase(): GetFilterClassFromTypeUseCase {
+        return GetFilterClassFromTypeUseCase()
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun providesGenerateImageUseCase(getFilterClassFromTypeUseCase: GetFilterClassFromTypeUseCase): GenerateImageUseCase {
+        return GenerateImageUseCase(getFilterClassFromTypeUseCase)
     }
 }
