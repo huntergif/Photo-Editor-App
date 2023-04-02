@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photo_editor.adjustments
+package com.aqchen.filterfiesta.ui.photo_editor.preset_filters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.domain.models.image.BaseImageFilter
 
-class AdjustmentsAdapter(
+class PresetFiltersAdapter(
     private val onClickListener: (filter: BaseImageFilter) -> Unit,
-) : ListAdapter<BaseImageFilter, AdjustmentsAdapter.ViewHolder>(
+) : ListAdapter<BaseImageFilter, PresetFiltersAdapter.ViewHolder>(
     FilterDiff
 ) {
     object FilterDiff : DiffUtil.ItemCallback<BaseImageFilter>() {
@@ -34,14 +34,14 @@ class AdjustmentsAdapter(
         val textView: TextView
 
         init {
-            imageView = view.findViewById(R.id.view_holder_adjustment_image)
-            textView = view.findViewById(R.id.view_holder_adjustment_name)
+            imageView = view.findViewById(R.id.view_holder_preset_filter_image)
+            textView = view.findViewById(R.id.view_holder_preset_filter_name)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_holder_adjustment, parent, false)
+            .inflate(R.layout.view_holder_preset_filter, parent, false)
 
         return ViewHolder(view)
     }
