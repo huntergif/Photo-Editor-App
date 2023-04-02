@@ -5,6 +5,6 @@ import com.aqchen.filterfiesta.domain.models.image.BaseImageFilter
 
 data class SelectFilterState(
     val filter: BaseImageFilter,
-    val filterValue: Filter,
-    val filterListPosition: Int? = null
+    val filters: List<Filter>,
+    val selectPosition: Int,
 )

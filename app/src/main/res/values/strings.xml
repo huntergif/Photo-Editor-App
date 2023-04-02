@@ -90,4 +90,8 @@
     <!-- Photo Editor Image Preview Fragment -->
     <string name="photo_editor_image_preview_content_description">Image Preview</string>
     <string name="photo_editor_image_preview_container_transition_name">photo_editor_image_preview_container_transition</string>
+
+    <!-- Edit Parameters Fragment -->
+    <string name="edit_parameters_cancel_button_label">Cancel</string>
+    <string name="edit_parameters_save_button_label">Apply</string>
 </resources>

@@ -69,9 +69,11 @@ class AdjustmentsFragment: Fragment() {
             photoEditorViewModel = ViewModelProvider(requireActivity())[PhotoEditorImagesViewModel::class.java]
 
             adapter = AdjustmentsAdapter {
-                photoEditorViewModel.onEvent(PhotoEditorImagesEvent.SelectFilter(newDefaultFilter(it), null))
-                photoEditorViewModel.onEvent(PhotoEditorImagesEvent.SetPreviewFilter(
-                    newDefaultFilter(it)))
+                // when the user selects an adjustment, we need to add a new "default" filter to the end of the current filter list
+                val newFilterList = photoEditorViewModel.imageFiltersStateFlow.value + newDefaultFilter(it)
+                // select the new filter by passing in the "new" filter list and selecting the last index
+                photoEditorViewModel.onEvent(PhotoEditorImagesEvent.SelectFilter(newFilterList, newFilterList.size - 1))
+                // change the bottom bar to tho the edit parameters fragment
                 requireParentFragment().parentFragmentManager.commit {
                     setReorderingAllowed(true)
                     replace(R.id.photo_editor_bottom_bar, EditParametersFragment.newInstance())

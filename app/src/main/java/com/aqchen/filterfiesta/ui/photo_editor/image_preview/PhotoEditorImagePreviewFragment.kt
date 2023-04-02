@@ -3,8 +3,11 @@ package com.aqchen.filterfiesta.ui.photo_editor.image_preview
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.ui.photo_editor.custom_filters.CustomFiltersViewModel
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
+import com.aqchen.filterfiesta.util.Resource
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
@@ -35,16 +39,36 @@ class PhotoEditorImagePreviewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val imageView: ImageView = view.findViewById(R.id.image_preview_image_view)
+        val loadingIndicator: ProgressBar = view.findViewById(R.id.image_preview_loading_indicator)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel = ViewModelProvider(requireActivity())[PhotoEditorImagesViewModel::class.java]
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.baseImageStateFlow.collect {
-                    Glide.with(requireActivity())
-                        .load(it?.imageUri)
-                        .placeholder(R.drawable.baseline_add_photo_alternate_70)
-                        .into(imageView)
+                launch {
+                    viewModel.displayPhotoEditorBitmapStateFlow.collect {
+                        when (it) {
+                            is Resource.Error -> {
+                                // glide should fail to load and display the placeholder
+                                Glide.with(requireActivity())
+                                    .load(it.data)
+                                    .placeholder(R.drawable.baseline_add_photo_alternate_70)
+                                    .into(imageView)
+                            }
+                            Resource.Loading -> {
+                                loadingIndicator.visibility = VISIBLE
+                            }
+                            is Resource.Success -> {
+                                loadingIndicator.visibility = GONE
+
+                                Glide.with(requireActivity())
+                                    .load(it.data)
+                                    .placeholder(R.drawable.baseline_add_photo_alternate_70)
+                                    .into(imageView)
+                            }
+                            null -> {}
+                        }
+                    }
                 }
             }
         }

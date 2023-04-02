@@ -18,11 +18,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.ui.photo_editor.bottom_bars.home.BottomBarHomeFragment
 import com.aqchen.filterfiesta.ui.photo_editor.tool_pager.ToolPagerFragment
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.BitmapType
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
+import com.aqchen.filterfiesta.util.Resource
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -65,22 +69,44 @@ class PhotoEditorFragment : Fragment() {
             photoEditorImagesViewModel.filterPreviewImageFile = File(requireContext().filesDir, "filter_preview_image")
             val uri = Uri.fromFile(photoEditorImagesViewModel.previewImageFile)
 
-            val target = object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-//                    photoEditorImagesViewModel.previewImageBitmap = resource
-//                    photoEditorImagesViewModel.filterPreviewBitmap = resource
+            lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                launch {
+                    photoEditorImagesViewModel.baseImageStateFlow.collect {
+                        if (it != null) {
+                            photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetDisplayedPhotoEditorBitmap(
+                                Resource.Loading
+                            ))
+
+                            val target = object : CustomTarget<Bitmap>() {
+                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetInternalBitmap(resource, BitmapType.PREVIEW_IMAGE))
+                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetDisplayedPhotoEditorBitmap(
+                                        Resource.Success(resource)
+                                    ))
+                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetBaseImageBitmap(resource))
+                                }
+
+                                override fun onLoadCleared(placeholder: Drawable?) {
+                                    // do nothing (need to have implementation for abstract function)
+                                }
+
+                                override fun onLoadFailed(errorDrawable: Drawable?) {
+                                    super.onLoadFailed(errorDrawable)
+
+                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetDisplayedPhotoEditorBitmap(
+                                        Resource.Error("Failed to load base image")
+                                    ))
+                                }
+
+                            }
+                            Glide.with(requireContext())
+                                .asBitmap()
+                                .load(it.imageUri)
+                                .into(target)
+                        }
+                    }
                 }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-
-                }
-
             }
-
-            Glide.with(requireContext())
-                .asBitmap()
-                .load(uri)
-                .into(target)
         }
 
         val menuHost: MenuHost = requireActivity()

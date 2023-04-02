@@ -3,6 +3,7 @@ package com.aqchen.filterfiesta.domain.models.image
 import android.graphics.Bitmap
 import android.net.Uri
 import com.aqchen.filterfiesta.domain.models.Filter
+import com.aqchen.filterfiesta.util.Resource
 
 data class ParameterSetting(
     val type: String,
@@ -17,7 +18,7 @@ abstract class BaseImageFilter(
     val name: String,
     val parameterSettings: List<ParameterSetting>
 ) {
-    abstract fun apply(source: Bitmap, dest: Bitmap, parameters: Map<String, Double>)
+    abstract fun apply(source: Bitmap, parameters: Map<String, Double>): Bitmap?
 }
 
 fun newDefaultFilter(filter: BaseImageFilter): Filter {

@@ -44,45 +44,37 @@ class ParameterFragment: Fragment() {
             photoEditorImagesViewModel = ViewModelProvider(requireActivity())[PhotoEditorImagesViewModel::class.java]
             editParametersViewModel = ViewModelProvider(requireActivity())[EditParametersViewModel::class.java]
 
-            val selectedAdjustmentState = photoEditorImagesViewModel.selectedFilterStateFlow.value
+            val selectedFilterState = photoEditorImagesViewModel.selectedFilterStateFlow.value
             val parameterSettings = editParametersViewModel.selectedParameterSettingStateFlow.value
 
-            if (selectedAdjustmentState == null) {
+            if (selectedFilterState == null) {
                 Snackbar.make(view, "No adjustment selected", Snackbar.LENGTH_LONG).show()
             } else if (parameterSettings == null) {
                 Snackbar.make(view, "No parameter selected", Snackbar.LENGTH_LONG).show()
             } else {
                 slider.valueFrom = parameterSettings.min.toFloat()
                 slider.valueTo = parameterSettings.max.toFloat()
-//                slider.value =
-//                    (photoEditorImagesViewModel.selectedFilterStateFlow.value?.filterValue?.parameters?.get(parameterSettings.type)?.toFloat())
-//                        ?: parameterSettings.default.toFloat()
                 slider.value =
-                    (photoEditorImagesViewModel.previewFilterStateFlow.value?.parameters?.get(parameterSettings.type)?.toFloat())
+                    (selectedFilterState.filters[selectedFilterState.selectPosition].parameters[parameterSettings.type]
+                        ?.toFloat())
                         ?: parameterSettings.default.toFloat()
             }
 
             slider.addOnChangeListener { _, value, _ ->
-                var filterList = photoEditorImagesViewModel.imageFiltersStateFlow.value
-                val previewFilter = photoEditorImagesViewModel.previewFilterStateFlow.value
-                if (selectedAdjustmentState != null && parameterSettings != null && previewFilter != null) {
-                    filterList = filterList + selectedAdjustmentState.filterValue
-                    val mutableParams = previewFilter.parameters.toMutableMap()
+                if (selectedFilterState != null && parameterSettings != null) {
+                    // since everything is immutable in the selected filter state, we need to copy the nested items we change
+                    // get a mutable copy of the parameters map for the selected filter
+                    val mutableParams = selectedFilterState.filters[selectedFilterState.selectPosition].parameters.toMutableMap()
+                    // change the filter's parameter value to the new slider value
                     mutableParams[parameterSettings.type] = value.toDouble()
-                    Log.d("ParameterFragment", mutableParams[parameterSettings.type].toString())
-                    //photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SelectFilter(filterValue = selectedAdjustmentState.filterValue.copy(parameters = mutableParams.toMap()), filterListPosition = selectedAdjustmentState.filterListPosition))
-                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetPreviewFilter(previewFilter.copy(parameters = mutableParams.toMap())))
-                }
-            }
-
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                photoEditorImagesViewModel.previewFilterStateFlow.collect {
-                    if (it != null) {
-                        photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.ShowPreview)
-//                        slider.value =
-//                            (photoEditorImagesViewModel.previewFilterStateFlow.value?.parameters?.get(parameterSettings.type)?.toFloat())
-//                                ?: parameterSettings.default.toFloat()
-                    }
+                    // create a copy of the filter at the selected position, with the parameter map
+                    val newFilter = selectedFilterState.filters[selectedFilterState.selectPosition].copy(parameters = mutableParams.toMap())
+                    // get a mutable copy of the filters list
+                    val newList = selectedFilterState.filters.toMutableList()
+                    // set the new filter in the filters list
+                    newList[selectedFilterState.selectPosition] = newFilter
+                    // notify the view model that the filter list has changed
+                    photoEditorImagesViewModel.onEvent((PhotoEditorImagesEvent.SelectFilter(newList.toList(), selectedFilterState.selectPosition)))
                 }
             }
         }
