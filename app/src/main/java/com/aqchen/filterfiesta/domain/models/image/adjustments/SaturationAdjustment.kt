@@ -1,10 +1,8 @@
 package com.aqchen.filterfiesta.domain.models.image.adjustments
 
 import android.graphics.Bitmap
-import android.net.Uri
 import com.aqchen.filterfiesta.domain.models.image.BaseImageFilter
 import com.aqchen.filterfiesta.domain.models.image.ParameterSetting
-import com.aqchen.filterfiesta.util.Resource
 
 class SaturationAdjustment: BaseImageFilter(
     type = "saturation",

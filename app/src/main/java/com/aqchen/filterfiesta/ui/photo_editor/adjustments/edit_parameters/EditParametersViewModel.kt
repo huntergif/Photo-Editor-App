@@ -10,7 +10,8 @@ import javax.inject.Inject
 @HiltViewModel
 class EditParametersViewModel @Inject constructor(): ViewModel() {
     private val _selectedParameterSettingStateFlow = MutableStateFlow<ParameterSetting?>(null)
-    val selectedParameterSettingStateFlow: StateFlow<ParameterSetting?> = _selectedParameterSettingStateFlow
+    val selectedParameterSettingStateFlow: StateFlow<ParameterSetting?> =
+        _selectedParameterSettingStateFlow
 
     fun onEvent(event: EditParametersEvent) {
         when (event) {

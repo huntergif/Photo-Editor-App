@@ -1,28 +1,23 @@
 package com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.pager.ParameterPagerFragment
-import com.aqchen.filterfiesta.ui.photo_editor.tool_pager.ToolPagerFragment
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.BitmapType
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.util.Resource
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 
 class EditParametersFragment : Fragment() {

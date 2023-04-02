@@ -12,7 +12,6 @@ import android.util.DisplayMetrics
 import android.view.WindowInsets
 import android.widget.TextView
 import org.opencv.core.CvType
-import org.opencv.imgproc.Imgproc.COLOR_BGR2Luv
 
 
 // Adds the given clickable span to the given text view.

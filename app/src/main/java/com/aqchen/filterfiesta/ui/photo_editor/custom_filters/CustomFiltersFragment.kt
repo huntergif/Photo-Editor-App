@@ -94,5 +94,4 @@ class CustomFiltersFragment : Fragment() {
             }
         }
     }
-
 }

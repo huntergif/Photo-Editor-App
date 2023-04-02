@@ -17,12 +17,15 @@ class AdjustmentsAdapter(
 ) : ListAdapter<BaseImageFilter, AdjustmentsAdapter.ViewHolder>(
     FilterDiff
 ) {
-    object FilterDiff: DiffUtil.ItemCallback<BaseImageFilter>() {
+    object FilterDiff : DiffUtil.ItemCallback<BaseImageFilter>() {
         override fun areItemsTheSame(oldItem: BaseImageFilter, newItem: BaseImageFilter): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: BaseImageFilter, newItem: BaseImageFilter): Boolean {
+        override fun areContentsTheSame(
+            oldItem: BaseImageFilter,
+            newItem: BaseImageFilter
+        ): Boolean {
             return oldItem.type == newItem.type
         }
     }

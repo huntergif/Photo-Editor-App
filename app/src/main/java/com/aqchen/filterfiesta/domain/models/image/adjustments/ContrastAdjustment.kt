@@ -1,14 +1,11 @@
 package com.aqchen.filterfiesta.domain.models.image.adjustments
 
 import android.graphics.Bitmap
-import android.util.Log
 import com.aqchen.filterfiesta.domain.models.image.BaseImageFilter
 import com.aqchen.filterfiesta.domain.models.image.ParameterSetting
-import com.aqchen.filterfiesta.util.Resource
 import com.aqchen.filterfiesta.util.bitmapConfigToCvType
 import org.opencv.android.Utils
 import org.opencv.core.Core
-import org.opencv.core.CvType
 import org.opencv.core.Mat
 
 class ContrastAdjustment: BaseImageFilter(

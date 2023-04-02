@@ -24,7 +24,6 @@ import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.EditP
 import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.parameter.ParameterFragment
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.ui.util.CenterLinearLayoutManager
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ParameterPagerFragment : Fragment() {
@@ -77,7 +76,7 @@ class ParameterPagerFragment : Fragment() {
             editParametersViewModel = ViewModelProvider(requireActivity())[EditParametersViewModel::class.java]
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                 launch {
+                launch {
                     viewModel.currentPositionFlow.collect { currentPos ->
                         (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                             @Suppress("WrongConstant")

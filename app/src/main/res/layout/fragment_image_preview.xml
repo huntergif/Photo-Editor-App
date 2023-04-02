@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/photo_editor_image_preview_content_description"
-         />
+        />
 
     <!-- Loading indicator, note this has to be at the bottom to appear above image view -->
     <!-- https://developer.android.com/reference/android/view/View.html#Drawing -->

@@ -40,27 +40,11 @@ class LoginFragment : Fragment() {
     }
 
     private lateinit var viewModel: LoginViewModel
-    // TODO REMOVE TEST
-    private lateinit var testViewModel: PhotoEditorImagesViewModel
-
-    private val selectImageIntent = registerForActivityResult(
-        ActivityResultContracts.GetContent()
-    )
-    { uri ->
-        if (uri != null) {
-            testViewModel.onEvent(PhotoEditorImagesEvent.SetBaseImage(uri))
-            // TODO change back to login fragment to home fragment
-            findNavController().navigate(R.id.action_loginFragment_to_photoEditorFragment)
-        } else {
-            Snackbar.make(requireView(), "Failed to select image", Snackbar.LENGTH_LONG).show()
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.i("LoginFragment", "LoginFragment onCreateView")
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
@@ -77,17 +61,14 @@ class LoginFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
-            // TODO REMOVE TEST (ALSO REMOVE FROM NAVGRAPH)
-            testViewModel = ViewModelProvider(requireActivity())[PhotoEditorImagesViewModel::class.java]
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.loginUserFlow.collect {
                         when (it) {
                             is Resource.Success -> {
+                                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                                 Snackbar.make(view, R.string.login_successful, Snackbar.LENGTH_LONG).show()
-
-                                selectImageIntent.launch("image/*")
                             }
                             is Resource.Error -> {
                                 submitButton.isEnabled = true
@@ -110,11 +91,11 @@ class LoginFragment : Fragment() {
         }
 
         emailTextInput.doAfterTextChanged {
-            text -> viewModel.onEvent(LoginFormEvent.EmailChanged(text.toString()))
+                text -> viewModel.onEvent(LoginFormEvent.EmailChanged(text.toString()))
         }
 
         passwordTextInput.doAfterTextChanged {
-            text -> viewModel.onEvent(LoginFormEvent.PasswordChanged(text.toString()))
+                text -> viewModel.onEvent(LoginFormEvent.PasswordChanged(text.toString()))
         }
 
         submitButton.setOnClickListener {

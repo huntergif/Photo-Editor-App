@@ -1,12 +1,9 @@
 package com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images
 
 import android.graphics.Bitmap
-import android.os.Environment
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aqchen.filterfiesta.domain.models.Filter
-import com.aqchen.filterfiesta.domain.models.image.BaseImageFilter
 import com.aqchen.filterfiesta.domain.models.image.Image
 import com.aqchen.filterfiesta.domain.use_case.filters.GenerateImageUseCase
 import com.aqchen.filterfiesta.domain.use_case.filters.GetFilterClassFromTypeUseCase
@@ -18,7 +15,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.File
-import java.lang.Thread.State
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,32 +22,36 @@ class PhotoEditorImagesViewModel @Inject constructor(
     private val getFilterClassFromTypeUseCase: GetFilterClassFromTypeUseCase,
     private val generateImageUseCase: GenerateImageUseCase,
 ): ViewModel() {
+    // state flow for the base (initial selected) image
     private val _baseImageStateFlow = MutableStateFlow<Image?>(null)
     val baseImageStateFlow: StateFlow<Image?> = _baseImageStateFlow
 
+    // state flow for the image filters (the filter list which would be applied to the final saved image)
     private val _imageFiltersStateFlow = MutableStateFlow<List<Filter>>(emptyList())
     val imageFiltersStateFlow: StateFlow<List<Filter>> = _imageFiltersStateFlow
 
+    // state flow for the selected filter state (for when the user chooses a filter to add or edit)
     private val _selectedFilterStateFlow = MutableStateFlow<SelectFilterState?>(null)
     val selectedFilterStateFlow: StateFlow<SelectFilterState?> = _selectedFilterStateFlow
 
-    private var generateImageJob: Job? = null
-    private var generateImageType: BitmapType? = null
-
-    lateinit var previewImageFile: File
-    lateinit var filterPreviewImageFile: File
-
+    // state flow for the bitmap loaded from the base image uri
     private val _baseImageBitmapStateFlow = MutableStateFlow<Bitmap?>(null)
     val baseImageBitmapStateFlow: StateFlow<Bitmap?> = _baseImageBitmapStateFlow
 
+    // state flow for the preview image bitmap (the final image that would be saved)
     private val _previewImageBitmapStateFlow = MutableStateFlow<Resource<Bitmap>?>(null)
     val previewImageBitmapStateFlow: StateFlow<Resource<Bitmap>?> = _previewImageBitmapStateFlow
 
+    // state flow for the filter preview (the preview for when the user is adding or editing a filter, not confirmed as to be saved)
     private val _filterPreviewBitmapStateFlow = MutableStateFlow<Resource<Bitmap>?>(null)
     val filterPreviewBitmapStateFlow: StateFlow<Resource<Bitmap>?> = _filterPreviewBitmapStateFlow
 
+    // state flow for the bitmap to be displayed on the photo editor. Usually either the preview image or filter preview bitmap
     private val _displayPhotoEditorBitmapStateFlow = MutableStateFlow<Resource<Bitmap>?>(null)
     val displayPhotoEditorBitmapStateFlow: StateFlow<Resource<Bitmap>?> = _displayPhotoEditorBitmapStateFlow
+
+    private var generateImageJob: Job? = null
+    private var generateImageType: BitmapType? = null
 
     fun onEvent(event: PhotoEditorImagesEvent) {
         when (event) {

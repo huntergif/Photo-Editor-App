@@ -62,9 +62,9 @@ class PasswordResetViewModel  @Inject constructor(
                 _passwordResetResultFlow.emit(Resource.Loading)
 
                 val task = sendPasswordResetEmailUseCase(_passwordResetFormStateFlow.value.email)
-                task.addOnCompleteListener { task ->
+                task.addOnCompleteListener { taskResult ->
                     viewModelScope.launch {
-                        if (task.isSuccessful) {
+                        if (taskResult.isSuccessful) {
                             _passwordResetResultFlow.emit(Resource.Success(Unit))
                         } else {
                             _passwordResetResultFlow.emit(Resource.Error(errorMessage = task.exception!!.message.toString()))
