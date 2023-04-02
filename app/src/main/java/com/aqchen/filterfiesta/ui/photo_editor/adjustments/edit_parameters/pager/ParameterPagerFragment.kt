@@ -24,7 +24,6 @@ import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.EditP
 import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.parameter.ParameterFragment
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.ui.util.CenterLinearLayoutManager
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ParameterPagerFragment : Fragment() {
@@ -72,7 +71,7 @@ class ParameterPagerFragment : Fragment() {
         })
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel = ViewModelProvider(requireActivity())[ParameterPagerViewModel::class.java]
+            viewModel = ViewModelProvider(requireParentFragment())[ParameterPagerViewModel::class.java]
             photoEditorViewModel = ViewModelProvider(requireActivity())[PhotoEditorImagesViewModel::class.java]
             editParametersViewModel = ViewModelProvider(requireActivity())[EditParametersViewModel::class.java]
 
@@ -92,10 +91,10 @@ class ParameterPagerFragment : Fragment() {
                 }
 
                 launch {
-                    photoEditorViewModel.selectedAdjustmentStateFlow.collect {
+                    photoEditorViewModel.selectedFilterStateFlow.collect {
                         if (it != null) {
                             adapter = ParameterPagerAdapter(
-                                it.adjustment.parameterSettings,
+                                it.filter.parameterSettings,
                                 viewModel.selectedPositionFlow
                             ) { itemPos ->
                                 recyclerView.smoothScrollToPosition(itemPos)

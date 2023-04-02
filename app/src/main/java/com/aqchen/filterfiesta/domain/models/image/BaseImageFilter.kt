@@ -1,5 +1,8 @@
 package com.aqchen.filterfiesta.domain.models.image
 
+import android.graphics.Bitmap
+import com.aqchen.filterfiesta.domain.models.Filter
+
 data class ParameterSetting(
     val type: String,
     val name: String,
@@ -13,5 +16,13 @@ abstract class BaseImageFilter(
     val name: String,
     val parameterSettings: List<ParameterSetting>
 ) {
-    abstract fun apply(parameters: Map<String, Double>)
+    abstract fun apply(source: Bitmap, parameters: Map<String, Double>): Bitmap?
+}
+
+fun newDefaultFilter(filter: BaseImageFilter): Filter {
+    val paramMap = mutableMapOf<String, Double>()
+    filter.parameterSettings.forEach {
+        paramMap[it.type] = it.default
+    }
+    return Filter(filter.type, paramMap.toMap())
 }

@@ -1,5 +1,7 @@
 package com.aqchen.filterfiesta.ui.photo_editor
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,13 +12,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.ui.photo_editor.bottom_bars.home.BottomBarHomeFragment
-import com.aqchen.filterfiesta.ui.photo_editor.tool_pager.ToolPagerFragment
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.BitmapType
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
+import com.aqchen.filterfiesta.util.Resource
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.transition.MaterialSharedAxis
+import kotlinx.coroutines.launch
 
 class PhotoEditorFragment : Fragment() {
 
@@ -24,7 +35,7 @@ class PhotoEditorFragment : Fragment() {
         fun newInstance() = PhotoEditorFragment()
     }
 
-    private lateinit var viewModel: PhotoEditorViewModel
+    private lateinit var photoEditorImagesViewModel: PhotoEditorImagesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +48,55 @@ class PhotoEditorFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
-        val bottomBarFragment: FragmentContainerView = view.findViewById(R.id.photo_editor_bottom_bar)
         childFragmentManager.beginTransaction().replace(R.id.photo_editor_bottom_bar, BottomBarHomeFragment()).commit()
+        childFragmentManager.restoreBackStack("photo_editor_bottom_bar")
+
+        lifecycleScope.launch {
+            photoEditorImagesViewModel = ViewModelProvider(requireActivity())[PhotoEditorImagesViewModel::class.java]
+
+            lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                launch {
+                    photoEditorImagesViewModel.baseImageStateFlow.collect {
+                        if (it != null) {
+                            // reset image filters
+                            photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetImageFilters(
+                                emptyList()))
+                            // notify that the base image bitmap is loading
+                            photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetDisplayedPhotoEditorBitmap(
+                                Resource.Loading
+                            ))
+
+                            val target = object : CustomTarget<Bitmap>() {
+                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetInternalBitmap(resource, BitmapType.PREVIEW_IMAGE))
+                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetDisplayedPhotoEditorBitmap(
+                                        Resource.Success(resource)
+                                    ))
+                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetBaseImageBitmap(resource))
+                                }
+
+                                override fun onLoadCleared(placeholder: Drawable?) {
+                                    // do nothing (need to have implementation for abstract function)
+                                }
+
+                                override fun onLoadFailed(errorDrawable: Drawable?) {
+                                    super.onLoadFailed(errorDrawable)
+
+                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetDisplayedPhotoEditorBitmap(
+                                        Resource.Error("Failed to load base image")
+                                    ))
+                                }
+
+                            }
+                            Glide.with(requireContext())
+                                .asBitmap()
+                                .load(it.imageUri)
+                                .into(target)
+                        }
+                    }
+                }
+            }
+        }
 
         val menuHost: MenuHost = requireActivity()
 
@@ -63,6 +121,7 @@ class PhotoEditorFragment : Fragment() {
                         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false).apply {
                             duration = resources.getInteger(R.integer.motion_duration_large).toLong()
                         }
+                        childFragmentManager.saveBackStack("photo_editor_bottom_bar")
                         findNavController().navigate(R.id.action_photoEditorFragment_to_createCustomFilterFragment)
                         true
                     }
@@ -74,6 +133,7 @@ class PhotoEditorFragment : Fragment() {
                         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false).apply {
                             duration = resources.getInteger(R.integer.motion_duration_large).toLong()
                         }
+                        childFragmentManager.saveBackStack("photo_editor_bottom_bar")
                         findNavController().navigate(R.id.action_photoEditorFragment_to_customFiltersDetailsListFragment)
                         true
                     }

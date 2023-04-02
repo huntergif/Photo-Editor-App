@@ -9,6 +9,7 @@
 
     <com.alexvasilkov.gestures.views.GestureImageView
         android:id="@+id/image_preview_image_view"
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -17,5 +18,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/photo_editor_image_preview_content_description"
         />
+
+    <!-- Loading indicator, note this has to be at the bottom to appear above image view -->
+    <!-- https://developer.android.com/reference/android/view/View.html#Drawing -->
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/image_preview_loading_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:showAnimationBehavior="outward"
+        app:hideAnimationBehavior="inward"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,7 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/preview_fragment_container"
         android:name="com.aqchen.filterfiesta.ui.photo_editor.image_preview.PhotoEditorImagePreviewFragment"
+        android:transitionName="@string/photo_editor_image_preview_container_transition_name"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
