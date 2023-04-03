@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
+import com.aqchen.filterfiesta.ui.home.HomeViewModel
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.util.Resource
@@ -40,6 +41,7 @@ class LoginFragment : Fragment() {
     }
 
     private lateinit var viewModel: LoginViewModel
+    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,14 +63,14 @@ class LoginFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
+            homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.loginUserFlow.collect {
                         when (it) {
                             is Resource.Success -> {
-                                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                                Snackbar.make(view, R.string.login_successful, Snackbar.LENGTH_LONG).show()
+                                // listen to authStateFlow to handle success
                             }
                             is Resource.Error -> {
                                 submitButton.isEnabled = true
@@ -85,6 +87,15 @@ class LoginFragment : Fragment() {
                     viewModel.loginFormStateFlow.collect {
                         emailTextInputLayout.error = it.emailError
                         passwordTextInputLayout.error = it.passwordError
+                    }
+                }
+                // listen to auth state to determine when to navigate
+                launch {
+                    homeViewModel.authStateFlow.collect {
+                        if (it != null) {
+                            findNavController().navigate(R.id.action_global_homeFragment)
+                            Snackbar.make(view, R.string.login_successful, Snackbar.LENGTH_LONG).show()
+                        }
                     }
                 }
             }

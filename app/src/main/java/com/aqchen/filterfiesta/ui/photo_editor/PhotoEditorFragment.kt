@@ -21,6 +21,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.ui.photo_editor.bottom_bars.home.BottomBarHomeFragment
+import com.aqchen.filterfiesta.ui.photo_editor.filter_list_side_sheet.FilterListAdapter
 import com.aqchen.filterfiesta.ui.photo_editor.save_modal_bottom_sheet.SaveModalBottomSheetFragment
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.BitmapType
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
@@ -29,7 +30,12 @@ import com.aqchen.filterfiesta.util.Resource
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
+import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemDragListener
+import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemSwipeListener
+import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnListScrollListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.sidesheet.SideSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.flow.collectLatest
@@ -57,8 +63,30 @@ class PhotoEditorFragment : Fragment() {
         childFragmentManager.beginTransaction().replace(R.id.photo_editor_bottom_bar, BottomBarHomeFragment()).commit()
         childFragmentManager.restoreBackStack("photo_editor_bottom_bar")
 
-        val bottomBarFragmentContainerView: FragmentContainerView = view.findViewById(R.id.photo_editor_bottom_bar)
         val saveModalBottomSheet = SaveModalBottomSheetFragment()
+        val filterListSideSheet = SideSheetDialog(requireContext())
+        var filterListSideSheetAdapter = FilterListAdapter(emptyList())
+
+        filterListSideSheet.setContentView(R.layout.side_sheet_photo_editor)
+
+        val onItemSwipeListener = object : OnItemSwipeListener<String> {
+            override fun onItemSwiped(position: Int, direction: OnItemSwipeListener.SwipeDirection, item: String): Boolean {
+                // Handle action of item swiped
+                // Return false to indicate that the swiped item should be removed from the adapter's data set (default behaviour)
+                // Return true to stop the swiped item from being automatically removed from the adapter's data set (in this case, it will be your responsibility to manually update the data set as necessary)
+                return false
+            }
+        }
+
+        val onItemDragListener = object : OnItemDragListener<String> {
+            override fun onItemDragged(previousPosition: Int, newPosition: Int, item: String) {
+                // Handle action of item being dragged from one position to another
+            }
+
+            override fun onItemDropped(initialPosition: Int, finalPosition: Int, item: String) {
+                // Handle action of item dropped
+            }
+        }
 
         lifecycleScope.launch {
             photoEditorImagesViewModel = ViewModelProvider(requireActivity())[PhotoEditorImagesViewModel::class.java]
@@ -118,6 +146,11 @@ class PhotoEditorFragment : Fragment() {
                         saveModalBottomSheet.show(parentFragmentManager, SaveModalBottomSheetFragment.TAG)
                     }
                 }
+                launch {
+                    photoEditorImagesViewModel.imageFiltersStateFlow.collectLatest {
+                        filterListSideSheetAdapter.dataSet = it
+                    }
+                }
             }
         }
 
@@ -160,10 +193,23 @@ class PhotoEditorFragment : Fragment() {
                         findNavController().navigate(R.id.action_photoEditorFragment_to_customFiltersDetailsListFragment)
                         true
                     }
+                    R.id.action_photo_editor_manage_filters -> {
+                        filterListSideSheet.show()
+                        val recyclerView = filterListSideSheet.findViewById<DragDropSwipeRecyclerView>(R.id.side_sheet_photo_editor_filter_list_recycler_view)
+                        if (recyclerView == null) {
+                            Snackbar.make(view, "Failed to show filter list", Snackbar.LENGTH_SHORT).show()
+                            return true
+                        }
+                        Snackbar.make(view, filterListSideSheetAdapter.dataSet.toString(), Snackbar.LENGTH_SHORT).show()
+                        recyclerView.adapter = filterListSideSheetAdapter
+                        recyclerView.orientation = DragDropSwipeRecyclerView.ListOrientation.VERTICAL_LIST_WITH_VERTICAL_DRAGGING
+                        recyclerView.swipeListener = onItemSwipeListener
+                        recyclerView.dragListener = onItemDragListener
+                        true
+                    }
                     else -> false
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
     }
 }

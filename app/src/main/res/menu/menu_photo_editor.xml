@@ -18,4 +18,9 @@
         android:orderInCategory="300"
         android:title="@string/photo_editor_menu_manage_custom_filters_label"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_photo_editor_manage_filters"
+        android:orderInCategory="400"
+        android:title="@string/photo_editor_menu_manage_filters_label"
+        app:showAsAction="never" />
 </menu>

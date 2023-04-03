@@ -4,19 +4,28 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.ui.photo_editor.tool_pager.ToolPagerFragment
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.util.Resource
+import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.launch
 
 class BottomBarHomeFragment : Fragment() {

@@ -9,6 +9,9 @@ import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -16,13 +19,20 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Date
@@ -33,6 +43,7 @@ class HomeFragment : Fragment() {
         fun newInstance() = HomeFragment()
     }
 
+    private lateinit var viewModel: HomeViewModel
     private lateinit var photoEditorImagesViewModel: PhotoEditorImagesViewModel
     private var photoUri: Uri? = null
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
@@ -103,7 +114,40 @@ class HomeFragment : Fragment() {
         }
 
         lifecycleScope.launch {
+            viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
             photoEditorImagesViewModel = ViewModelProvider(requireActivity())[PhotoEditorImagesViewModel::class.java]
+
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.authStateFlow.collectLatest {
+                        Log.d("HomeFragment", it.toString())
+                        if (it == null) {
+                            Snackbar.make(view, "Not logged-in", Snackbar.LENGTH_LONG).show()
+                            findNavController().navigate(R.id.action_global_loginFragment)
+                        }
+                    }
+                }
+            }
         }
+
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // Add menu items here
+                menuInflater.inflate(R.menu.menu_home, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Handle the menu selection
+                return when (menuItem.itemId) {
+                    R.id.action_home_sign_out -> {
+                        viewModel.onEvent(HomeEvent.SignOut)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 }

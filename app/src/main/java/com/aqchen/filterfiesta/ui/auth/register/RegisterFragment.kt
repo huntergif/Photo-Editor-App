@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
+import com.aqchen.filterfiesta.ui.home.HomeViewModel
 import com.aqchen.filterfiesta.util.Resource
 import com.aqchen.filterfiesta.util.setTextViewWithClickableSpan
 import com.google.android.material.button.MaterialButton
@@ -32,6 +33,7 @@ class RegisterFragment : Fragment() {
     }
 
     private lateinit var viewModel: RegisterViewModel
+    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,6 +66,7 @@ class RegisterFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel = ViewModelProvider(requireActivity())[RegisterViewModel::class.java]
+            homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
             // relaunch coroutines when the fragment starts or is restarted
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -73,7 +76,7 @@ class RegisterFragment : Fragment() {
                         when (it) {
                             is Resource.Success -> {
                                 Snackbar.make(view, R.string.register_successful, Snackbar.LENGTH_LONG).show()
-                                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+                                findNavController().navigate(R.id.action_global_homeFragment)
                             }
                             is Resource.Error -> {
                                 // re-enabled button to try again
@@ -97,6 +100,15 @@ class RegisterFragment : Fragment() {
                         repeatedPasswordTextInputLayout.error = it.repeatedPasswordError
                         termsCheckBox.error = it.acceptedTermsError
                         termsCheckBox.isErrorShown = it.acceptedTermsError != null
+                    }
+                }
+                // listen to auth state to determine when to navigate
+                launch {
+                    homeViewModel.authStateFlow.collect {
+                        if (it != null) {
+                            findNavController().navigate(R.id.action_global_homeFragment)
+                            Snackbar.make(view, R.string.login_successful, Snackbar.LENGTH_LONG).show()
+                        }
                     }
                 }
             }

@@ -4,8 +4,14 @@ import com.aqchen.filterfiesta.data.remote.FirebaseAuthentication
 import com.aqchen.filterfiesta.domain.repository.AuthRepository
 import com.aqchen.filterfiesta.util.Resource
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.tasks.await
 
 class AuthRepositoryImpl(
@@ -41,4 +47,14 @@ class AuthRepositoryImpl(
     override fun getCurrentUser(): FirebaseUser? {
         return firebaseAuth.conn.currentUser
     }
+
+    override fun getAuthStateFlow(scope: CoroutineScope) = callbackFlow {
+        val authStateListener = FirebaseAuth.AuthStateListener { auth ->
+            trySend(auth.currentUser)
+        }
+        firebaseAuth.conn.addAuthStateListener(authStateListener)
+        awaitClose {
+            firebaseAuth.conn.removeAuthStateListener(authStateListener)
+        }
+    }.stateIn(scope, SharingStarted.WhileSubscribed(), firebaseAuth.conn.currentUser)
 }
