@@ -53,6 +53,14 @@ class PhotoEditorFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Set enter and return transitions - pairs with transitions in home fragment
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+
         return inflater.inflate(R.layout.fragment_photo_editor, container, false)
     }
 

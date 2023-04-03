@@ -54,6 +54,14 @@ class HomeFragment : Fragment() {
         if (tookPhoto && photoUri != null) {
             photoUri?.let{
                 photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetBaseImage(it))
+
+                // transitions to/from the photo editor fragment
+                exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
+                    duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+                }
+                reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false).apply {
+                    duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+                }
                 findNavController().navigate(R.id.action_homeFragment_to_photoEditorFragment)
             }
         }
@@ -87,13 +95,11 @@ class HomeFragment : Fragment() {
         val selectCameraButton: Button = view.findViewById(R.id.select_camera_button)
 
         selectPhotoButton.setOnClickListener {
-            //viewModel.onEvent(LoginFormEvent.Submit)
-            // Set exit and renter transitions to the register fragment
-            // note that we also need to set transitions in the register fragment onCreateView
-            exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true).apply {
+            // transitions to/from the photo editor fragment
+            exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
                 duration = resources.getInteger(R.integer.motion_duration_large).toLong()
             }
-            reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false).apply {
+            reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false).apply {
                 duration = resources.getInteger(R.integer.motion_duration_large).toLong()
             }
 

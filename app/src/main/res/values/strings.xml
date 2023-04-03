@@ -29,7 +29,7 @@
     <string name="password_reset_title">Reset Password</string>
     <string name="password_reset_subtitle">Enter the email associated with your account and we\'ll send instructions on how to reset your password.</string>
     <string name="password_reset_submit_label">Submit</string>
-    <string name="password_reset_email_sent">An email has successfully been sent to rest your password!</string>
+    <string name="password_reset_email_sent">An email has successfully been sent to reset your password!</string>
 
     <!-- Strings used for Login and Register Fragment -->
     <string name="email_input_hint">Email</string>
