@@ -1,5 +1,6 @@
 package com.aqchen.filterfiesta.ui.photo_editor.adjustments
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
