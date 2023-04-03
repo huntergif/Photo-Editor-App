@@ -13,7 +13,9 @@ import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.domain.models.CustomFilter
 
 // Note we extend androidx.recyclerview.widget.ListAdapter since the list may be dynamic from Firestore
-class CustomFiltersAdapter : ListAdapter<CustomFilter, CustomFiltersAdapter.ViewHolder>(FilterGroupDiff) {
+class CustomFiltersAdapter(
+    private val onClickListener: (view: View, customFilter: CustomFilter) -> Unit,
+) : ListAdapter<CustomFilter, CustomFiltersAdapter.ViewHolder>(FilterGroupDiff) {
 
     object FilterGroupDiff: DiffUtil.ItemCallback<CustomFilter>() {
         override fun areItemsTheSame(oldItem: CustomFilter, newItem: CustomFilter): Boolean {
@@ -53,5 +55,8 @@ class CustomFiltersAdapter : ListAdapter<CustomFilter, CustomFiltersAdapter.View
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.textView.text = getItem(position).name
+        viewHolder.itemView.setOnClickListener {
+            onClickListener(viewHolder.itemView, getItem(position))
+        }
     }
 }

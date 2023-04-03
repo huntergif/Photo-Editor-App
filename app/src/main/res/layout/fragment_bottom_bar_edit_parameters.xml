@@ -9,6 +9,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/edit_adjustment_name_text_view"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/xs_margin"

@@ -60,7 +60,7 @@
     <fragment
         android:id="@+id/createCustomFilterFragment"
         android:name="com.aqchen.filterfiesta.ui.photo_editor.custom_filters.create.CreateCustomFilterFragment"
-        android:label="fragment_create_custom_filter"
+        android:label="New Custom Filter"
         tools:layout="@layout/fragment_create_custom_filter" />
     <fragment
         android:id="@+id/customFiltersDetailsListFragment"

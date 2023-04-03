@@ -1,6 +1,7 @@
 package com.aqchen.filterfiesta.ui.photo_editor.image_preview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -18,7 +19,10 @@ import com.aqchen.filterfiesta.ui.photo_editor.custom_filters.CustomFiltersViewM
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.util.Resource
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.io.File
 
 class PhotoEditorImagePreviewFragment : Fragment() {
 
@@ -46,7 +50,7 @@ class PhotoEditorImagePreviewFragment : Fragment() {
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.displayPhotoEditorBitmapStateFlow.collect {
+                    viewModel.displayPhotoEditorBitmapStateFlow.collectLatest {
                         when (it) {
                             is Resource.Error -> {
                                 // glide should fail to load and display the placeholder
@@ -61,9 +65,11 @@ class PhotoEditorImagePreviewFragment : Fragment() {
                             is Resource.Success -> {
                                 loadingIndicator.visibility = GONE
 
+                                // placeholder removes flickering while loading into image view
+                                // https://stackoverflow.com/questions/45142274/glide-showing-imageview-background-in-between-loading-images
                                 Glide.with(requireActivity())
                                     .load(it.data)
-                                    .placeholder(R.drawable.baseline_add_photo_alternate_70)
+                                    .placeholder(imageView.drawable)
                                     .into(imageView)
                             }
                             null -> {}

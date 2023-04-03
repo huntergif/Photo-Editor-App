@@ -14,9 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.ui.photo_editor.tool_pager.ToolPagerAdapter
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.BitmapType
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.ui.util.CenterLinearLayoutManager
 import com.aqchen.filterfiesta.ui.util.MarginItemDecoration
 import com.aqchen.filterfiesta.ui.util.MarginItemDecorationDirection
+import com.aqchen.filterfiesta.util.Resource
 import com.google.android.material.motion.MotionUtils
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
@@ -29,6 +33,7 @@ class CustomFiltersFragment : Fragment() {
     }
 
     private lateinit var viewModel: CustomFiltersViewModel
+    private lateinit var photoEditorImagesViewModel: PhotoEditorImagesViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: CustomFiltersAdapter
 
@@ -60,12 +65,22 @@ class CustomFiltersFragment : Fragment() {
         recyclerView = view.findViewById(R.id.custom_filters_recycler_view)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
-        adapter = CustomFiltersAdapter()
+        adapter = CustomFiltersAdapter { _, customFilter ->
+            // Set filters as custom filter
+            val bitmapResource = photoEditorImagesViewModel.previewImageBitmapStateFlow.value
+
+            if (bitmapResource is Resource.Success) {
+                photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetImageFilters(customFilter.filters))
+                photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.GenerateBitmapUsingFilters(customFilter.filters, BitmapType.PREVIEW_IMAGE))
+            }
+        }
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(MarginItemDecoration(MarginItemDecorationDirection.Horizontal))
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel = ViewModelProvider(requireActivity())[CustomFiltersViewModel::class.java]
+            photoEditorImagesViewModel = ViewModelProvider(requireActivity())[PhotoEditorImagesViewModel::class.java]
+
             viewModel.onEvent(CustomFiltersEvent.LoadCustomFilters)
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

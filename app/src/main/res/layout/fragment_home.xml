@@ -20,9 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/md_sm_margin"
-            android:gravity="center"
             android:text="@string/select_roll_submit_label"
-            android:drawableTop="@drawable/ic_camera_roll"
+            app:icon="@drawable/ic_camera_roll"
             app:layout_constraintBottom_toTopOf="@id/select_camera_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -33,9 +32,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/md_sm_margin"
-            android:gravity="center"
             android:text="@string/select_camera_submit_label"
-            android:drawableTop="@drawable/ic_take_photo"
+            app:icon="@drawable/ic_take_photo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/select_roll_button"/>

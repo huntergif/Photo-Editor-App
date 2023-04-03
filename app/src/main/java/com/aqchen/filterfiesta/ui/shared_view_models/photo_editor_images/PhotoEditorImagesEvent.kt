@@ -23,4 +23,6 @@ sealed class PhotoEditorImagesEvent {
     data class SetInternalBitmap(val bitmap: Bitmap, val bitmapType: BitmapType): PhotoEditorImagesEvent()
     data class SetDisplayedPhotoEditorBitmap(val bitmapResource: Resource<Bitmap>?, val progress: DisplayedPhotoEditorBitmapProgress? = null): PhotoEditorImagesEvent()
     data class GenerateBitmapUsingFilters(val filters: List<Filter>, val bitmapType: BitmapType): PhotoEditorImagesEvent()
+    object Save: PhotoEditorImagesEvent()
+    object Cancel: PhotoEditorImagesEvent()
 }

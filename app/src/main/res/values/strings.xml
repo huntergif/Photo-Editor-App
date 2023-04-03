@@ -94,4 +94,10 @@
     <!-- Edit Parameters Fragment -->
     <string name="edit_parameters_cancel_button_label">Cancel</string>
     <string name="edit_parameters_save_button_label">Apply</string>
+
+    <!-- Save Bottom Sheet -->
+    <string name="bottom_sheet_save_image_section_title">Save Image</string>
+    <string name="bottom_sheet_save_button_label">Save</string>
+    <string name="bottom_sheet_share_button_label">Share</string>
+    <string name="bottom_sheet_save_custom_filter_section_title">Save as Custom Filter</string>
 </resources>

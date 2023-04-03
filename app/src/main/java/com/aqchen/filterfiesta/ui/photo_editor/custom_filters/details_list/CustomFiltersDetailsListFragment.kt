@@ -52,11 +52,13 @@ class CustomFiltersDetailsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // needed for shared container transform
         postponeEnterTransition()
 
         val recyclerView: RecyclerView = view.findViewById(R.id.custom_filters_details_list_recycler_view)
+
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        val adapter = CustomFiltersDetailsListAdapter(requireContext()) { view, it ->
+        val adapter = CustomFiltersDetailsListAdapter(requireContext()) { itemView, it ->
             if (it.id != null) {
                 viewCustomFilterViewModel.onEvent(ViewCustomFilterEvent.SelectCustomFilter(it))
 
@@ -83,7 +85,7 @@ class CustomFiltersDetailsListFragment : Fragment() {
                     R.string.custom_filter_details_container_transition_name
                 )
                 val extras = FragmentNavigatorExtras(
-                    view to customFilterDetailsTransitionName
+                    itemView to customFilterDetailsTransitionName
                 )
                 findNavController().navigate(R.id.action_customFiltersDetailsListFragment_to_customFiltersDetailsFragment, null, null, extras)
             } else {

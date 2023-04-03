@@ -1,6 +1,7 @@
 package com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,6 +77,7 @@ class EditParametersFragment : Fragment() {
                 launch {
                     // collect results of the filter preview bitmap generation
                     photoEditorImagesViewModel.filterPreviewBitmapStateFlow.collect {
+                        Log.d("EditParametersFragment", "COLLECTED PREVIEW BITMAP ${it.toString()}")
                         when (it) {
                             is Resource.Error -> {
                                 Snackbar.make(view, "Failed to generate filter preview image", Snackbar.LENGTH_LONG).show()
