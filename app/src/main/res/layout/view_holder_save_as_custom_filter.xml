@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/view_holder_adjustment_card_view"
+        android:id="@+id/view_holder_save_as_custom_filter_card_view"
         app:cardCornerRadius="0dp"
         app:strokeWidth="0dp"
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackground" >
             <ImageView
-                android:id="@+id/view_holder_details_list_custom_filter_image"
+                android:id="@+id/view_holder_save_as_custom_filter_image"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_marginVertical="@dimen/sm_margin"
@@ -32,27 +32,27 @@
                 app:tint="?attr/colorOnSurfaceVariant"
                 android:contentDescription="@string/filter_group_image_content_description" />
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/view_holder_details_list_custom_filter_name"
+                android:id="@+id/view_holder_save_as_custom_filter_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/sm_margin"
                 android:layout_marginHorizontal="@dimen/sm_margin"
                 android:textColor="?attr/colorPrimary"
                 android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                app:layout_constraintStart_toEndOf="@id/view_holder_details_list_custom_filter_image"
+                app:layout_constraintStart_toEndOf="@id/view_holder_save_as_custom_filter_image"
                 app:layout_constraintTop_toTopOf="parent" />
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/view_holder_details_list_custom_filter_description"
+                android:id="@+id/view_holder_save_as_custom_filter_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/sm_margin"
                 android:layout_marginHorizontal="@dimen/sm_margin"
                 android:textColor="?attr/colorOnSurfaceVariant"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                app:layout_constraintTop_toBottomOf="@id/view_holder_details_list_custom_filter_name"
-                app:layout_constraintStart_toEndOf="@id/view_holder_details_list_custom_filter_image" />
+                app:layout_constraintTop_toBottomOf="@id/view_holder_save_as_custom_filter_name"
+                app:layout_constraintStart_toEndOf="@id/view_holder_save_as_custom_filter_image" />
             <ImageView
-                android:id="@+id/view_holder_details_list_chevron_image"
+                android:id="@+id/view_holder_save_as_custom_filter_chevron_image"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginVertical="@dimen/sm_margin"

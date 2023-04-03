@@ -6,7 +6,7 @@
     <!-- Strings used for Login Fragment -->
     <string name="login_title">Login</string>
     <string name="login_subtitle">Welcome back!</string>
-    <string name="login_submit_label">LOGIN</string>
+    <string name="login_submit_label">Login</string>
     <string name="login_successful">Logged-in!</string>
     <string name="login_failed">Failed to login</string>
     <string name="login_no_account_question">Don\'t have an account? Sign Up Now</string>
@@ -17,7 +17,7 @@
     <!-- Strings used for Register Fragment -->
     <string name="register_title">Sign Up</string>
     <string name="register_subtitle">Create an account</string>
-    <string name="register_submit_label">SIGN UP</string>
+    <string name="register_submit_label">Sign Up</string>
     <string name="register_repeat_password_input_hint">Confirm password</string>
     <string name="register_accept_terms_label">Accept Privacy Policy</string>
     <string name="register_successful">Created an account!</string>
@@ -29,15 +29,17 @@
     <string name="password_reset_title">Reset Password</string>
     <string name="password_reset_subtitle">Enter the email associated with your account and we\'ll send instructions on how to reset your password.</string>
     <string name="password_reset_submit_label">Submit</string>
-    <string name="password_reset_email_sent">An email has successfully been sent to rest your password!</string>
+    <string name="password_reset_email_sent">An email has successfully been sent to reset your password!</string>
 
     <!-- Strings used for Login and Register Fragment -->
     <string name="email_input_hint">Email</string>
     <string name="password_input_hint">Password</string>
 
-    <!-- Strings used for Select Method Fragment -->
+    <!-- Home Fragment -->
     <string name="select_roll_submit_label">Choose from Photos</string>
     <string name="select_camera_submit_label">Use Camera</string>
+    <string name="home_title">Hello!</string>
+    <string name="home_subtitle">Pick an option to begin editing</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -66,6 +68,7 @@
     <string name="photo_editor_menu_settings_label">Settings</string>
     <string name="photo_editor_menu_create_custom_filter_label">New Custom Filter</string>
     <string name="photo_editor_menu_manage_custom_filters_label">Manage Custom Filters</string>
+    <string name="photo_editor_menu_manage_filters_label">Manage Filters</string>
 
     <!-- Custom Filters Details List Fragment -->
     <string name="custom_filters_details_list_description">%1$d filters</string>
@@ -94,4 +97,16 @@
     <!-- Edit Parameters Fragment -->
     <string name="edit_parameters_cancel_button_label">Cancel</string>
     <string name="edit_parameters_save_button_label">Apply</string>
+
+    <!-- Save Bottom Sheet -->
+    <string name="bottom_sheet_save_image_section_title">Save Image</string>
+    <string name="bottom_sheet_save_button_label">Save</string>
+    <string name="bottom_sheet_share_button_label">Share</string>
+    <string name="bottom_sheet_save_custom_filter_section_title">Save as Custom Filter</string>
+
+    <!-- Filter List View Holder -->
+    <string name="filter_list_drag_image_content_description">Drag to reorder filters, swipe to edit or delete</string>
+
+    <!-- Home Menu -->
+    <string name="home_menu_sign_out_label">Sign out</string>
 </resources>

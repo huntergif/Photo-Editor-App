@@ -38,25 +38,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="top"
-        app:constraint_referenced_ids="photo_editor_cancel_button,photo_editor_save_button" />
+        app:constraint_referenced_ids="photo_editor_home_cancel_button,photo_editor_home_save_button" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/photo_editor_cancel_button"
+        android:id="@+id/photo_editor_home_cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/photo_editor_cancel_button_label"
         android:layout_marginVertical="@dimen/sm_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/photo_editor_save_button" />
+        app:layout_constraintRight_toRightOf="@id/photo_editor_home_save_button" />
+
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/photo_editor_save_button"
+        android:id="@+id/photo_editor_home_save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/photo_editor_save_button_label"
         android:layout_marginVertical="@dimen/sm_margin"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/photo_editor_cancel_button"
+        app:layout_constraintLeft_toLeftOf="@id/photo_editor_home_cancel_button"
         app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aqchen.filterfiesta.domain.models.Filter
@@ -11,7 +12,9 @@ import com.aqchen.filterfiesta.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.File
@@ -25,6 +28,8 @@ class PhotoEditorImagesViewModel @Inject constructor(
     // state flow for the base (initial selected) image
     private val _baseImageStateFlow = MutableStateFlow<Image?>(null)
     val baseImageStateFlow: StateFlow<Image?> = _baseImageStateFlow
+
+    var lastProcessedImage: Image? = null
 
     // state flow for the image filters (the filter list which would be applied to the final saved image)
     private val _imageFiltersStateFlow = MutableStateFlow<List<Filter>>(emptyList())
@@ -49,6 +54,12 @@ class PhotoEditorImagesViewModel @Inject constructor(
     // state flow for the bitmap to be displayed on the photo editor. Usually either the preview image or filter preview bitmap
     private val _displayPhotoEditorBitmapStateFlow = MutableStateFlow<Resource<Bitmap>?>(null)
     val displayPhotoEditorBitmapStateFlow: StateFlow<Resource<Bitmap>?> = _displayPhotoEditorBitmapStateFlow
+
+    private val _saveEventStateFlow = MutableSharedFlow<List<Int>>()
+    val saveEventStateFlow: SharedFlow<List<Int>> = _saveEventStateFlow
+
+    private val _cancelEventStateFlow = MutableSharedFlow<List<Int>>()
+    val cancelEventStateFlow: SharedFlow<List<Int>> = _cancelEventStateFlow
 
     private var generateImageJob: Job? = null
     private var generateImageType: BitmapType? = null
@@ -87,6 +98,18 @@ class PhotoEditorImagesViewModel @Inject constructor(
             }
             is PhotoEditorImagesEvent.GenerateBitmapUsingFilters -> {
                 generateImage(event.filters, event.bitmapType)
+            }
+            is PhotoEditorImagesEvent.Save -> {
+                Log.d("ViewModel", "RECIEVED SAVE")
+                viewModelScope.launch {
+                    _saveEventStateFlow.emit(emptyList())
+
+                }
+            }
+            is PhotoEditorImagesEvent.Cancel -> {
+                viewModelScope.launch {
+                    _cancelEventStateFlow.emit(emptyList())
+                }
             }
         }
     }

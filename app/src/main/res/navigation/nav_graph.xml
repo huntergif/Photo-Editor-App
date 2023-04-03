@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -16,22 +16,12 @@
         <action
             android:id="@+id/action_loginFragment_to_passwordResetFragment"
             app:destination="@id/passwordResetFragment" />
-        <action    
-            android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_photoEditorFragment"
-            app:destination="@id/photoEditorFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.aqchen.filterfiesta.ui.auth.register.RegisterFragment"
         android:label=""
-        tools:layout="@layout/fragment_register">
-        <action
-            android:id="@+id/action_registerFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_register"/>
     <fragment
         android:id="@+id/passwordResetFragment"
         android:name="com.aqchen.filterfiesta.ui.auth.password_reset.PasswordResetFragment"
@@ -60,7 +50,7 @@
     <fragment
         android:id="@+id/createCustomFilterFragment"
         android:name="com.aqchen.filterfiesta.ui.photo_editor.custom_filters.create.CreateCustomFilterFragment"
-        android:label="fragment_create_custom_filter"
+        android:label="New Custom Filter"
         tools:layout="@layout/fragment_create_custom_filter" />
     <fragment
         android:id="@+id/customFiltersDetailsListFragment"
@@ -85,4 +75,14 @@
         android:name="com.aqchen.filterfiesta.ui.photo_editor.custom_filters.edit_details.EditCustomFilterDetailsFragment"
         android:label=""
         tools:layout="@layout/fragment_edit_custom_filter_details" />
+    <action
+        android:id="@+id/action_global_homeFragment"
+        app:destination="@id/homeFragment"
+        app:popUpTo="@id/loginFragment"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_loginFragment"
+        app:destination="@id/loginFragment"
+        app:popUpTo="@id/homeFragment"
+        app:popUpToInclusive="true" />
 </navigation>

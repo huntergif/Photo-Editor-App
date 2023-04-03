@@ -19,13 +19,6 @@ class ContrastAdjustment: BaseImageFilter(
             min = -127.0,
             max = 127.0,
         ),
-        ParameterSetting(
-            type = "test",
-            name = "Test",
-            default = 0.0,
-            min = 0.0,
-            max = 1.0,
-        ),
     )
 ) {
 

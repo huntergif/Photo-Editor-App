@@ -1,45 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.home.HomeFragment"
+    android:layout_marginHorizontal="@dimen/sm_margin"
+    android:layout_marginBottom="@dimen/sm_margin"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    android:layout_height="match_parent" >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginHorizontal="@dimen/sm_margin"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/home_title_text"
+        android:text="@string/home_title"
+        android:textSize="@dimen/text_title_font_size"
+        android:textColor="?attr/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/home_subtitle_text"
+        android:text="@string/home_subtitle"
+        android:textSize="@dimen/text_subtitle_font_size"
         android:layout_marginBottom="@dimen/sm_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/home_title_text"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Choose From Photos Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/select_roll_button"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:fitsSystemWindows="true" >
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/md_sm_margin"
+        android:text="@string/select_roll_submit_label"
+        app:icon="@drawable/ic_camera_roll"
+        app:layout_constraintBottom_toTopOf="@id/select_camera_button"
+        app:layout_constraintTop_toBottomOf="@id/home_subtitle_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-        <!-- Choose From Photos Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/select_roll_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/md_sm_margin"
-            android:gravity="center"
-            android:text="@string/select_roll_submit_label"
-            android:drawableTop="@drawable/ic_camera_roll"
-            app:layout_constraintBottom_toTopOf="@id/select_camera_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    <!-- Use Camera Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/select_camera_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/md_sm_margin"
+        android:text="@string/select_camera_submit_label"
+        app:icon="@drawable/ic_take_photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/select_roll_button"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-        <!-- Use Camera Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/select_camera_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/md_sm_margin"
-            android:gravity="center"
-            android:text="@string/select_camera_submit_label"
-            android:drawableTop="@drawable/ic_take_photo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/select_roll_button"/>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
