@@ -5,41 +5,53 @@ import com.aqchen.filterfiesta.domain.models.image.BaseImageFilter
 import com.aqchen.filterfiesta.domain.models.image.ParameterSetting
 import com.aqchen.filterfiesta.util.bitmapConfigToCvType
 import org.opencv.android.Utils
-import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
+import org.opencv.photo.Photo
 
-class SaturationAdjustment: BaseImageFilter(
-    type = "saturation",
-    name = "Saturation",
+class DetailAdjustment: BaseImageFilter(
+    type = "detail",
+    name = "Details",
     parameterSettings = listOf(
         ParameterSetting(
-            type = "strength",
-            name = "Strength",
-            default = 1.5,
+            type = "sigmaSpace",
+            name = "Sigma Space",
+            default = 10.0,
             min = 0.0,
-            max = 3.0,
+            max = 50.0,
+        ),
+        ParameterSetting(
+            type = "sigmaColor",
+            name = "Sigma Color",
+            default = 1.0,
+            min = 0.0,
+            max = 1.0,
         ),
     )
 ) {
+
+    // https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/
     override fun apply(source: Bitmap, parameters: Map<String, Double>): Bitmap? {
         val cvType = bitmapConfigToCvType(source.config)
         val imageMatrix = Mat(source.height, source.width, cvType)
-        val tempMatrix = Mat(source.height, source.width, cvType)
+
+        val sigmaSpace = parameters["sigmaSpace"]?.toFloat() ?: return null
+        val sigmaColor = parameters["sigmaColor"]?.toFloat() ?: return null
 
         Utils.bitmapToMat(source, imageMatrix)
 
-        val strength = parameters["strength"] ?: return null
+        val origSize = imageMatrix.size()
 
-        Imgproc.cvtColor(imageMatrix, tempMatrix, Imgproc.COLOR_BGRA2GRAY)
-        Imgproc.cvtColor(tempMatrix, tempMatrix, Imgproc.COLOR_GRAY2RGB)
+        Imgproc.pyrDown(imageMatrix, imageMatrix)
         Imgproc.cvtColor(imageMatrix, imageMatrix, Imgproc.COLOR_BGRA2RGB)
-
-        Core.addWeighted(imageMatrix, strength, tempMatrix, 1 - strength, 0.0, imageMatrix)
+        Photo.detailEnhance(imageMatrix, imageMatrix, sigmaSpace, sigmaColor)
         Imgproc.cvtColor(imageMatrix, imageMatrix, Imgproc.COLOR_RGB2BGRA)
+        Imgproc.pyrUp(imageMatrix, imageMatrix)
+        Imgproc.resize(imageMatrix, imageMatrix, origSize)
 
         val resultBitmap = Bitmap.createBitmap(source.width, source.height, source.config)
         Utils.matToBitmap(imageMatrix, resultBitmap)
+
         return resultBitmap
     }
 }

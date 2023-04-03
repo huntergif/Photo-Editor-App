@@ -2,6 +2,7 @@ package com.aqchen.filterfiesta.domain.use_case.filters
 
 import com.aqchen.filterfiesta.domain.models.image.BaseImageFilter
 import com.aqchen.filterfiesta.domain.models.image.adjustments.ContrastAdjustment
+import com.aqchen.filterfiesta.domain.models.image.adjustments.DetailAdjustment
 import com.aqchen.filterfiesta.domain.models.image.adjustments.SaturationAdjustment
 
 class GetAdjustmentsUseCase {
@@ -9,6 +10,7 @@ class GetAdjustmentsUseCase {
         return listOf(
             ContrastAdjustment(),
             SaturationAdjustment(),
+            DetailAdjustment(),
         )
     }
 }
