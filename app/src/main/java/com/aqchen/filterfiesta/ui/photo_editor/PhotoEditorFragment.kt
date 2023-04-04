@@ -4,16 +4,16 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -33,13 +33,13 @@ import com.bumptech.glide.request.transition.Transition
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemDragListener
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemSwipeListener
-import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnListScrollListener
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.sidesheet.SideSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
 
 class PhotoEditorFragment : Fragment() {
 
@@ -48,6 +48,18 @@ class PhotoEditorFragment : Fragment() {
     }
 
     private lateinit var photoEditorImagesViewModel: PhotoEditorImagesViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+                    showConfirmExitDialog()
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,7 +85,7 @@ class PhotoEditorFragment : Fragment() {
 
         val saveModalBottomSheet = SaveModalBottomSheetFragment()
         val filterListSideSheet = SideSheetDialog(requireContext())
-        var filterListSideSheetAdapter = FilterListAdapter(emptyList())
+        val filterListSideSheetAdapter = FilterListAdapter(emptyList())
 
         filterListSideSheet.setContentView(R.layout.side_sheet_photo_editor)
 
@@ -105,7 +117,6 @@ class PhotoEditorFragment : Fragment() {
                 // collect updates to the base image uri
                 launch {
                     photoEditorImagesViewModel.baseImageStateFlow.collectLatest {
-                        Log.d("PhotoEditorFragment", "COLLECTED BASE IMAGE")
                         if (it != null && it != photoEditorImagesViewModel.lastProcessedImage) {
                             // reset image filters
                             photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetImageFilters(
@@ -150,10 +161,16 @@ class PhotoEditorFragment : Fragment() {
                 // collect updates to the "save" event
                 launch {
                     photoEditorImagesViewModel.saveEventStateFlow.collectLatest {
-                        Log.d("PhotoEditorFragment", "COLLECTED SAVE EVENT")
                         saveModalBottomSheet.show(parentFragmentManager, SaveModalBottomSheetFragment.TAG)
                     }
                 }
+                // collect updates to the "cancel" even
+                launch {
+                    photoEditorImagesViewModel.cancelEventStateFlow.collectLatest {
+                        showConfirmExitDialog()
+                    }
+                }
+                // collect updates to image filters to update side sheet
                 launch {
                     photoEditorImagesViewModel.imageFiltersStateFlow.collectLatest {
                         filterListSideSheetAdapter.dataSet = it
@@ -219,5 +236,19 @@ class PhotoEditorFragment : Fragment() {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun showConfirmExitDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.dialog_confirm_exit_title))
+            .setMessage(resources.getString(R.string.dialog_confirm_exit_description))
+            .setNegativeButton(resources.getString(R.string.dialog_confirm_exit_negative_label)) { dialog, which ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(resources.getString(R.string.dialog_confirm_exit_positive_label)) { dialog, which ->
+                dialog.dismiss()
+                findNavController().navigate(R.id.action_global_homeFragment)
+            }
+            .show()
     }
 }

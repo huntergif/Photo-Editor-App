@@ -10,7 +10,6 @@ class GetToolPagesUseCase @Inject constructor() {
             ToolPage.CustomFilters,
             ToolPage.Adjustments,
             ToolPage.PresetFilters,
-            ToolPage.OtherTools,
         )
     }
 }

@@ -58,6 +58,7 @@ class PhotoEditorImagePreviewFragment : Fragment() {
                                     .load(it.data)
                                     .placeholder(R.drawable.baseline_add_photo_alternate_70)
                                     .into(imageView)
+                                loadingIndicator.visibility = GONE
                             }
                             Resource.Loading -> {
                                 loadingIndicator.visibility = VISIBLE

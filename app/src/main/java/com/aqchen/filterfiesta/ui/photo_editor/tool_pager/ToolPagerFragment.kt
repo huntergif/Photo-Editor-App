@@ -117,10 +117,6 @@ class ToolPagerFragment : Fragment() {
                                     AdjustmentsFragment.newInstance()
                                 }
 
-                                ToolPage.OtherTools -> {
-                                    AdjustmentsFragment.newInstance()
-                                }
-
                                 ToolPage.PresetFilters -> {
                                     PresetFiltersFragment.newInstance()
                                 }

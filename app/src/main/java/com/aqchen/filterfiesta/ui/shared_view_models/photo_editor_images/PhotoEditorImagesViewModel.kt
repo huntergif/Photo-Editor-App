@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,7 +61,10 @@ class PhotoEditorImagesViewModel @Inject constructor(
     val cancelEventStateFlow: SharedFlow<List<Int>> = _cancelEventStateFlow
 
     private var generateImageJob: Job? = null
-    private var generateImageType: BitmapType? = null
+
+    // The last non-loading bitmap resources for a fallback when it's generate job is cancelled
+    private var lastNonLoadingPreviewImageBitmapResource: Resource<Bitmap>? = null
+    private var lastNonLoadingFilterPreviewBitmapResource: Resource<Bitmap>? = null
 
     fun onEvent(event: PhotoEditorImagesEvent) {
         when (event) {
@@ -116,19 +118,18 @@ class PhotoEditorImagesViewModel @Inject constructor(
 
     private fun generateImage(filters: List<Filter>, bitmapType: BitmapType) {
         // change any "loading" state flows to null and cancel any currently running image generation job
-        when (generateImageType) {
+        when (bitmapType) {
             BitmapType.PREVIEW_IMAGE -> {
-                _previewImageBitmapStateFlow.value = null
+                _previewImageBitmapStateFlow.value = lastNonLoadingPreviewImageBitmapResource
             }
             BitmapType.FILTER_PREVIEW -> {
-                _filterPreviewBitmapStateFlow.value = null
+                _filterPreviewBitmapStateFlow.value = lastNonLoadingFilterPreviewBitmapResource
             }
-            null -> {}
         }
         generateImageJob?.cancel()
 
         // determine which bitmap (preview image for filter preview we're changing
-        generateImageType = bitmapType
+        // generateImageType = bitmapType
         val stateFlow = when (bitmapType) {
             BitmapType.PREVIEW_IMAGE -> {
                 _previewImageBitmapStateFlow
@@ -151,11 +152,20 @@ class PhotoEditorImagesViewModel @Inject constructor(
             // debounce generate image requests by 200ms
             delay(200)
             val newBitmap = generateImageUseCase(baseBitmap, filters)
-            if (newBitmap == null) {
-                stateFlow.emit(Resource.Error("Failed to generate image"))
+            val resource = if (newBitmap == null) {
+                Resource.Error("Failed to generate image")
             } else {
-                stateFlow.emit(Resource.Success(newBitmap))
+                Resource.Success(newBitmap)
             }
+            when (bitmapType) {
+                BitmapType.PREVIEW_IMAGE -> {
+                    lastNonLoadingPreviewImageBitmapResource = resource
+                }
+                BitmapType.FILTER_PREVIEW -> {
+                    lastNonLoadingFilterPreviewBitmapResource = resource
+                }
+            }
+            stateFlow.emit(resource)
         }
     }
 }

@@ -58,7 +58,7 @@ class BottomBarHomeFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 launch {
                     photoEditorImagesViewModel.previewImageBitmapStateFlow.collect {
-                        Log.d("BottomBarHomeFragment", "Collected preview image bitmap")
+                        Log.d("BottomBarHomeFragment", "Collected preview image bitmap $it")
                         photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetDisplayedPhotoEditorBitmap(it))
 //                        when (it) {
 //                            is Resource.Success -> {
