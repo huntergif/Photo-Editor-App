@@ -18,9 +18,11 @@ enum class BitmapType {
 sealed class PhotoEditorImagesEvent {
     data class SetBaseImage(val uri: Uri): PhotoEditorImagesEvent()
     data class SetImageFilters(val filters: List<Filter>): PhotoEditorImagesEvent()
+    data class SetFilterPreviewFilters(val filters: List<Filter>): PhotoEditorImagesEvent()
     data class SelectFilter(val filters: List<Filter>, val selectPosition: Int): PhotoEditorImagesEvent()
     data class SetBaseImageBitmap(val bitmap: Bitmap?): PhotoEditorImagesEvent()
     data class SetInternalBitmap(val bitmap: Bitmap, val bitmapType: BitmapType): PhotoEditorImagesEvent()
+    object ClearFilterPreviewBitmap: PhotoEditorImagesEvent()
     data class SetDisplayedPhotoEditorBitmap(val bitmapResource: Resource<Bitmap>?, val progress: DisplayedPhotoEditorBitmapProgress? = null): PhotoEditorImagesEvent()
     data class GenerateBitmapUsingFilters(val filters: List<Filter>, val bitmapType: BitmapType): PhotoEditorImagesEvent()
     object Save: PhotoEditorImagesEvent()

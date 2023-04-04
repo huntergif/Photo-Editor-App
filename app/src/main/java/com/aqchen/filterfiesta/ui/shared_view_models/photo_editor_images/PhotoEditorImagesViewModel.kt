@@ -34,6 +34,9 @@ class PhotoEditorImagesViewModel @Inject constructor(
     private val _imageFiltersStateFlow = MutableStateFlow<List<Filter>>(emptyList())
     val imageFiltersStateFlow: StateFlow<List<Filter>> = _imageFiltersStateFlow
 
+    private val _filterPreviewFiltersStateFlow = MutableStateFlow<List<Filter>>(emptyList())
+    val filterPreviewFiltersStateFlow: StateFlow<List<Filter>> = _filterPreviewFiltersStateFlow
+
     // state flow for the selected filter state (for when the user chooses a filter to add or edit)
     private val _selectedFilterStateFlow = MutableStateFlow<SelectFilterState?>(null)
     val selectedFilterStateFlow: StateFlow<SelectFilterState?> = _selectedFilterStateFlow
@@ -74,12 +77,16 @@ class PhotoEditorImagesViewModel @Inject constructor(
             is PhotoEditorImagesEvent.SetImageFilters -> {
                 _imageFiltersStateFlow.value = event.filters
             }
+            is PhotoEditorImagesEvent.SetFilterPreviewFilters -> {
+                _filterPreviewFiltersStateFlow.value = event.filters
+            }
             is PhotoEditorImagesEvent.SelectFilter -> {
                 val filter = getFilterClassFromTypeUseCase(event.filters[event.selectPosition].type)
                 if (filter == null) {
                     _selectedFilterStateFlow.value = null
                 } else {
                     _selectedFilterStateFlow.value = SelectFilterState(filter = filter, filters = event.filters, selectPosition = event.selectPosition)
+                    _filterPreviewFiltersStateFlow.value = event.filters
                 }
             }
             is PhotoEditorImagesEvent.SetBaseImageBitmap -> {
@@ -91,11 +98,16 @@ class PhotoEditorImagesViewModel @Inject constructor(
                         _previewImageBitmapStateFlow.value = Resource.Success(event.bitmap)
                     }
                     BitmapType.FILTER_PREVIEW -> {
+                        Log.d("DisplayBitmap", "Filter preview bitmap set: ${event.bitmap}")
                         _filterPreviewBitmapStateFlow.value = Resource.Success(event.bitmap)
                     }
                 }
             }
+            is PhotoEditorImagesEvent.ClearFilterPreviewBitmap -> {
+                _filterPreviewBitmapStateFlow.value = null
+            }
             is PhotoEditorImagesEvent.SetDisplayedPhotoEditorBitmap -> {
+                Log.d("DisplayBitmap", "Set Display Bitmap Event: ${event.bitmapResource}")
                 _displayPhotoEditorBitmapStateFlow.value = event.bitmapResource
             }
             is PhotoEditorImagesEvent.GenerateBitmapUsingFilters -> {
