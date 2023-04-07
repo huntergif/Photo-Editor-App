@@ -51,6 +51,7 @@ class PhotoEditorImagePreviewFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.displayPhotoEditorBitmapStateFlow.collectLatest {
+                        Log.d("DisplayBitmap", "Current filter preview bitmap: ${viewModel.filterPreviewBitmapStateFlow.value}")
                         when (it) {
                             is Resource.Error -> {
                                 // glide should fail to load and display the placeholder
@@ -64,6 +65,7 @@ class PhotoEditorImagePreviewFragment : Fragment() {
                                 loadingIndicator.visibility = VISIBLE
                             }
                             is Resource.Success -> {
+                                Log.d("DisplayBitmap", "RECEIVED DISPLAY BITMAP SUCCESS")
                                 loadingIndicator.visibility = GONE
 
                                 // placeholder removes flickering while loading into image view
@@ -75,6 +77,11 @@ class PhotoEditorImagePreviewFragment : Fragment() {
                             }
                             null -> {}
                         }
+                    }
+                }
+                launch {
+                    viewModel.filterPreviewBitmapStateFlow.collect {
+                        Log.d("DisplayBitmap", "Collected filter preview bitmap resource: $it")
                     }
                 }
             }

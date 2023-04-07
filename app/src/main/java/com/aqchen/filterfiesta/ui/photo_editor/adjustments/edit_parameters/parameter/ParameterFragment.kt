@@ -74,8 +74,8 @@ class ParameterFragment: Fragment() {
                     // set the new filter in the filters list
                     newList[selectedFilterState.selectPosition] = newFilter
                     // notify the view model that the filter list has changed
-                    //photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.Set)
-                    photoEditorImagesViewModel.onEvent((PhotoEditorImagesEvent.SelectFilter(newList.toList(), selectedFilterState.selectPosition)))
+                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetFilterPreviewFilters(newList.toList()))
+                    // photoEditorImagesViewModel.onEvent((PhotoEditorImagesEvent.SelectFilter(newList.toList(), selectedFilterState.selectPosition)))
                 }
             }
         }
