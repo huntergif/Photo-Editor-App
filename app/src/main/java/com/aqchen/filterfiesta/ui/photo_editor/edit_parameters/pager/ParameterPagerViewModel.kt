@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.pager
+package com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.pager
 
 import androidx.lifecycle.ViewModel
 import com.aqchen.filterfiesta.domain.models.image.ParameterSetting

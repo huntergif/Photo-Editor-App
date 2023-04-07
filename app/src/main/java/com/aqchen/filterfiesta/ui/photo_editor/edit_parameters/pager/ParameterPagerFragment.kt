@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.pager
+package com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.pager
 
 import android.content.Context
 import android.os.Build
@@ -19,9 +19,9 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.aqchen.filterfiesta.R
-import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.EditParametersEvent
-import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.EditParametersViewModel
-import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.parameter.ParameterFragment
+import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.EditParametersEvent
+import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.EditParametersViewModel
+import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.parameter.ParameterFragment
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.ui.util.CenterLinearLayoutManager
 import kotlinx.coroutines.launch
@@ -59,7 +59,13 @@ class ParameterPagerFragment : Fragment() {
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                viewModel.onEvent(ParameterPagerEvent.FocusParameterPageViewHolder(snapHelper.getSnapPosition(recyclerView)))
+                viewModel.onEvent(
+                    ParameterPagerEvent.FocusParameterPageViewHolder(
+                        snapHelper.getSnapPosition(
+                            recyclerView
+                        )
+                    )
+                )
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

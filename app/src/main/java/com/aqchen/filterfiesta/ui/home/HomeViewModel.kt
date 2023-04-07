@@ -1,5 +1,6 @@
 package com.aqchen.filterfiesta.ui.home
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aqchen.filterfiesta.domain.use_case.auth.GetAuthStateFlowUseCase
@@ -14,6 +15,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     val authStateFlow = getAuthStateFlowUseCase(viewModelScope)
+    var photoUri: Uri? = null
 
     fun onEvent(event: HomeEvent) {
         when (event) {

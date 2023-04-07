@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/editParametersFragment"
-        android:name="com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.EditParametersFragment"
+        android:name="com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.EditParametersFragment"
         android:label="fragment_bottom_bar_edit_parameters"
         tools:layout="@layout/fragment_bottom_bar_edit_parameters" />
 

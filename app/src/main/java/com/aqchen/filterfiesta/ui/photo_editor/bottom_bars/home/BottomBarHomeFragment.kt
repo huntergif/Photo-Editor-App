@@ -26,6 +26,7 @@ import com.aqchen.filterfiesta.util.Resource
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class BottomBarHomeFragment : Fragment() {
@@ -57,7 +58,7 @@ class BottomBarHomeFragment : Fragment() {
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 launch {
-                    photoEditorImagesViewModel.previewImageBitmapStateFlow.collect {
+                    photoEditorImagesViewModel.previewImageBitmapStateFlow.collectLatest {
                         Log.d("BottomBarHomeFragment", "Collected preview image bitmap $it")
                         photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetDisplayedPhotoEditorBitmap(it))
 //                        when (it) {

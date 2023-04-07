@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.parameter.ParameterFragment"
+    tools:context="com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.parameter.ParameterFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
