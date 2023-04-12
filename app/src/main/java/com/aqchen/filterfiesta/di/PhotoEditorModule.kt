@@ -14,6 +14,7 @@ import com.aqchen.filterfiesta.domain.use_case.custom_filters.GetCustomFiltersUs
 import com.aqchen.filterfiesta.domain.use_case.custom_filters.UpdateCustomFilterUseCase
 import com.aqchen.filterfiesta.domain.use_case.custom_filters.ValidateCustomFilterNameUseCase
 import com.aqchen.filterfiesta.domain.use_case.custom_filters.ValidateCustomFilterUpdatableUseCase
+import com.aqchen.filterfiesta.domain.use_case.filters.CreateImageMatrixUseCase
 import com.aqchen.filterfiesta.domain.use_case.filters.GenerateImageUseCase
 import com.aqchen.filterfiesta.domain.use_case.filters.GetAdjustmentsUseCase
 import com.aqchen.filterfiesta.domain.use_case.filters.GetFilterClassFromTypeUseCase
@@ -45,6 +46,13 @@ object PhotoEditorModule {
     @ViewModelScoped
     fun provideFilterGroupRepository(filterGroupDao: FilterGroupDao): CustomFilterRepository {
         return CustomCustomFilterRepositoryImpl(filterGroupDao)
+    }
+
+    // needed for SaveModalBottomSheetViewModel
+    @Provides
+    @ViewModelScoped
+    fun provideUpdateCustomFilterUseCase(customFilterRepository: CustomFilterRepository, authRepository: AuthRepository): UpdateCustomFilterUseCase {
+        return UpdateCustomFilterUseCase(customFilterRepository, authRepository)
     }
 
     @Provides
@@ -104,5 +112,11 @@ object PhotoEditorModule {
     @ViewModelScoped
     fun providesGenerateImageUseCase(getFilterClassFromTypeUseCase: GetFilterClassFromTypeUseCase): GenerateImageUseCase {
         return GenerateImageUseCase(getFilterClassFromTypeUseCase)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun providesCreateImageMatrixUseCase(): CreateImageMatrixUseCase{
+        return CreateImageMatrixUseCase()
     }
 }

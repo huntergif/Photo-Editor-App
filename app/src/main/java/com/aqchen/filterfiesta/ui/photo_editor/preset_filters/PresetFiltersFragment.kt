@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.domain.models.image.newDefaultFilter
-import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.EditParametersFragment
+import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.EditParametersFragment
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.ui.util.MarginItemDecoration

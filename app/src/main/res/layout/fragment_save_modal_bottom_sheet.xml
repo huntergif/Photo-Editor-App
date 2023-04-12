@@ -57,6 +57,18 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="bottom_sheet_save_button,bottom_sheet_share_button" />
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/bottom_sheet_save_loading_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:showAnimationBehavior="outward"
+        app:hideAnimationBehavior="inward"
+        app:layout_constraintTop_toBottomOf="@id/bottom_sheet_save_drag_handle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/bottom_sheet_save_image_buttons_divider"
         android:layout_width="match_parent"

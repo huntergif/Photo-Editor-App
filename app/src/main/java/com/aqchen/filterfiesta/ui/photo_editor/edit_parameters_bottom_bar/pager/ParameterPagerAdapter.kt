@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.pager
+package com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.pager
 
 import android.util.TypedValue
 import android.view.LayoutInflater

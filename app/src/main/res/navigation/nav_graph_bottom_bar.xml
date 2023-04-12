@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/bottomBarHomeFragment"
-        android:name="com.aqchen.filterfiesta.ui.photo_editor.bottom_bars.home.BottomBarHomeFragment"
+        android:name="com.aqchen.filterfiesta.ui.photo_editor.home_bottom_bar.BottomBarHomeFragment"
         android:label="fragment_bottom_bar_home"
         tools:layout="@layout/fragment_bottom_bar_home" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/editParametersFragment"
-        android:name="com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.EditParametersFragment"
+        android:name="com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.EditParametersFragment"
         android:label="fragment_bottom_bar_edit_parameters"
         tools:layout="@layout/fragment_bottom_bar_edit_parameters" />
 

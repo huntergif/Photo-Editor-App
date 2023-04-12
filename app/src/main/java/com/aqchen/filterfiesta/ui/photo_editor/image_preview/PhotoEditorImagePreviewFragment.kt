@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -59,14 +60,14 @@ class PhotoEditorImagePreviewFragment : Fragment() {
                                     .load(it.data)
                                     .placeholder(R.drawable.baseline_add_photo_alternate_70)
                                     .into(imageView)
-                                loadingIndicator.visibility = GONE
+                                loadingIndicator.visibility = INVISIBLE
                             }
                             Resource.Loading -> {
                                 loadingIndicator.visibility = VISIBLE
                             }
                             is Resource.Success -> {
                                 Log.d("DisplayBitmap", "RECEIVED DISPLAY BITMAP SUCCESS")
-                                loadingIndicator.visibility = GONE
+                                loadingIndicator.visibility = INVISIBLE
 
                                 // placeholder removes flickering while loading into image view
                                 // https://stackoverflow.com/questions/45142274/glide-showing-imageview-background-in-between-loading-images

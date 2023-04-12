@@ -8,33 +8,37 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
-import androidx.core.content.FileProvider
+import android.widget.ProgressBar
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.ui.photo_editor.custom_filters.details_list.CustomFiltersDetailsListEvent
 import com.aqchen.filterfiesta.ui.photo_editor.custom_filters.details_list.CustomFiltersDetailsListViewModel
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.BitmapType
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
+import com.aqchen.filterfiesta.ui.util.saveImageToCache
+import com.aqchen.filterfiesta.ui.util.saveImageToStream
 import com.aqchen.filterfiesta.util.Resource
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
 
 
 class SaveModalBottomSheetFragment: BottomSheetDialogFragment() {
@@ -46,6 +50,7 @@ class SaveModalBottomSheetFragment: BottomSheetDialogFragment() {
     private lateinit var viewModel: SaveModalBottomSheetViewModel
     private lateinit var customFiltersDetailsListViewModel: CustomFiltersDetailsListViewModel
     private lateinit var photoEditorImagesViewModel: PhotoEditorImagesViewModel
+    private lateinit var dialog: BottomSheetDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,11 +65,12 @@ class SaveModalBottomSheetFragment: BottomSheetDialogFragment() {
 
         val saveButton: Button = view.findViewById(R.id.bottom_sheet_save_button)
         val shareButton: Button = view.findViewById(R.id.bottom_sheet_share_button)
+        val loadingIndicator: ProgressBar = view.findViewById(R.id.bottom_sheet_save_loading_indicator)
         val customFiltersRecyclerView: RecyclerView = view.findViewById(R.id.bottom_sheet_save_custom_filters_recycler_view)
 
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val adapter = SaveAsCustomFilterAdapter(requireContext()) { _, it ->
-            if (it.id != null && viewModel.saveStateFlow.value !is Resource.Loading) {
+            if (it.id != null && viewModel.saveCustomFilterStateFlow.value !is Resource.Loading) {
                 Snackbar.make(view, "Save to ${it.name}", Snackbar.LENGTH_LONG).show()
                 viewModel.onEvent(SaveModalBottomSheetEvent.SaveAsCustomFilter(it, photoEditorImagesViewModel.imageFiltersStateFlow.value))
             } else {
@@ -74,6 +80,8 @@ class SaveModalBottomSheetFragment: BottomSheetDialogFragment() {
         customFiltersRecyclerView.layoutManager = layoutManager
         customFiltersRecyclerView.adapter = adapter
         customFiltersRecyclerView.addItemDecoration(DividerItemDecoration(activity, LinearLayout.VERTICAL))
+
+        val modalBottomSheetBehavior = dialog.behavior
 
         lifecycleScope.launch {
             viewModel = ViewModelProvider(requireActivity())[SaveModalBottomSheetViewModel::class.java]
@@ -101,20 +109,82 @@ class SaveModalBottomSheetFragment: BottomSheetDialogFragment() {
                     }
                 }
                 launch {
-                    viewModel.saveStateFlow.collect {
+                    viewModel.exportStateFlow.collect {
                         when (it) {
                             is Resource.Error -> {
+                                loadingIndicator.visibility = INVISIBLE
                                 saveButton.isEnabled = true
                                 shareButton.isEnabled = true
                                 Snackbar.make(view, it.errorMessage, Snackbar.LENGTH_LONG).show()
                             }
                             Resource.Loading -> {
+                                loadingIndicator.visibility = VISIBLE
                                 saveButton.isEnabled = false
                                 shareButton.isEnabled = false
                             }
                             is Resource.Success -> {
+                                loadingIndicator.visibility = INVISIBLE
                                 saveButton.isEnabled = true
                                 shareButton.isEnabled = true
+                            }
+                            null -> {}
+                        }
+                    }
+                }
+                launch {
+                    photoEditorImagesViewModel.imageExportBitmapStateFlow.collect {
+                        when (it) {
+                            is Resource.Error -> {
+                                loadingIndicator.visibility = INVISIBLE
+                                modalBottomSheetBehavior.isHideable = true
+                                saveButton.isEnabled = true
+                                shareButton.isEnabled = true
+                                Snackbar.make(view, it.errorMessage, Snackbar.LENGTH_LONG).show()
+                            }
+                            is Resource.Loading -> {
+                                loadingIndicator.visibility = VISIBLE
+                                modalBottomSheetBehavior.isHideable = false
+                                saveButton.isEnabled = false
+                                shareButton.isEnabled = false
+                            }
+                            is Resource.Success -> {
+                                launch {
+                                    viewModel.onEvent(
+                                        SaveModalBottomSheetEvent.SetExportState(
+                                            Resource.Loading
+                                        )
+                                    )
+                                    when (viewModel.exportTypeStateFlow.value) {
+                                        ExportType.SAVE -> {
+                                            launch(Dispatchers.IO) {
+                                                saveImage(it.data, requireContext(), "FilterFiesta")
+                                            }
+                                            Snackbar.make(
+                                                view,
+                                                "Saved image on device",
+                                                Snackbar.LENGTH_LONG
+                                            ).show()
+                                        }
+
+                                        ExportType.SHARE -> {
+                                            launch(Dispatchers.IO) {
+                                                shareImage(it.data)
+                                            }
+                                        }
+
+                                        null -> {}
+                                    }
+                                    viewModel.onEvent(SaveModalBottomSheetEvent.SetExportType(null))
+                                    viewModel.onEvent(
+                                        SaveModalBottomSheetEvent.SetExportState(
+                                            Resource.Success(Unit)
+                                        )
+                                    )
+                                    loadingIndicator.visibility = INVISIBLE
+                                    modalBottomSheetBehavior.isHideable = true
+                                    saveButton.isEnabled = true
+                                    shareButton.isEnabled = true
+                                }
                             }
                             null -> {}
                         }
@@ -124,35 +194,33 @@ class SaveModalBottomSheetFragment: BottomSheetDialogFragment() {
         }
 
         saveButton.setOnClickListener {
-            viewModel.onEvent(SaveModalBottomSheetEvent.SetSaveState(Resource.Loading))
-            when (val bitmapResource = photoEditorImagesViewModel.previewImageBitmapStateFlow.value) {
-                is Resource.Success -> {
-                    saveImage(bitmapResource.data, requireContext(), "FilterFiesta")
-                    viewModel.onEvent(SaveModalBottomSheetEvent.SetSaveState(Resource.Success(Unit)))
-                    Snackbar.make(view, "Saved image on device", Snackbar.LENGTH_LONG).show()
-                }
-                else -> {
-                    viewModel.onEvent(SaveModalBottomSheetEvent.SetSaveState(Resource.Error("Can't save image, preview not loaded")))
-                }
-            }
+            modalBottomSheetBehavior.isHideable = false
+            loadingIndicator.visibility = VISIBLE
+            viewModel.onEvent(SaveModalBottomSheetEvent.SetExportType(ExportType.SAVE))
+            photoEditorImagesViewModel.onEvent(
+                PhotoEditorImagesEvent.GenerateBitmapUsingFilters(
+                    photoEditorImagesViewModel.imageFiltersStateFlow.value,
+                    BitmapType.IMAGE_EXPORT_ORIGINAL_RES,
+                )
+            )
         }
 
         shareButton.setOnClickListener {
-            viewModel.onEvent(SaveModalBottomSheetEvent.SetSaveState(Resource.Loading))
-            when (val bitmapResource = photoEditorImagesViewModel.previewImageBitmapStateFlow.value) {
-                is Resource.Success -> {
-                    shareImage(bitmapResource.data)
-                    viewModel.onEvent(SaveModalBottomSheetEvent.SetSaveState(Resource.Success(Unit)))
-                }
-                else -> {
-                    viewModel.onEvent(SaveModalBottomSheetEvent.SetSaveState(Resource.Error("Can't save image, preview not loaded")))
-                }
-            }
+            //viewModel.onEvent(SaveModalBottomSheetEvent.SetSaveState(Resource.Loading))
+            modalBottomSheetBehavior.isHideable = false
+            loadingIndicator.visibility = VISIBLE
+            viewModel.onEvent(SaveModalBottomSheetEvent.SetExportType(ExportType.SHARE))
+            photoEditorImagesViewModel.onEvent(
+                PhotoEditorImagesEvent.GenerateBitmapUsingFilters(
+                    photoEditorImagesViewModel.imageFiltersStateFlow.value,
+                    BitmapType.IMAGE_EXPORT_ORIGINAL_RES,
+                )
+            )
         }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
         val saveModalBottomSheetBehavior = dialog.behavior
         saveModalBottomSheetBehavior.peekHeight = requireParentFragment().requireView().findViewById<FragmentContainerView>(R.id.photo_editor_bottom_bar).height
         return dialog
@@ -181,32 +249,9 @@ class SaveModalBottomSheetFragment: BottomSheetDialogFragment() {
         return values
     }
 
-    private fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
-        if (outputStream != null) {
-            try {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-                outputStream.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
     // https://stackoverflow.com/questions/9049143/android-share-intent-for-a-bitmap-is-it-possible-not-to-save-it-prior-sharing
     private fun shareImage(bitmap: Bitmap) {
-        val cacheFile = File(requireContext().cacheDir, "images")
-        cacheFile.mkdirs() // don't forget to make the directory
-        val stream =
-            FileOutputStream("$cacheFile/image.png")
-        saveImageToStream(bitmap, stream)
-        // need to get saved image (in cache) via a new file object
-        val imagePath = File(requireContext().cacheDir, "images")
-        val newFile = File(imagePath, "image.png")
-        val contentUri = FileProvider.getUriForFile(
-            requireContext(),
-            "com.aqchen.filterfiesta.fileprovider",
-            newFile
-        )
+        val contentUri = saveImageToCache(bitmap, "image.png", requireContext())
         val shareIntent = Intent()
         shareIntent.action = Intent.ACTION_SEND
         // temporary permission for receiving app to read this file

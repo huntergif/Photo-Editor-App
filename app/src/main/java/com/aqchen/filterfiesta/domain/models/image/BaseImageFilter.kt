@@ -16,7 +16,7 @@ abstract class BaseImageFilter(
     val name: String,
     val parameterSettings: List<ParameterSetting>
 ) {
-    abstract fun apply(source: Bitmap, parameters: Map<String, Double>): Bitmap?
+    abstract fun apply(source: Bitmap, parameters: Map<String, Double>, matrices: FilterMatrices): Bitmap?
 }
 
 fun newDefaultFilter(filter: BaseImageFilter): Filter {

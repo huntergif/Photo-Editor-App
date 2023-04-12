@@ -1,20 +1,16 @@
-package com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.parameter
+package com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.parameter
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.aqchen.filterfiesta.R
-import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.EditParametersViewModel
+import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.EditParametersViewModel
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
-import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.SelectFilterState
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.pager
+package com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.pager
 
 import android.content.Context
 import android.os.Build
@@ -19,9 +19,9 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.aqchen.filterfiesta.R
-import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.EditParametersEvent
-import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.EditParametersViewModel
-import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters.parameter.ParameterFragment
+import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.EditParametersEvent
+import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.EditParametersViewModel
+import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.parameter.ParameterFragment
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.ui.util.CenterLinearLayoutManager
 import kotlinx.coroutines.launch
