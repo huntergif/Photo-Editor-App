@@ -2,6 +2,7 @@ package com.aqchen.filterfiesta.domain.models.image.adjustments
 
 import android.graphics.Bitmap
 import com.aqchen.filterfiesta.domain.models.image.BaseImageFilter
+import com.aqchen.filterfiesta.domain.models.image.FilterMatrices
 import com.aqchen.filterfiesta.domain.models.image.ParameterSetting
 import com.aqchen.filterfiesta.util.bitmapConfigToCvType
 import org.opencv.android.Utils
@@ -23,10 +24,13 @@ class ContrastAdjustment: BaseImageFilter(
 ) {
 
     // https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/
-    override fun apply(source: Bitmap, parameters: Map<String, Double>): Bitmap? {
-        val cvType = bitmapConfigToCvType(source.config)
-        val imageMatrix = Mat(source.height, source.width, cvType)
-        val tempMatrix = Mat(source.height, source.width, cvType) // holds result
+    override fun apply(
+        source: Bitmap,
+        parameters: Map<String, Double>,
+        matrices: FilterMatrices
+    ): Bitmap? {
+        val imageMatrix = matrices.matrix1
+        val tempMatrix = matrices.matrix2
 
         Utils.bitmapToMat(source, imageMatrix)
 

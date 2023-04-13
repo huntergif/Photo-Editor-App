@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters
+package com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar
 
 import android.view.LayoutInflater
 import android.view.View

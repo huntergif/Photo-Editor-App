@@ -1,7 +1,6 @@
-package com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.pager
+package com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.pager
 
 import androidx.lifecycle.ViewModel
-import com.aqchen.filterfiesta.domain.models.image.ParameterSetting
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

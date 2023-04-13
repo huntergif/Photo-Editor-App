@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -13,13 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.domain.models.image.newDefaultFilter
-import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.EditParametersFragment
+import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.EditParametersFragment
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.ui.util.MarginItemDecoration
 import com.aqchen.filterfiesta.ui.util.MarginItemDecorationDirection
 import com.google.android.material.motion.MotionUtils
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.coroutines.launch
@@ -40,13 +38,17 @@ class AdjustmentsFragment: Fragment() {
     ): View? {
         // pairs with transitions in photo editor fragment
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
-            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+            duration = MotionUtils.resolveThemeDuration(
+                requireContext(),
+                com.google.android.material.R.attr.motionDurationMedium3,
+                350
+            ).toLong()
         }
         exitTransition = MaterialFadeThrough().apply {
             duration = MotionUtils.resolveThemeDuration(
                 requireContext(),
-                com.google.android.material.R.attr.motionDurationMedium2,
-                300
+                com.google.android.material.R.attr.motionDurationMedium3,
+                350
             ).toLong()
         }
         returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false).apply {

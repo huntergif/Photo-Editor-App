@@ -1,5 +1,6 @@
 package com.aqchen.filterfiesta.ui
 
+import com.google.android.material.color.DynamicColors
 import dagger.hilt.android.HiltAndroidApp
 import org.opencv.android.OpenCVLoader
 
@@ -9,6 +10,7 @@ class Application : android.app.Application() {
     override fun onCreate() {
         super.onCreate()
 
+        DynamicColors.applyToActivitiesIfAvailable(this)
         OpenCVLoader.initDebug()
     }
 }

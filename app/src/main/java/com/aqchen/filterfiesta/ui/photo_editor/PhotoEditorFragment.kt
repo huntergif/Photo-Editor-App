@@ -14,18 +14,21 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
-import com.aqchen.filterfiesta.ui.photo_editor.bottom_bars.home.BottomBarHomeFragment
+import com.aqchen.filterfiesta.ui.photo_editor.home_bottom_bar.BottomBarHomeFragment
 import com.aqchen.filterfiesta.ui.photo_editor.filter_list_side_sheet.FilterListAdapter
 import com.aqchen.filterfiesta.ui.photo_editor.save_modal_bottom_sheet.SaveModalBottomSheetFragment
+import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.BaseImageBitmaps
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.BitmapType
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
+import com.aqchen.filterfiesta.ui.util.getScaledBitmap
 import com.aqchen.filterfiesta.util.Resource
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -80,6 +83,8 @@ class PhotoEditorFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
+        val previewFragmentContainerView: FragmentContainerView = view.findViewById(R.id.preview_fragment_container)
+
         childFragmentManager.beginTransaction().replace(R.id.photo_editor_bottom_bar, BottomBarHomeFragment()).commit()
         childFragmentManager.restoreBackStack("photo_editor_bottom_bar")
 
@@ -129,12 +134,14 @@ class PhotoEditorFragment : Fragment() {
                             val target = object : CustomTarget<Bitmap>() {
                                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                                     Log.d("PhotoEditorFragment", "ON RESOURCE READY ${resource.isRecycled}")
+                                    // get a scaled bitmap based on the image preview fragment container dimensions
+                                    val scaledBitmap = getScaledBitmap(resource , previewFragmentContainerView.measuredWidth, previewFragmentContainerView.measuredHeight)
+                                    Log.d("PhotoEditorViewModel", "Scaled bitmap width: ${scaledBitmap.width} height: ${scaledBitmap.height}")
                                     photoEditorImagesViewModel.lastProcessedImage = it
-                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetInternalBitmap(resource, BitmapType.PREVIEW_IMAGE))
-//                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetDisplayedPhotoEditorBitmap(
-//                                        Resource.Success(resource)
-//                                    ))
-                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetBaseImageBitmap(resource))
+                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetInternalBitmap(Resource.Success(scaledBitmap), BitmapType.PREVIEW_IMAGE))
+                                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetBaseImageBitmap(
+                                        BaseImageBitmaps(base = resource, scaled = scaledBitmap)
+                                    ))
                                 }
 
                                 override fun onLoadCleared(placeholder: Drawable?) {

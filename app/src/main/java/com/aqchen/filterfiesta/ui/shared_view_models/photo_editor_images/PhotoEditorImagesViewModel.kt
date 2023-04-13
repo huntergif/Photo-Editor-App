@@ -5,7 +5,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aqchen.filterfiesta.domain.models.Filter
+import com.aqchen.filterfiesta.domain.models.image.FilterMatrices
 import com.aqchen.filterfiesta.domain.models.image.Image
+import com.aqchen.filterfiesta.domain.use_case.filters.CreateImageMatrixUseCase
 import com.aqchen.filterfiesta.domain.use_case.filters.GenerateImageUseCase
 import com.aqchen.filterfiesta.domain.use_case.filters.GetFilterClassFromTypeUseCase
 import com.aqchen.filterfiesta.util.Resource
@@ -23,6 +25,7 @@ import javax.inject.Inject
 class PhotoEditorImagesViewModel @Inject constructor(
     private val getFilterClassFromTypeUseCase: GetFilterClassFromTypeUseCase,
     private val generateImageUseCase: GenerateImageUseCase,
+    private val createImageMatrixUseCase: CreateImageMatrixUseCase
 ): ViewModel() {
     // state flow for the base (initial selected) image
     private val _baseImageStateFlow = MutableStateFlow<Image?>(null)
@@ -42,8 +45,8 @@ class PhotoEditorImagesViewModel @Inject constructor(
     val selectedFilterStateFlow: StateFlow<SelectFilterState?> = _selectedFilterStateFlow
 
     // state flow for the bitmap loaded from the base image uri
-    private val _baseImageBitmapStateFlow = MutableStateFlow<Bitmap?>(null)
-    val baseImageBitmapStateFlow: StateFlow<Bitmap?> = _baseImageBitmapStateFlow
+    private val _baseImageBitmapsStateFlow = MutableStateFlow<BaseImageBitmaps?>(null)
+    val baseImageBitmapsStateFlow: StateFlow<BaseImageBitmaps?> = _baseImageBitmapsStateFlow
 
     // state flow for the preview image bitmap (the final image that would be saved)
     private val _previewImageBitmapStateFlow = MutableStateFlow<Resource<Bitmap>?>(null)
@@ -52,6 +55,10 @@ class PhotoEditorImagesViewModel @Inject constructor(
     // state flow for the filter preview (the preview for when the user is adding or editing a filter, not confirmed as to be saved)
     private val _filterPreviewBitmapStateFlow = MutableStateFlow<Resource<Bitmap>?>(null)
     val filterPreviewBitmapStateFlow: StateFlow<Resource<Bitmap>?> = _filterPreviewBitmapStateFlow
+
+    // state flow for the bitmap to be exported (saved, shared, etc.)
+    private val _imageExportBitmapStateFlow = MutableStateFlow<Resource<Bitmap>?>(null)
+    val imageExportBitmapStateFlow: StateFlow<Resource<Bitmap>?> = _imageExportBitmapStateFlow
 
     // state flow for the bitmap to be displayed on the photo editor. Usually either the preview image or filter preview bitmap
     private val _displayPhotoEditorBitmapStateFlow = MutableStateFlow<Resource<Bitmap>?>(null)
@@ -68,6 +75,8 @@ class PhotoEditorImagesViewModel @Inject constructor(
     // The last non-loading bitmap resources for a fallback when it's generate job is cancelled
     private var lastNonLoadingPreviewImageBitmapResource: Resource<Bitmap>? = null
     private var lastNonLoadingFilterPreviewBitmapResource: Resource<Bitmap>? = null
+
+//    private var filterMatrices: FilterMatrices? = null
 
     fun onEvent(event: PhotoEditorImagesEvent) {
         when (event) {
@@ -90,16 +99,28 @@ class PhotoEditorImagesViewModel @Inject constructor(
                 }
             }
             is PhotoEditorImagesEvent.SetBaseImageBitmap -> {
-                _baseImageBitmapStateFlow.value = event.bitmap
+                _baseImageBitmapsStateFlow.value = event.bitmaps
+//                if (event.bitmaps != null) {
+//                    val mat = createImageMatrixUseCase(event.bitmaps)
+//                    filterMatrices = FilterMatrices(
+//                        resultMatrix = mat,
+//                        matrix1 = mat.clone(),
+//                        matrix2 = mat.clone(),
+//                        matrix3 = mat.clone()
+//                    )
+//                }
             }
             is PhotoEditorImagesEvent.SetInternalBitmap -> {
                 when (event.bitmapType) {
                     BitmapType.PREVIEW_IMAGE -> {
-                        _previewImageBitmapStateFlow.value = Resource.Success(event.bitmap)
+                        _previewImageBitmapStateFlow.value = event.resource
                     }
                     BitmapType.FILTER_PREVIEW -> {
-                        Log.d("DisplayBitmap", "Filter preview bitmap set: ${event.bitmap}")
-                        _filterPreviewBitmapStateFlow.value = Resource.Success(event.bitmap)
+                        Log.d("DisplayBitmap", "Filter preview bitmap set: ${event.resource}")
+                        _filterPreviewBitmapStateFlow.value = event.resource
+                    }
+                    BitmapType.IMAGE_EXPORT_ORIGINAL_RES -> {
+                        _imageExportBitmapStateFlow.value = event.resource
                     }
                 }
             }
@@ -137,6 +158,7 @@ class PhotoEditorImagesViewModel @Inject constructor(
             BitmapType.FILTER_PREVIEW -> {
                 _filterPreviewBitmapStateFlow.value = lastNonLoadingFilterPreviewBitmapResource
             }
+            BitmapType.IMAGE_EXPORT_ORIGINAL_RES -> {}
         }
         generateImageJob?.cancel()
 
@@ -149,21 +171,40 @@ class PhotoEditorImagesViewModel @Inject constructor(
             BitmapType.FILTER_PREVIEW -> {
                 _filterPreviewBitmapStateFlow
             }
+            BitmapType.IMAGE_EXPORT_ORIGINAL_RES -> {
+                _imageExportBitmapStateFlow
+            }
         }
 
         // get base image bitmap
-        val baseBitmap = baseImageBitmapStateFlow.value
+        val baseBitmap = when (bitmapType) {
+            BitmapType.IMAGE_EXPORT_ORIGINAL_RES -> {
+                baseImageBitmapsStateFlow.value?.base
+            }
+            else -> {
+                baseImageBitmapsStateFlow.value?.scaled
+            }
+        }
         if (baseBitmap == null) {
             stateFlow.value = Resource.Error("No base image bitmap set")
             return
         }
 
+        Log.d("PhotoEditorViewModel", "width: ${baseBitmap.width} height: ${baseBitmap.height}")
+
         // start generate image job
         generateImageJob = viewModelScope.launch {
             stateFlow.emit(Resource.Loading)
-            // debounce generate image requests by 200ms
+            // debounce generate image requests by 500ms
             delay(200)
-            val newBitmap = generateImageUseCase(baseBitmap, filters)
+            val mat = createImageMatrixUseCase(baseBitmap)
+            val filterMatrices = FilterMatrices(
+                resultMatrix = mat,
+                matrix1 = mat.clone(),
+                matrix2 = mat.clone(),
+                matrix3 = mat.clone()
+            )
+            val newBitmap = generateImageUseCase(baseBitmap, filters, filterMatrices)
             val resource = if (newBitmap == null) {
                 Resource.Error("Failed to generate image")
             } else {
@@ -176,6 +217,7 @@ class PhotoEditorImagesViewModel @Inject constructor(
                 BitmapType.FILTER_PREVIEW -> {
                     lastNonLoadingFilterPreviewBitmapResource = resource
                 }
+                BitmapType.IMAGE_EXPORT_ORIGINAL_RES -> {}
             }
             stateFlow.emit(resource)
         }

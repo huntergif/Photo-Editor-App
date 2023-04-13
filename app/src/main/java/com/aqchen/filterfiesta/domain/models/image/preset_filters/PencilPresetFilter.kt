@@ -2,6 +2,7 @@ package com.aqchen.filterfiesta.domain.models.image.preset_filters
 
 import android.graphics.Bitmap
 import com.aqchen.filterfiesta.domain.models.image.BaseImageFilter
+import com.aqchen.filterfiesta.domain.models.image.FilterMatrices
 import com.aqchen.filterfiesta.domain.models.image.ParameterSetting
 import com.aqchen.filterfiesta.util.bitmapConfigToCvType
 import org.opencv.android.Utils
@@ -37,11 +38,14 @@ class PencilPresetFilter: BaseImageFilter(
     )
 ) {
     // Implementation is same as Color Pencil, but the output mat is swapped
-    override fun apply(source: Bitmap, parameters: Map<String, Double>): Bitmap? {
-        val cvType = bitmapConfigToCvType(source.config)
-        val imageMatrix = Mat(source.height, source.width, cvType)
-        val tempMatrix1 = Mat(source.height, source.width, cvType) // holds result
-        val tempMatrix2 = Mat(source.height, source.width, cvType)
+    override fun apply(
+        source: Bitmap,
+        parameters: Map<String, Double>,
+        matrices: FilterMatrices
+    ): Bitmap? {
+        val imageMatrix = matrices.matrix1
+        val tempMatrix1 = matrices.matrix2
+        val tempMatrix2 = matrices.matrix3
 
         val sigmaSpace = parameters["sigmaSpace"]?.toFloat() ?: return null
         val sigmaColor = parameters["sigmaColor"]?.toFloat() ?: return null

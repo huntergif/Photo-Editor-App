@@ -50,15 +50,15 @@ class CustomFiltersFragment : Fragment() {
         exitTransition = MaterialFadeThrough().apply {
             duration = MotionUtils.resolveThemeDuration(
                 requireContext(),
-                com.google.android.material.R.attr.motionDurationMedium2,
-                300
+                com.google.android.material.R.attr.motionDurationMedium3,
+                350
             ).toLong()
         }
         enterTransition = MaterialFadeThrough().apply {
             duration = MotionUtils.resolveThemeDuration(
                 requireContext(),
-                com.google.android.material.R.attr.motionDurationMedium2,
-                300
+                com.google.android.material.R.attr.motionDurationMedium3,
+                350
             ).toLong()
         }
 

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.domain.models.image.newDefaultFilter
-import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.EditParametersFragment
+import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.EditParametersFragment
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.ui.util.MarginItemDecoration
@@ -38,13 +38,17 @@ class PresetFiltersFragment: Fragment() {
     ): View? {
         // pairs with transitions in photo editor fragment
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
-            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+            duration = MotionUtils.resolveThemeDuration(
+                requireContext(),
+                com.google.android.material.R.attr.motionDurationMedium3,
+                350
+            ).toLong()
         }
         exitTransition = MaterialFadeThrough().apply {
             duration = MotionUtils.resolveThemeDuration(
                 requireContext(),
-                com.google.android.material.R.attr.motionDurationMedium2,
-                300
+                com.google.android.material.R.attr.motionDurationMedium3,
+                350
             ).toLong()
         }
         returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false).apply {

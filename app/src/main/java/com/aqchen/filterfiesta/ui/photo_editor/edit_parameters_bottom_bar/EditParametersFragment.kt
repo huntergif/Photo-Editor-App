@@ -1,4 +1,4 @@
-package com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters
+package com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar
 
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.aqchen.filterfiesta.R
-import com.aqchen.filterfiesta.ui.photo_editor.adjustments.edit_parameters.pager.ParameterPagerFragment
+import com.aqchen.filterfiesta.ui.photo_editor.edit_parameters_bottom_bar.pager.ParameterPagerFragment
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.BitmapType
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
@@ -59,7 +59,7 @@ class EditParametersFragment : Fragment() {
                     // set the image filters to the selected state (temp) filters
                     photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetImageFilters(newFilters))
                     // set the preview image as the bitmap from the generated for the filter preview
-                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetInternalBitmap(bitmapResource.data, BitmapType.PREVIEW_IMAGE))
+                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetInternalBitmap(Resource.Success(bitmapResource.data), BitmapType.PREVIEW_IMAGE))
                     parentFragmentManager.popBackStack()
                 } else {
                     Snackbar.make(view, "Can't save new filter", Snackbar.LENGTH_LONG).show()
@@ -108,7 +108,7 @@ class EditParametersFragment : Fragment() {
 //                emptyList()))
             when (val previewImageBitmap = photoEditorImagesViewModel.previewImageBitmapStateFlow.value) {
                 is Resource.Success -> {
-                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetInternalBitmap(previewImageBitmap.data, BitmapType.FILTER_PREVIEW))
+                    photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetInternalBitmap(Resource.Success(previewImageBitmap.data), BitmapType.FILTER_PREVIEW))
                 }
                 else -> {
                     Snackbar.make(view, "Can't cancel, preview image not loaded", Snackbar.LENGTH_SHORT).show()

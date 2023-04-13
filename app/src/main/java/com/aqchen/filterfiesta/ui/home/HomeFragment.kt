@@ -45,14 +45,14 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var photoEditorImagesViewModel: PhotoEditorImagesViewModel
-    private var photoUri: Uri? = null
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
     private val takePhoto = registerForActivityResult(
         ActivityResultContracts.TakePicture()
     ) { tookPhoto: Boolean ->
-        if (tookPhoto && photoUri != null) {
-            photoUri?.let{
+        Log.d("HomeFragment", "${tookPhoto}, ${viewModel.photoUri}")
+        if (tookPhoto && viewModel.photoUri != null) {
+            viewModel.photoUri?.let{
                 photoEditorImagesViewModel.onEvent(PhotoEditorImagesEvent.SetBaseImage(it))
 
                 // transitions to/from the photo editor fragment
@@ -111,12 +111,12 @@ class HomeFragment : Fragment() {
         selectCameraButton.setOnClickListener {
             val photoName = "IMG_${Date()}.JPG"
             val photoFile = File(requireContext().applicationContext.filesDir, photoName)
-            photoUri = FileProvider.getUriForFile(
+            viewModel.photoUri = FileProvider.getUriForFile(
                 requireContext(),
                 "com.aqchen.filterfiesta.fileprovider",
                 photoFile
             )
-            takePhoto.launch(photoUri)
+            takePhoto.launch(viewModel.photoUri)
         }
 
         lifecycleScope.launch {
