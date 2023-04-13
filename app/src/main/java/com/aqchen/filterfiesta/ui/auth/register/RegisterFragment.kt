@@ -65,8 +65,8 @@ class RegisterFragment : Fragment() {
         val registerPrivacyPolicyText = view.findViewById<TextView>(R.id.register_privacy_policy_text)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel = ViewModelProvider(requireParentFragment())[RegisterViewModel::class.java]
-            homeViewModel = ViewModelProvider(requireParentFragment())[HomeViewModel::class.java]
+            viewModel = ViewModelProvider(requireActivity())[RegisterViewModel::class.java]
+            homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
             // relaunch coroutines when the fragment starts or is restarted
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

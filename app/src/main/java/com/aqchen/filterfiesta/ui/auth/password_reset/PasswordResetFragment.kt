@@ -52,7 +52,7 @@ class PasswordResetFragment : Fragment() {
         val submitButton = view.findViewById<MaterialButton>(R.id.password_reset_submit_button)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel = ViewModelProvider(requireParentFragment())[PasswordResetViewModel::class.java]
+            viewModel = ViewModelProvider(requireActivity())[PasswordResetViewModel::class.java]
 
             // relaunch coroutines when the fragment starts or is restarted
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

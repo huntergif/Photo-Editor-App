@@ -38,13 +38,17 @@ class AdjustmentsFragment: Fragment() {
     ): View? {
         // pairs with transitions in photo editor fragment
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
-            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+            duration = MotionUtils.resolveThemeDuration(
+                requireContext(),
+                com.google.android.material.R.attr.motionDurationMedium3,
+                350
+            ).toLong()
         }
         exitTransition = MaterialFadeThrough().apply {
             duration = MotionUtils.resolveThemeDuration(
                 requireContext(),
-                com.google.android.material.R.attr.motionDurationMedium2,
-                300
+                com.google.android.material.R.attr.motionDurationMedium3,
+                350
             ).toLong()
         }
         returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false).apply {

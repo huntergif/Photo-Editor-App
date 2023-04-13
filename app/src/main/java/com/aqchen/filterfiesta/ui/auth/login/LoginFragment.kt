@@ -62,8 +62,8 @@ class LoginFragment : Fragment() {
         val forgotPasswordText = view.findViewById<TextView>(R.id.forgot_password_text)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel = ViewModelProvider(requireParentFragment())[LoginViewModel::class.java]
-            homeViewModel = ViewModelProvider(requireParentFragment())[HomeViewModel::class.java]
+            viewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
+            homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
