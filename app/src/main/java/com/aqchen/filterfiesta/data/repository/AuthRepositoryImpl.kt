@@ -4,6 +4,7 @@ import com.aqchen.filterfiesta.data.remote.FirebaseAuthentication
 import com.aqchen.filterfiesta.domain.repository.AuthRepository
 import com.aqchen.filterfiesta.util.Resource
 import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
@@ -20,7 +21,7 @@ class AuthRepositoryImpl(
     override suspend fun signInWithEmailAndPassword(email: String, password: String): Resource<FirebaseUser> {
         return try {
             Resource.Success(firebaseAuth.conn.signInWithEmailAndPassword(email, password).await().user!!)
-        } catch (e: FirebaseAuthException) {
+        } catch (e: FirebaseException) {
             Resource.Error(e.message ?: "Unknown Firebase Auth Error")
         }
     }
@@ -31,7 +32,7 @@ class AuthRepositoryImpl(
     ): Resource<FirebaseUser> {
         return try {
             Resource.Success(firebaseAuth.conn.createUserWithEmailAndPassword(email, password).await().user!!)
-        } catch (e: FirebaseAuthException) {
+        } catch (e: FirebaseException) {
             Resource.Error(e.message ?: "Unknown Firebase Auth Error")
         }
     }
@@ -50,7 +51,11 @@ class AuthRepositoryImpl(
 
     override fun getAuthStateFlow(scope: CoroutineScope) = callbackFlow {
         val authStateListener = FirebaseAuth.AuthStateListener { auth ->
-            trySend(auth.currentUser)
+            try {
+                trySend(auth.currentUser)
+            } catch (e: FirebaseException) {
+                // Do nothing
+            }
         }
         firebaseAuth.conn.addAuthStateListener(authStateListener)
         awaitClose {

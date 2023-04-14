@@ -74,7 +74,7 @@ class LoginFragment : Fragment() {
                             }
                             is Resource.Error -> {
                                 submitButton.isEnabled = true
-                                Snackbar.make(view, R.string.login_failed, Snackbar.LENGTH_LONG).show()
+                                Snackbar.make(view, "${getString(R.string.login_failed)}: ${it.errorMessage}", Snackbar.LENGTH_LONG).show()
                             }
                             Resource.Loading -> {
                                 submitButton.isEnabled = false
