@@ -5,13 +5,11 @@ import com.aqchen.filterfiesta.domain.models.CustomFilter
 import com.aqchen.filterfiesta.domain.repository.CustomFilterRepository
 import com.aqchen.filterfiesta.util.Resource
 import com.google.firebase.FirebaseException
-import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onErrorReturn
 import javax.inject.Inject
 
-class CustomCustomFilterRepositoryImpl @Inject constructor(
+class CustomFilterRepositoryImpl @Inject constructor(
     private val filterGroupDao: FilterGroupDao
 ): CustomFilterRepository {
     // Note that the Unit class is the standard "no return value" type class: https://stackoverflow.com/questions/55953052/kotlin-void-vs-unit-vs-nothing

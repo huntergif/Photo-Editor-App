@@ -1,18 +1,13 @@
 package com.aqchen.filterfiesta.ui.auth.login
 
-import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.TextPaint
 import android.text.style.ClickableSpan
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -22,8 +17,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.ui.home.HomeViewModel
-import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
-import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
 import com.aqchen.filterfiesta.util.Resource
 import com.aqchen.filterfiesta.util.setTextViewWithClickableSpan
 import com.google.android.material.button.MaterialButton

@@ -147,7 +147,7 @@ class LoginFragmentTest {
         onView(withId(R.id.login_password_input)).perform(typeText("1"))
         onView(withId(R.id.login_submit_button)).perform(click())
         // should refactor in the future to reduce flakiness
-        sleep(100)
+        sleep(500)
         // assert
         verify(exactly = 0) {
             navController.navigate(any<Int>())

@@ -3,7 +3,7 @@ package com.aqchen.filterfiesta.di
 import com.aqchen.filterfiesta.data.dao.FilterGroupDao
 import com.aqchen.filterfiesta.data.dao.FilterGroupDaoImpl
 import com.aqchen.filterfiesta.data.remote.FirebaseFirestore
-import com.aqchen.filterfiesta.data.repository.CustomCustomFilterRepositoryImpl
+import com.aqchen.filterfiesta.data.repository.CustomFilterRepositoryImpl
 import com.aqchen.filterfiesta.domain.repository.AuthRepository
 import com.aqchen.filterfiesta.domain.repository.CustomFilterRepository
 import com.aqchen.filterfiesta.domain.use_case.custom_filters.CreateCustomFilterUseCase
@@ -45,7 +45,7 @@ object PhotoEditorModule {
     @Provides
     @ViewModelScoped
     fun provideFilterGroupRepository(filterGroupDao: FilterGroupDao): CustomFilterRepository {
-        return CustomCustomFilterRepositoryImpl(filterGroupDao)
+        return CustomFilterRepositoryImpl(filterGroupDao)
     }
 
     // needed for SaveModalBottomSheetViewModel

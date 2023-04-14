@@ -1,12 +1,8 @@
 package com.aqchen.filterfiesta.ui.home
 
-import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.text.TextPaint
-import android.text.style.ClickableSpan
 import android.util.Log
-import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -24,7 +20,6 @@ import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.aqchen.filterfiesta.R
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent

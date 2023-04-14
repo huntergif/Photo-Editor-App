@@ -17,7 +17,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialSharedAxis
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 

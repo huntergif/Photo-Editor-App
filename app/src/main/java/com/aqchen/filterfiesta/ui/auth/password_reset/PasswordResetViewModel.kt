@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.aqchen.filterfiesta.domain.use_case.auth.SendPasswordResetEmailUseCase
 import com.aqchen.filterfiesta.domain.use_case.auth.ValidateEmailUseCase
 import com.aqchen.filterfiesta.util.Resource
-import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

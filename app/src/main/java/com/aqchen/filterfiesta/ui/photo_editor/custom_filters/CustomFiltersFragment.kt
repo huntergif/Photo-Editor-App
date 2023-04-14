@@ -2,7 +2,6 @@ package com.aqchen.filterfiesta.ui.photo_editor.custom_filters
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +12,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aqchen.filterfiesta.R
-import com.aqchen.filterfiesta.ui.photo_editor.tool_pager.ToolPagerAdapter
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.BitmapType
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesEvent
 import com.aqchen.filterfiesta.ui.shared_view_models.photo_editor_images.PhotoEditorImagesViewModel
-import com.aqchen.filterfiesta.ui.util.CenterLinearLayoutManager
 import com.aqchen.filterfiesta.ui.util.MarginItemDecoration
 import com.aqchen.filterfiesta.ui.util.MarginItemDecorationDirection
 import com.aqchen.filterfiesta.util.Resource
@@ -87,13 +84,13 @@ class CustomFiltersFragment : Fragment() {
                 launch {
                     viewModel.customFiltersStateFlow.collect {
                         when (it.getCustomFiltersStatus) {
-                            is com.aqchen.filterfiesta.util.Resource.Error -> {
+                            is Resource.Error -> {
                                 Snackbar.make(view, "Failed to get custom filters", Snackbar.LENGTH_LONG).show()
                             }
-                            com.aqchen.filterfiesta.util.Resource.Loading -> {
+                            Resource.Loading -> {
                                 // Do nothing for now
                             }
-                            is com.aqchen.filterfiesta.util.Resource.Success -> {
+                            is Resource.Success -> {
                                 launch {
                                     it.customFilters?.collect { customFilters ->
                                         adapter.submitList(customFilters)
