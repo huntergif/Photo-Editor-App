@@ -5,7 +5,9 @@ import com.aqchen.filterfiesta.domain.models.image.adjustments.ContrastAdjustmen
 import com.aqchen.filterfiesta.domain.models.image.adjustments.DetailAdjustment
 import com.aqchen.filterfiesta.domain.models.image.adjustments.SaturationAdjustment
 import com.aqchen.filterfiesta.domain.models.image.preset_filters.ColorPencilPresetFilter
+import com.aqchen.filterfiesta.domain.models.image.preset_filters.DotBlobsPresetFilter
 import com.aqchen.filterfiesta.domain.models.image.preset_filters.PencilPresetFilter
+import com.aqchen.filterfiesta.domain.models.image.preset_filters.VignettePresetFilter
 import com.aqchen.filterfiesta.domain.models.image.preset_filters.WaterColorPresetFilter
 
 class GetFilterClassFromTypeUseCase {
@@ -29,6 +31,9 @@ class GetFilterClassFromTypeUseCase {
             }
             "watercolor" -> {
                 imageFilter = WaterColorPresetFilter()
+            }
+            "dotBlobs" -> {
+                imageFilter = DotBlobsPresetFilter()
             }
         }
         return imageFilter
